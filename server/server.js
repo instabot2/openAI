@@ -1,49 +1,53 @@
-const express = require('express');
-const OpenAI = require('openai');
-const cors = require('cors');
+import express from 'express';
+import * as dotenv from 'dotenv';
+import cors from 'cors';
+import { OpenAI } from 'openai';
+
+dotenv.config();
+
+const openai = new OpenAI(process.env.OPENAI_API_KEY);
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// Initialize OpenAI API with static API key
-const openai = new OpenAI('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');
-
-// Route for the homepage
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Hello from ChatGPT AI, server is running successfully.',
+    message: 'Hello from ChatGPT AI, Server is running successfully.'
   });
 });
 
-// Route for generating response to user prompt
-app.post('/', async (req, res, next) => {
+app.post('/', async (req, res) => {
   try {
     const prompt = req.body.prompt;
+
     const response = await openai.complete({
-      engine: 'text-davinci-002',
+      engine: "text-davinci-003",
       prompt: `${prompt}`,
+      temperature: 0,
       maxTokens: 3000,
-      n: 1,
-      stop: '\n',
+      topP: 1,
+      frequencyPenalty: 0.5,
+      presencePenalty: 0,
+      stop: "\n"
     });
+
     res.status(200).send({
-      bot: response.choices[0].text,
+      bot: response.choices[0].text
     });
+
   } catch (error) {
     console.error(error);
-    next(error);
+
+    if (error instanceof TypeError && error.message === "Failed to fetch") {
+      res.status(500).send("Failed to fetch resource. Please check your network connection and try again.");
+    } else {
+      res.status(500).send(error || 'Something went wrong');
+    }
   }
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  res.status(500).send({
-    message: err.message || 'Something went wrong',
-    error: err,
-  });
-});
-
-// Start the server
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => console.log(`ChatGPT server started on http://localhost:${PORT}`));
