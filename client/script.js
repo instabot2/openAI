@@ -106,13 +106,13 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData)
     } else {
       const err = await response.text()
-      messageDiv.innerHTML = 'Something went wrong, error populating data!'
-      alert(err)
+      messageDiv.innerHTML = `Error: ${err}`
+      console.error(err)
     }
   } catch (err) {
     clearInterval(loadInterval)
-    messageDiv.innerHTML = 'Something went wrong, error connecting to server!'
-    alert(err)
+    messageDiv.innerHTML = `Error: ${err.message}`
+    console.error(err)
   }
 }
 
