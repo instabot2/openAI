@@ -110,8 +110,7 @@ const handleSubmit = async (e) => {
         if (response.status === 401) {
             messageDiv.innerHTML = "Access Denied"
         } else {
-            messageDiv.innerHTML = "Something went wrong"
-            alert(err)
+            messageDiv.innerHTML = "Something went wrong: " + err;
         }
     }
 }
