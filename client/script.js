@@ -86,7 +86,7 @@ const handleSubmit = async (e) => {
     // messageDiv.innerHTML = "..."
     loader(messageDiv)
 
-    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    const response = await fetch('https://codex-im0y.onrender.com/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -106,8 +106,13 @@ const handleSubmit = async (e) => {
         typeText(messageDiv, parsedData)
     } else {
         const err = await response.text()
-        
-        messageDiv.innerHTML = "Something went wrong: " + err;
+
+        if (response.status === 401) {
+            messageDiv.innerHTML = "Access Denied"
+        } else {
+            messageDiv.innerHTML = "Something went wrong"
+            alert(err)
+        }
     }
 }
 
@@ -117,3 +122,4 @@ form.addEventListener('keyup', (e) => {
         handleSubmit(e)
     }
 })
+
