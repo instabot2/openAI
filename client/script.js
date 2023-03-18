@@ -89,13 +89,13 @@ const handleSubmit = async (e) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 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'
+        'Authorization': 'Bearer ${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}'
       },
       body: JSON.stringify({
         prompt: data.get('prompt')
       })
     })
-
+   
     clearInterval(loadInterval)
     messageDiv.innerHTML = ' '
 
