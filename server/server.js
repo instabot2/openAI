@@ -17,7 +17,7 @@ app.use(express.json())
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Hello from CodeX!'
+    message: 'Hello from ChatGPT AI'
   })
 })
 
@@ -33,6 +33,7 @@ app.post('/', async (req, res) => {
       top_p: 1, // alternative to sampling with temperature, called nucleus sampling
       frequency_penalty: 0.5, // Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
       presence_penalty: 0, // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+   
     });
 
     res.status(200).send({
@@ -45,4 +46,6 @@ app.post('/', async (req, res) => {
   }
 })
 
-app.listen(5000, () => console.log('AI server started on http://localhost:5000'))
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`ChatGPT server started on http://localhost:${PORT}`));
+//app.listen(5000, () => console.log('AI server started on http://localhost:5000'))
