@@ -21,10 +21,13 @@ app.post('/', async (req, res, next) => {
   try {
     const prompt = req.body.prompt;
     const response = await openai.complete({
-      engine: 'text-davinci-002',
+      engine: 'text-davinci-003',
       prompt: `${prompt}`,
+      temperature: 0,
       maxTokens: 3000,
-      n: 1,
+      topP: 1,
+      frequencyPenalty: 0.5,
+      presencePenalty: 0,
       stop: '\n',
     });
     res.status(200).send({
