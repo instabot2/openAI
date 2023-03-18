@@ -85,7 +85,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv)
 
   try {
-    const response = await fetch('https://chatgpt-ai-83yl.onrender.com', {
+    const response = await fetch('https://chatgpt-ai-1z3r.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
