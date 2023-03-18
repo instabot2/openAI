@@ -90,7 +90,7 @@ const handleSubmit = async (e) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer YOUR_AUTH_TOKEN'
+            'Authorization': 'Bearer https://api.render.com/deploy/srv-cgam71hmbg55nqj89tr0?key=xZz4jQPNh0E'
         },
         body: JSON.stringify({
             prompt: data.get('prompt')
