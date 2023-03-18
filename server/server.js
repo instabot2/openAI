@@ -17,7 +17,7 @@ app.use(express.json())
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Hello from ChatGPT AI'
+    message: 'Hello from ChatGPT AI, Server is running succesfully.'
   })
 })
 
@@ -48,4 +48,3 @@ app.post('/', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`ChatGPT server started on http://localhost:${PORT}`));
-//app.listen(5000, () => console.log('AI server started on http://localhost:5000'))
