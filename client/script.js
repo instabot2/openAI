@@ -89,7 +89,7 @@ const handleSubmit = async (e) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${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}`
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         model: 'text-davinci-003',
