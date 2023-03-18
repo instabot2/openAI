@@ -109,6 +109,8 @@ const handleSubmit = async (e) => {
 
         if (response.status === 401) {
             messageDiv.innerHTML = "Access Denied"
+        } else if (response.status === 404) {
+            messageDiv.innerHTML = "The requested resource could not be found."    
         } else {
             messageDiv.innerHTML = "Something went wrong: " + err;
         }
