@@ -90,6 +90,7 @@ const handleSubmit = async (e) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer YOUR_AUTH_TOKEN'
         },
         body: JSON.stringify({
             prompt: data.get('prompt')
