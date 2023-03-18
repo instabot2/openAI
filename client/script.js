@@ -85,17 +85,14 @@ const handleSubmit = async (e) => {
   loader(messageDiv)
 
   try {
-    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer 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'
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
-        max_tokens: 100,
-        n: 1,
-        stop: ['\n']
+        prompt: data.get('prompt')
       })
     })
 
@@ -104,7 +101,7 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const data = await response.json()
-      const parsedData = data.choices[0].text.trim() // trims any trailing spaces/'\n' 
+      const parsedData = data.bot.trim() // trims any trailing spaces/'\n' 
 
       typeText(messageDiv, parsedData)
     } else {
@@ -126,4 +123,3 @@ form.addEventListener('keyup', (e) => {
     handleSubmit(e)
   }
 })
-
