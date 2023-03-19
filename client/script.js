@@ -86,34 +86,50 @@ const handleSubmit = async (e) => {
     // messageDiv.innerHTML = "..."
     loader(messageDiv);
 
-    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            prompt: data.get('prompt')
-        })
-    });
+    try {
+        const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt: data.get('prompt'),
+            }),
+        });
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = "";
+        clearInterval(loadInterval);
+        messageDiv.innerHTML = '';
 
-    if (response.ok) {
-        const data = await response.json();
-        const parsedData = data.bot.trim(); // trims any trailing spaces/'\n' 
+        if (response.ok) {
+            const data = await response.json();
+            const parsedData = data.bot.trim(); // trims any trailing spaces/'\n' 
 
-        typeText(messageDiv, parsedData);
-    } else {
-        const err = await response.text();
-
-        if (response.status === 401) {
-            messageDiv.innerHTML = "Access Denied";
-        } else if (response.status === 404) {
-            messageDiv.innerHTML = "The requested resource could not be found.";
+            typeText(messageDiv, parsedData);
         } else {
-            messageDiv.innerHTML = "Something went wrong: " + err;
+            let errorMessage = '';
+
+            switch (response.status) {
+                case 400:
+                    errorMessage = 'Bad Request';
+                    break;
+                case 401:
+                    errorMessage = 'Unauthorized';
+                    break;
+                case 404:
+                    errorMessage = 'Not Found';
+                    break;
+                case 500:
+                    errorMessage = 'Internal Server Error';
+                    break;
+                default:
+                    errorMessage = 'Something went wrong';
+                    break;
+            }
+
+            throw new Error(errorMessage);
         }
+    } catch (err) {
+        messageDiv.innerHTML = `Error: ${err.message}`;
     }
 };
 
