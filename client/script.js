@@ -88,7 +88,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
-    const response = await axios.post('https://chatgpt-pub.onrender.com', {
+    const response = await axios.post('https://chatgpt-ai-lujs.onrender.com', {
       prompt: data.get('prompt'),
     });
 
