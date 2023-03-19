@@ -45,26 +45,21 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
-    let wrapperClass = "wrapper";
-    if (isAi) {
-        wrapperClass += " ai";
-    }
-    let profileImgSrc = user;
-    let profileImgAlt = "user";
-    if (isAi) {
-        profileImgSrc = bot;
-        profileImgAlt = "bot";
-    }
     return (
-        '<div class="' + wrapperClass + '">' +
-        '<div class="chat">' +
-        '<div class="profile">' +
-        '<img src="' + profileImgSrc + '" alt="' + profileImgAlt + '">' +
-        '</div>' +
-        '<div class="message" id="' + uniqueId + '">' + value + '</div>' +
-        '</div>' +
-        '</div>'
-    );
+        `
+        <div class="wrapper ${isAi && 'ai'}">
+            <div class="chat">
+                <div class="profile">
+                    <img 
+                      src=${isAi ? bot : user} 
+                      alt="${isAi ? 'bot' : 'user'}" 
+                    />
+                </div>
+                <div class="message" id=${uniqueId}>${value}</div>
+            </div>
+        </div>
+    `
+    )
 }
 
 const handleSubmit = async (e) => {
