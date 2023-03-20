@@ -86,7 +86,7 @@ const handleSubmit = async (e) => {
     // messageDiv.innerHTML = "..."
     loader(messageDiv);
 
-    const response = await fetch('https://mychatgpt-app.onrender.com', {
+    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
