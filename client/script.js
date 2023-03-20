@@ -87,7 +87,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   const url = 'https://chatgpt-ai-lujs.onrender.com';
-  const token = 'Bearer org-KcKlrrOI4DA7EZRvmmF2GNi5'; // replace with your actual bearer token
+  const token = `Bearer ${process.env.REACT_APP_API_KEY}`; // replace with your actual bearer token
 
   try {
     const response = await fetch(url, {
@@ -102,23 +102,8 @@ const handleSubmit = async (e) => {
     });
 
     clearInterval(loadInterval);
-    messageDiv.innerHTML = '';
-
-    if (response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-
-      typeText(messageDiv, parsedData);
-    } else {
-      const err = await response.text();
-
-      messageDiv.innerHTML = 'Something went wrong';
-      alert(err);
-    }
-  } catch (err) {
-    console.error(err);
-    messageDiv.innerHTML = 'Something went wrong';
-    alert(err.message);
+  } catch (error) {
+    console.error(error);
   }
 };
 
