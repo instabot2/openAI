@@ -87,7 +87,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   const url = 'https://chatgpt-ai-lujs.onrender.com';
-  const token = 'Bearer YOUR_BEARER_TOKEN_HERE'; // replace with your actual bearer token
+  const token = 'Bearer srv-cgam71hmbg55nqj89tr0?key=xZz4jQPNh0E'; // replace with your actual bearer token
 
   try {
     const response = await fetch(url, {
