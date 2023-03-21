@@ -65,6 +65,8 @@ function chatStripe(isAi, value, uniqueId) {
 const handleSubmit = async (e) => {
   e.preventDefault()
 
+  const prompt = "Hello, how are you doing today?";
+  
   const data = new FormData(form)
 
   // user's chatstripe
@@ -85,8 +87,6 @@ const handleSubmit = async (e) => {
 
   // messageDiv.innerHTML = '...'
   loader(messageDiv)
-
-  const prompt = "Hello, how are you doing today?";
 
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
