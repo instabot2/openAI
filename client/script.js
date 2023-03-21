@@ -65,8 +65,6 @@ function chatStripe(isAi, value, uniqueId) {
 const handleSubmit = async (e) => {
   e.preventDefault()
 
-  const prompt = "Hello, how are you doing today?";
-  
   const data = new FormData(form)
 
   // user's chatstripe
