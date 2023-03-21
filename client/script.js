@@ -86,6 +86,8 @@ const handleSubmit = async (e) => {
   // messageDiv.innerHTML = '...'
   loader(messageDiv)
 
+  const prompt = "Hello, how are you doing today?";
+
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
