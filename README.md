@@ -16,4 +16,9 @@ You have to configure to setup, by following the packager.json file
     "openai": "^3.1.0"
 etc, setup openai, cors, dotenv, express and nodemon
 
-Using  model: 'text-davinci-003',
+Using  model: 'text-davinci-003'
+
+Build client using Vite
+    "dev": "dotenv vite",
+    "build": "dotenv vite build",
+    "preview": "dotenv vite preview"
