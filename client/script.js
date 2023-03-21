@@ -45,19 +45,21 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
-  return `
+  return (
+    `
     <div class="wrapper ${isAi && 'ai'}">
-      <div class="chat">
-        <div class="profile">
-          <img 
-            src=${isAi ? bot : user} 
-            alt="${isAi ? 'bot' : 'user'}" 
-          />
+        <div class="chat">
+            <div class="profile">
+                <img 
+                  src=${isAi ? bot : user} 
+                  alt="${isAi ? 'bot' : 'user'}" 
+                />
+            </div>
+            <div class="message" id=${uniqueId}>${value}</div>
         </div>
-        <div class="message" id=${uniqueId}>${value}</div>
-      </div>
     </div>
-  `
+`
+  )
 }
 
 const handleSubmit = async (e) => {
@@ -68,31 +70,31 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'))
 
-  // to clear the textarea input
+  // to clear the textarea input 
   form.reset()
 
   // bot's chatstripe
   const uniqueId = generateUniqueId()
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId)
 
-  // to focus scroll to the bottom
+  // to focus scroll to the bottom 
   chatContainer.scrollTop = chatContainer.scrollHeight
 
-  // specific message div
+  // specific message div 
   const messageDiv = document.getElementById(uniqueId)
 
-  // messageDiv.innerHTML = "..."
+  // messageDiv.innerHTML = '...'
   loader(messageDiv)
 
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt')
-      })
+        prompt: data.get('prompt'),
+      }),
     })
 
     clearInterval(loadInterval)
@@ -100,15 +102,16 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const data = await response.json()
-      const parsedData = data.bot.trim() // trims any trailing spaces/'\n'
+      const parsedData = data.bot.trim() // trims any trailing spaces/'\n' 
 
       typeText(messageDiv, parsedData)
     } else {
       const err = await response.text()
-      throw new Error(err)
+
+      messageDiv.innerHTML = `Error: ${err}`
     }
   } catch (err) {
-    messageDiv.innerHTML = 'Something went wrong'
+    messageDiv.innerHTML = 'Something went wrong : ${err}' 
     console.error(err)
   }
 }
