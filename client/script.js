@@ -111,7 +111,7 @@ const handleSubmit = async (e) => {
       messageDiv.innerHTML = `Error: ${err}`
     }
   } catch (err) {
-    messageDiv.innerHTML = 'Something went wrong : ${err}' 
+    messageDiv.innerHTML = `Something went wrong: ${err}`
     console.error(err)
   }
 }
