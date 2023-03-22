@@ -41,7 +41,8 @@ body {
 
 /* hides scrollbar */
 #chat_container::-webkit-scrollbar {
-  display: none;
+  //display: none;
+  overflow-y: scroll;
 }
 
 .wrapper {
