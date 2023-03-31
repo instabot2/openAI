@@ -42,13 +42,14 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
+  const messageClass = `message-${uniqueId}`;
   return `
     <div class="wrapper ${isAi && 'ai'}">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        <div class="message" id=${uniqueId}>${value}</div>
+        <div class="message ${messageClass}" id=${uniqueId}>${value}</div>
       </div>
     </div>
   `;
@@ -58,9 +59,9 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'), generateUniqueId());
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
