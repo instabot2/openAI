@@ -69,13 +69,20 @@ const handleSubmit = async (e) => {
 
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'))
+
   // to clear the textarea input 
   form.reset()
+
   // bot's chatstripe
   const uniqueId = generateUniqueId()
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId)
+
+  // to focus scroll to the bottom 
+  chatContainer.scrollTop = chatContainer.scrollHeight
+
   // specific message div 
   const messageDiv = document.getElementById(uniqueId)
+
   // messageDiv.innerHTML = '...'
   loader(messageDiv)
 
@@ -98,9 +105,6 @@ const handleSubmit = async (e) => {
       const parsedData = data.bot.trim() // trims any trailing spaces/'\n' 
 
       typeText(messageDiv, parsedData)
-
-      // scroll to the bottom when bot's message is received
-      chatContainer.scrollTop = chatContainer.scrollHeight
     } else {
       const err = await response.text()
 
