@@ -41,19 +41,58 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
+//function chatStripe(isAi, value, uniqueId) {
+//  const messageClass = `message-${uniqueId}`;
+//  return `
+//    <div class="wrapper ${isAi && 'ai'}">
+//      <div class="chat">
+//        <div class="profile">
+//          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
+//        </div>
+//        <div class="message ${messageClass}" id=${uniqueId}>${value}</div>
+//      </div>
+//    </div>
+//  `;
+//}
+
 function chatStripe(isAi, value, uniqueId) {
   const messageClass = `message-${uniqueId}`;
-  return `
-    <div class="wrapper ${isAi && 'ai'}">
-      <div class="chat">
-        <div class="profile">
-          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
-        </div>
-        <div class="message ${messageClass}" id=${uniqueId}>${value}</div>
-      </div>
-    </div>
-  `;
+  const wrapper = document.createElement("div");
+  wrapper.className = `wrapper ${isAi && "ai"}`;
+
+  const chat = document.createElement("div");
+  chat.className = "chat";
+
+  const profile = document.createElement("div");
+  profile.className = "profile";
+
+  const img = document.createElement("img");
+  img.src = isAi ? bot : user;
+  img.alt = isAi ? "bot" : "user";
+  profile.appendChild(img);
+
+  const message = document.createElement("div");
+  message.className = `message ${messageClass}`;
+  message.id = uniqueId;
+  message.innerText = value;
+
+  chat.appendChild(profile);
+  chat.appendChild(message);
+
+  wrapper.appendChild(chat);
+
+  // Scroll to the bottom of the chat box when a new message is added
+  const chatBox = document.querySelector(".chat-box");
+  const isScrolledToBottom =
+    chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 1;
+
+  chatBox.appendChild(wrapper);
+
+  if (isScrolledToBottom) {
+    chatBox.scrollTop = chatBox.scrollHeight - chatBox.clientHeight;
+  }
 }
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
