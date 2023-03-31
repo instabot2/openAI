@@ -90,8 +90,12 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
-      // scroll to the latest message
-      messageDiv.scrollIntoView();
+
+      // Scroll to the latest message only if it's a bot message
+      if (messageDiv.classList.contains('ai')) {
+        messageDiv.scrollIntoView();
+      }
+
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -110,10 +114,4 @@ form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
     handleSubmit(e);
   }
-});
-
-// add event listener for resizing the window
-window.addEventListener('resize', () => {
-  // scroll to the latest message
-  chatContainer.scrollTop = chatContainer.scrollHeight;
 });
