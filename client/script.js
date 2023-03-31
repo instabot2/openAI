@@ -83,14 +83,14 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  chatStripe(false, data.get('prompt'), generateUniqueId()); // generate a unique id here and pass it as the third parameter
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -116,7 +116,7 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData);
       // scroll to the latest message
       messageDiv.scrollIntoView();
-
+      
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
