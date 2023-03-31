@@ -117,3 +117,9 @@ form.addEventListener('keyup', (e) => {
     handleSubmit(e)
   }
 })
+
+// Display loading message at the top of the browser when loading
+window.onload = () => {
+  const loadingMessage = document.querySelector('#loading_message')
+  loadingMessage.style.display = 'none'
+}
