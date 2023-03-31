@@ -42,37 +42,23 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
-  const messageClass = `message-${uniqueId}`;
   return `
     <div class="wrapper ${isAi && 'ai'}">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        <div class="message ${messageClass}" id=${uniqueId}>${value}</div>
+        <div class="message" id=${uniqueId}>${value}</div>
       </div>
     </div>
   `;
-}
-
-function typeText(element, text, messageClass) {
-  let index = 0;
-  let interval = setInterval(() => {
-    if (index < text.length) {
-      const messageDiv = document.querySelector(`.${messageClass}`);
-      messageDiv.innerHTML += text.charAt(index);
-      index++;
-    } else {
-      clearInterval(interval);
-    }
-  }, 20);
 }
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -102,10 +88,9 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      typeText(messageDiv, parsedData, `message-${uniqueId}`);
+      typeText(messageDiv, parsedData);
       // scroll to the latest message
-      const latestMessage = document.querySelector(`.message-${uniqueId}`);
-      latestMessage.scrollIntoView();
+      messageDiv.scrollIntoView();
 
     } else {
       const err = await response.text();
