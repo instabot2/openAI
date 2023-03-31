@@ -8,7 +8,6 @@ let loadInterval;
 
 function loader(element) {
   element.textContent = '';
-
   loadInterval = setInterval(() => {
     // Update the text content of the loading indicator
     element.textContent += '.';
@@ -21,7 +20,6 @@ function loader(element) {
 
 function typeText(element, text) {
   let index = 0;
-
   let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
@@ -60,7 +58,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
