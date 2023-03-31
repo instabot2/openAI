@@ -83,17 +83,17 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  const prompt = data.get('prompt');
-
+  
   // user's chatstripe
-  chatStripe(false, prompt, generateUniqueId());
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatStripe(true, '...', uniqueId);
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
+  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -103,7 +103,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt,
+        prompt: data.get('prompt'),
       }),
     });
 
@@ -114,11 +114,9 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
+      // scroll to the latest message
+      messageDiv.scrollIntoView();
 
-      // Scroll to the latest message only if it's a bot message
-      if (messageDiv.classList.contains('ai')) {
-        messageDiv.scrollIntoView();
-      }
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
