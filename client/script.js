@@ -43,24 +43,24 @@ function generateUniqueId() {
 
 function chatStripe(isAi, value, uniqueId) {
   const messageClass = `message-${uniqueId}`;
-  const wrapper = document.createElement("div");
-  wrapper.className = `wrapper ${isAi && "ai"}`;
+  const wrapper = document.createElement('div');
+  wrapper.className = `wrapper ${isAi && 'ai'}`;
 
-  const chat = document.createElement("div");
-  chat.className = "chat";
+  const chat = document.createElement('div');
+  chat.className = 'chat';
 
-  const profile = document.createElement("div");
-  profile.className = "profile";
+  const profile = document.createElement('div');
+  profile.className = 'profile';
 
-  const img = document.createElement("img");
+  const img = document.createElement('img');
   img.src = isAi ? bot : user;
-  img.alt = isAi ? "bot" : "user";
+  img.alt = isAi ? 'bot' : 'user';
   profile.appendChild(img);
 
-  const message = document.createElement("div");
+  const message = document.createElement('div');
   message.className = `message ${messageClass}`;
   message.id = uniqueId;
-  message.innerText = value;
+  message.innerText = value.trim();
 
   chat.appendChild(profile);
   chat.appendChild(message);
@@ -68,7 +68,7 @@ function chatStripe(isAi, value, uniqueId) {
   wrapper.appendChild(chat);
 
   // Scroll to the bottom of the chat box when a new message is added
-  const chatBox = document.querySelector(".chat-box");
+  const chatBox = document.querySelector('.chat-box');
   const isScrolledToBottom =
     chatBox.scrollHeight - chatBox.clientHeight <= chatBox.scrollTop + 1;
 
@@ -83,9 +83,10 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+  const prompt = data.get('prompt');
+
   // user's chatstripe
-  chatStripe(false, data.get('prompt'), generateUniqueId());
+  chatStripe(false, prompt, generateUniqueId());
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -102,7 +103,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
+        prompt,
       }),
     });
 
