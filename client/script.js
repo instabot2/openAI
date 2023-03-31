@@ -41,20 +41,6 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-//function chatStripe(isAi, value, uniqueId) {
-//  const messageClass = `message-${uniqueId}`;
-//  return `
-//    <div class="wrapper ${isAi && 'ai'}">
-//      <div class="chat">
-//        <div class="profile">
-//          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
-//        </div>
-//        <div class="message ${messageClass}" id=${uniqueId}>${value}</div>
-//      </div>
-//    </div>
-//  `;
-//}
-
 function chatStripe(isAi, value, uniqueId) {
   const messageClass = `message-${uniqueId}`;
   const wrapper = document.createElement("div");
@@ -93,22 +79,20 @@ function chatStripe(isAi, value, uniqueId) {
   }
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
   
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  chatStripe(false, data.get('prompt'), generateUniqueId());
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  chatStripe(true, '...', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -134,7 +118,6 @@ const handleSubmit = async (e) => {
       if (messageDiv.classList.contains('ai')) {
         messageDiv.scrollIntoView();
       }
-
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
