@@ -74,6 +74,8 @@ const handleSubmit = async (e) => {
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  // to focus scroll to the bottom 
+  chatContainer.scrollTop = chatContainer.scrollHeight;
   // specific message div 
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -98,11 +100,8 @@ const handleSubmit = async (e) => {
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n' 
 
       typeText(messageDiv, parsedData);
-
-      // Scroll to the bottom of the chat container
-      setTimeout(() => {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }, 10);
+      // scroll to bottom when bot message is added
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     } else {
       const err = await response.text();
 
@@ -112,7 +111,7 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = `Something went wrong: ${err}`;
     console.error(err);
   }
-};
+}
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
