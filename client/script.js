@@ -45,21 +45,16 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
-  return (
-    `
+  return `
     <div class="wrapper ${isAi && 'ai'}">
-        <div class="chat">
-            <div class="profile">
-                <img 
-                  src=${isAi ? bot : user} 
-                  alt="${isAi ? 'bot' : 'user'}" 
-                />
-            </div>
-            <div class="message" id=${uniqueId}>${value}</div>
+      <div class="chat">
+        <div class="profile">
+          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
+        <div class="message" id=${uniqueId}>${value}</div>
+      </div>
     </div>
-`
-  );
+  `;
 }
 
 const handleSubmit = async (e) => {
@@ -104,20 +99,23 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData);
 
       // scroll to the latest message
-      messageDiv.scrollIntoView();
+      chatContainer.scrollTop = chatContainer.scrollHeight;
 
     } else {
       const err = await response.text();
 
       messageDiv.innerHTML = `Error: ${err}`;
+
+      // focus scroll to the bottom again
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   } catch (err) {
     messageDiv.innerHTML = `Something went wrong: ${err}`;
     console.error(err);
-  }
 
-  // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+    // focus scroll to the bottom again
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 };
 
 form.addEventListener('submit', handleSubmit);
