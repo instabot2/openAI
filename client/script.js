@@ -55,16 +55,18 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 const chatContainer = document.getElementById('chat_container');
+
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
 // Call the scrollToBottom function whenever a new message is added to the container
 function addNewMessage(message) {
   const newMessageElement = document.createElement('div');
   newMessageElement.textContent = message;
-  chatContainer.scrollTop = chatContainer.scrollHeight; // scroll to bottom
   chatContainer.appendChild(newMessageElement);
+  scrollToBottom();
 }
 
 const handleSubmit = async (e) => {
@@ -115,9 +117,7 @@ const handleSubmit = async (e) => {
 
   // focus scroll to the bottom again
   scrollToBottom();
-  // focus scroll to the bottom again
-  //chatContainer.scrollTop = chatContainer.scrollHeight;
-};
+}; 
 
 
 form.addEventListener('submit', handleSubmit);
