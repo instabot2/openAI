@@ -64,6 +64,9 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userChatStripe = chatStripe(false, data.get('prompt'));
   chatContainer.innerHTML += userChatStripe;
+  // focus on the bottom of the chat
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -105,9 +108,10 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
   
-  // focus scroll to the bottom again
+  // focus on the bottom of the chat after the bot's response
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
