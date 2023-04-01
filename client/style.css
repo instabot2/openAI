@@ -36,12 +36,18 @@ body {
   display: none;
 }
 
-#message_wrapper {
-  height: 100%;
-  overflow-y: scroll;
-  padding: 20px;
-  resize: vertical;
+/*#message_wrapper { */
+/*  height: 100%;*/
+/*  overflow-y: scroll;*/
+/*  padding: 20px;*/
+/*  resize: vertical;*/
+/*}*/
+
+#message_wrapper > div {
+  display: flex;
+  flex-direction: column-reverse;
 }
+
 
 
 .ai {
