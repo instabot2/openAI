@@ -27,7 +27,7 @@ body {
   width: 100%;
   //height: 100%;
   //overflow-y: auto;
-  max-height: 400px; /* Set a max height for the container */
+  //max-height: 400px; /* Set a max height for the container */
   overflow-y: scroll;
   height: auto; /* adjust the height as needed */
   display: flex;
