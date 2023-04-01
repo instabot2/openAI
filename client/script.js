@@ -3,7 +3,7 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
-const messageWrapper = document.getElementById("message_wrapper");
+//const messageWrapper = document.getElementById("message_wrapper");
 
 
 
