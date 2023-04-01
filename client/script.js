@@ -54,10 +54,9 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-const chatContainer = document.getElementById('chat_container');
-
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
+  const chatContainer = document.getElementById('chat_container');
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
