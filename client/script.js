@@ -42,7 +42,7 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
-  const newChatStripe = `
+  return `
     <div class="wrapper ${isAi && 'ai'}">
       <div class="chat">
         <div class="profile">
@@ -52,23 +52,20 @@ function chatStripe(isAi, value, uniqueId) {
       </div>
     </div>
   `;
-
-  return newChatStripe;
 }
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const data = new FormData(form);
 
+  const data = new FormData(form);
+  
   // user's chatstripe
-  const userChatStripe = chatStripe(false, data.get('prompt'));
-  chatContainer.insertAdjacentHTML('beforeend', userChatStripe);
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botChatStripe = chatStripe(true, ' ', uniqueId);
-  chatContainer.insertAdjacentHTML('beforeend', botChatStripe);
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -104,10 +101,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // scroll up the old chat when new messages populate
-  chatContainer.scrollTo(0, chatContainer.scrollHeight);
+  // focus scroll to the bottom again
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
