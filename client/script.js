@@ -61,8 +61,11 @@ function scrollToBottom() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Function to add a new message to the chat container
 function addNewMessage(message) {
+  // Save the current scroll position
+  const currentScroll = chatContainer.scrollTop;
+  // Scroll to the bottom
+  scrollToBottom();
   // Create a new chat stripe element
   const newChatStripe = document.createElement('div');
   newChatStripe.innerHTML = message;
@@ -70,6 +73,8 @@ function addNewMessage(message) {
   const isBotMessage = message.includes('bot');
   // Add the new chat stripe element to the chat container
   chatContainer.appendChild(newChatStripe);
+  // Scroll up to the previous position
+  chatContainer.scrollTop = currentScroll;
   // Scroll the chat container to the bottom after a small delay
   setTimeout(() => {
     if (isBotMessage) {
@@ -81,7 +86,6 @@ function addNewMessage(message) {
     scrollToBottom();
   }, 100);
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
