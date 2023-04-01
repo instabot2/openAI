@@ -1,128 +1,131 @@
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@100;300;400;500;700;800;900&display=swap");
 
-/* CSS code for ChatGPT AI */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Alegreya Sans", sans-serif;
 }
 
 body {
-  background-color: #f6f6f6;
-  font-family: sans-serif;
+  background: #343541;
 }
 
 #app {
+  width: 100vw;
+  height: 100vh;
+  background: #343541;
+
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  justify-content: flex-end; /* Display container on top */
+  align-items: center;
+  justify-content: space-between;
 }
 
 #chat_container {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-  margin: 20px;
+  flex: 1;
+  width: 100%;
+  height: 100%;
   overflow-y: scroll;
-  padding: 20px;
-  max-height: calc(100vh - 250px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-bottom: 20px;
   scroll-behavior: smooth;
 }
 
+/* hides scrollbar */
 #chat_container::-webkit-scrollbar {
-  width: 8px;
+  display: none;
 }
 
-#chat_container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+.wrapper {
+  width: 100%;
+  padding: 15px;
 }
 
-#message_wrapper {
+.ai {
+  background: #40414F;
+}
+
+.chat {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column-reverse; /* Display new data on top */
-  color: #333; /* Change text color */
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.profile {
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  background: #5436DA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai .profile {
+  background: #10a37f;
+}
+
+.profile img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
 }
 
 .message {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  max-width: 70%;
-  position: relative;
+  flex: 1;
+  color: #dcdcdc;
+  font-size: 20px;
+  max-width: 100%;
+  overflow-x: scroll;
+  white-space: pre-wrap; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.message:before {
-  border-radius: 0 10px 10px 10px;
-  content: "";
-  height: 25px;
-  position: absolute;
-  top: 0;
-  left: -10px;
-  width: 25px;
-}
-
-.user-message:before {
-  background-color: #ffdd2e;
-}
-
-.bot-message:before {
-  background-color: #eee;
-  transform: scaleX(-1);
-}
-
-.message p {
-  background-color: inherit;
-  border-radius: 0 10px 10px 10px;
-  padding: 10px;
+/* hides scrollbar */
+.message::-webkit-scrollbar {
+  display: none;
 }
 
 form {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px;
+  background: #40414F;
   display: flex;
-  margin: 20px;
+  flex-direction: row;
+  gap: 10px;
 }
 
 textarea {
-  background-color: #fff;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-  flex-grow: 1;
-  font-size: 16px;
-  line-height: 20px;
-  min-height: 50px;
+  width: 100%;
+  color: #fff;
+  font-size: 18px;
   padding: 10px;
-  resize: none;
-  color: #333; /* Change text color */
-}
-
-button {
-  background-color: #fff;
+  background: transparent;
+  border-radius: 5px;
   border: none;
-  border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-  cursor: pointer;
-  height: 50px;
-  margin-left: 10px;
-  transition: background-color 0.2s;
-  width: 50px;
-}
-
-button:hover {
-  background-color: #f6f6f6;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-button:focus {
   outline: none;
 }
 
-button img {
-  height: 24px;
-  width: 24px;
+button {
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+}
+
+form img {
+  width: 30px;
+  height: 30px;
 }
