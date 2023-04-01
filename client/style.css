@@ -40,9 +40,11 @@ body {
 }
 
 #message_wrapper {
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  resize: vertical;
 }
+
 /* Style the chat stripes */
 .wrapper {
   width: 100%;
