@@ -57,6 +57,7 @@ function chatStripe(isAi, value, uniqueId) {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
