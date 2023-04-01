@@ -34,11 +34,6 @@ body {
   scrollbar-width: none;
   padding-bottom: 20px;
   scroll-behavior: smooth;
-  
-  //max-height: 300px;
-  //overflow-y: scroll;
-  //padding-right: 20px; /* add padding to accommodate the scrollbar width */
-  box-sizing: content-box; /* include padding in the element's total width */
 }
 #chat_container::-webkit-scrollbar {
   display: none;
