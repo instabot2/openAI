@@ -30,6 +30,23 @@ function typeText(element, text) {
   }, 20);
 }
 
+
+const messageWrapper = document.getElementById("message_wrapper");
+function displayMessage(message) {
+  const messageElement = document.createElement("div");
+  messageElement.innerHTML = message;
+  messageWrapper.prepend(messageElement); // prepend the new message to the top
+}
+
+document.querySelector("form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const prompt = event.target.elements.prompt.value;
+  displayMessage(prompt);
+  event.target.reset();
+});
+
+
+
 function addMessage(value, isAi) {
   const messageWrapper = document.getElementById("message_wrapper");
   const uniqueId = Date.now();
