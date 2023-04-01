@@ -43,6 +43,7 @@ body {
 #message_wrapper {
   display: flex;
   flex-direction: column-reverse; /* Display new data on top */
+  color: #333; /* Change text color */
 }
 
 .message {
@@ -94,6 +95,7 @@ textarea {
   min-height: 50px;
   padding: 10px;
   resize: none;
+  color: #333; /* Change text color */
 }
 
 button {
@@ -124,4 +126,3 @@ button img {
   height: 24px;
   width: 24px;
 }
-
