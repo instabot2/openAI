@@ -51,7 +51,7 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column-reverse; /* reverse the order of the messages */
-  //justify-content: ${isAi ? 'flex-start' : 'flex-end'};
+  scroll-behavior: smooth; /* add smooth scrolling */
 }
 
 .ai {
