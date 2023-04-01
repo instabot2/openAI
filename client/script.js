@@ -42,7 +42,7 @@ function generateUniqueId() {
 }
 
 function chatStripe(isAi, value, uniqueId) {
-  return `
+  const newChatStripe = `
     <div class="wrapper ${isAi && 'ai'}">
       <div class="chat">
         <div class="profile">
@@ -52,6 +52,9 @@ function chatStripe(isAi, value, uniqueId) {
       </div>
     </div>
   `;
+
+  chatContainer.innerHTML += newChatStripe;
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 const handleSubmit = async (e) => {
