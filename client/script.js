@@ -41,9 +41,10 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-// Function to create the chat stripe
+
 function chatStripe(isAi, value, uniqueId) {
-  return `
+  // Create the chat stripe
+  const chatStripe = `
     <div class="wrapper ${isAi && 'ai'} auto-scroll">
       <div class="chat">
         <div class="profile">
@@ -53,7 +54,16 @@ function chatStripe(isAi, value, uniqueId) {
       </div>
     </div>
   `;
+  
+  // Add the chat stripe to the chat container
+  const chatContainer = document.getElementById('chat_container');
+  chatContainer.innerHTML += chatStripe;
+  
+  // Scroll the chat container to the bottom
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
+
+
 
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
