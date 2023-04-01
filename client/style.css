@@ -39,14 +39,25 @@ body {
   display: none;
 }
 
-.wrapper {
-  width: 100%;
-  padding: 15px;
-  height: auto;
-  overflow-y: auto;
+#message_wrapper {
   display: flex;
-  flex-direction: column-reverse; /* reverse the order of the messages */
+  flex-direction: column;
 }
+/* Style the chat stripes */
+.wrapper {
+  display: flex;
+  justify-content: ${isAi ? 'flex-start' : 'flex-end'};
+  margin: 8px 0;
+}
+
+/*.wrapper {*/
+/*  width: 100%;*/
+/*  padding: 15px;*/
+/*  height: auto;*/
+/*  overflow-y: auto;*/
+/*  display: flex;*/
+/*  flex-direction: column-reverse; /* reverse the order of the messages */
+/*}
 
 .ai {
   background: #40414F;
