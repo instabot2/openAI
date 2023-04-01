@@ -56,9 +56,6 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-// Get the chat container element
-const chatContainer = document.getElementById('chat_container');
-
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -74,8 +71,6 @@ function addNewMessage(message) {
   // Scroll the chat container to the bottom after a small delay
   setTimeout(scrollToBottom, 100);
 }
-
-
 
 
 
