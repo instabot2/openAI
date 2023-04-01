@@ -32,10 +32,12 @@ function typeText(element, text) {
 
 
 const messageWrapper = document.getElementById("message_wrapper");
+
 function displayMessage(message) {
   const messageElement = document.createElement("div");
   messageElement.innerHTML = message;
-  messageWrapper.prepend(messageElement); // prepend the new message to the top
+  messageWrapper.appendChild(messageElement); // append the new message to the end
+  messageWrapper.scrollTo(0, 0); // scroll to the top
 }
 
 document.querySelector("form").addEventListener("submit", (event) => {
