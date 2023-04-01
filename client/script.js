@@ -1,5 +1,5 @@
-import bot from './assets/bot.svg';
-import user from './assets/user.svg';
+import botSvg from './assets/bot.svg';
+import userSvg from './assets/user.svg';
 
 const form = document.querySelector('form');
 
@@ -45,18 +45,19 @@ function chatStripe(isAi, value, uniqueId) {
     <div class="wrapper ${isAi ? 'ai' : ''} auto-scroll">
       <div class="chat">
         <div class="profile">
-          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
+          <img src=${isAi ? botSvg : userSvg} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
         <div class="message" id=${uniqueId}>${value}</div>
       </div>
     </div>
   `;
-  
+
   return chatStripe;
 }
 
 // Function to scroll the chat container to the bottom
-function scrollToBottom(chatContainer) {
+function scrollToBottom() {
+  const chatContainer = document.querySelector('.chat-container');
   // Only scroll to the bottom if the chat container has the 'auto-scroll' class
   if (chatContainer.classList.contains('auto-scroll')) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -70,47 +71,23 @@ function scrollToBottom(chatContainer) {
   }
 }
 
-function addNewMessage(message) {
-  // Create a new chat stripe element
-  const newChatStripe = document.createElement('div');
-  newChatStripe.innerHTML = message;
-  // Check if the message is from the bot
-  const isBotMessage = message.includes('bot');
-  // Add the new chat stripe element to the chat container
-  chatContainer.appendChild(newChatStripe);
-  // Scroll the chat container to the bottom after a small delay
-  setTimeout(() => {
-    if (isBotMessage) {
-      const messageElement = newChatStripe.querySelector('.message');
-      if (messageElement) {
-        messageElement.scrollIntoView();
-      }
-    }
-    chatContainer.classList.add('auto-scroll'); // add auto-scroll class
-    scrollToBottom();
-  }, 100);
-}
-
-
-
-  
- 
-const handleSubmit = async (e) => {
+async function handleSubmit(e) {
   e.preventDefault();
 
   const data = new FormData(form);
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  const userChatStripe = chatStripe(false, data.get('prompt'), generateUniqueId());
+  addNewMessage(userChatStripe);
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  const botChatStripe = chatStripe(true, ' ', uniqueId);
+  addNewMessage(botChatStripe);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
   loader(messageDiv);
-  
+
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
