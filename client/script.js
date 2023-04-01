@@ -2,13 +2,10 @@ import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
 const form = document.querySelector('form');
-const chatContainer = document.querySelector('#chat_container');
-
-let loadInterval;
 
 function loader(element) {
   element.textContent = '';
-  loadInterval = setInterval(() => {
+  const loadInterval = setInterval(() => {
     // Update the text content of the loading indicator
     element.textContent += '.';
     // If the loading indicator has reached three dots, reset it
@@ -16,11 +13,12 @@ function loader(element) {
       element.textContent = '';
     }
   }, 300);
+  return loadInterval;
 }
 
 function typeText(element, text) {
   let index = 0;
-  let interval = setInterval(() => {
+  const interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
@@ -41,11 +39,10 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-
 function chatStripe(isAi, value, uniqueId) {
   // Create the chat stripe
   const chatStripe = `
-    <div class="wrapper ${isAi && 'ai'} auto-scroll">
+    <div class="wrapper ${isAi ? 'ai' : ''} auto-scroll">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
@@ -55,18 +52,11 @@ function chatStripe(isAi, value, uniqueId) {
     </div>
   `;
   
-  // Add the chat stripe to the chat container
-  //const chatContainer = document.getElementById('chat_container');
-  chatContainer.innerHTML += chatStripe;
-  
-  // Scroll the chat container to the bottom
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  return chatStripe;
 }
 
-
-
 // Function to scroll the chat container to the bottom
-function scrollToBottom() {
+function scrollToBottom(chatContainer) {
   // Only scroll to the bottom if the chat container has the 'auto-scroll' class
   if (chatContainer.classList.contains('auto-scroll')) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -79,8 +69,6 @@ function scrollToBottom() {
     }
   }
 }
-
-
 
 function addNewMessage(message) {
   // Create a new chat stripe element
