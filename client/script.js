@@ -60,8 +60,12 @@ function scrollToBottom() {
   // Only scroll to the bottom if the chat container has the 'auto-scroll' class
   if (chatContainer.classList.contains('auto-scroll')) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
+  } else {
+    chatContainer.scrollTop = 0;
   }
 }
+
+
 
 // Function to add a new message to the chat container
 function addNewMessage(message) {
