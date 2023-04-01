@@ -42,7 +42,7 @@ body {
 #message_wrapper {
   height: 100%;
   overflow-y: scroll;
-  resize: vertical;
+  //resize: vertical;
 }
 
 /* Style the chat stripes */
