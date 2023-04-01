@@ -54,22 +54,6 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-const chatContainer = document.getElementById('chat_container');
-// Function to scroll the chat container to the bottom
-function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-// Call the scrollToBottom function whenever a new message is added to the container
-function addNewMessage(message) {
-  const newMessageElement = document.createElement('div');
-  newMessageElement.textContent = message;
-  chatContainer.appendChild(newMessageElement);
-  scrollToBottom();
-}
-
-
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
