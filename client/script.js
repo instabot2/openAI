@@ -76,17 +76,23 @@ function addNewMessage(message) {
   const isBotMessage = message.includes('bot');
   // Add the new chat stripe element to the chat container
   chatContainer.appendChild(newChatStripe);
+  
+  
   // Scroll the chat container to the bottom after a small delay
-  setTimeout(() => {
-    if (isBotMessage) {
-      const messageElement = newChatStripe.querySelector('.message');
-      if (messageElement) {
-        messageElement.scrollIntoView();
-      }
-    }
-    scrollToBottom();
-  }, 100);
+//  setTimeout(() => {
+//    if (isBotMessage) {
+//      const messageElement = newChatStripe.querySelector('.message');
+//      if (messageElement) {
+//        messageElement.scrollIntoView();
+//      }
+//    }
+//    scrollToBottom();
+//  }, 100);
 }
+
+
+
+
 
 
 const handleSubmit = async (e) => {
