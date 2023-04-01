@@ -54,6 +54,13 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+function addNewMessage(message) {
+  const newMessageElement = document.createElement('div');
+  newMessageElement.textContent = message;
+  chatContainer.insertBefore(newMessageElement, chatContainer.firstChild);
+  scrollToBottom();
+}
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -70,7 +77,7 @@ const handleSubmit = async (e) => {
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
   loader(messageDiv);
-
+  
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -90,7 +97,7 @@ const handleSubmit = async (e) => {
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
       // scroll to the latest message
-      messageDiv.scrollIntoView();
+      scrollToBottom();
 
     } else {
       const err = await response.text();
@@ -102,8 +109,11 @@ const handleSubmit = async (e) => {
   }
 
   // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  scrollToBottom();
+  // focus scroll to the bottom again
+  //chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
