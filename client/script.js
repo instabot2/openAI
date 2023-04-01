@@ -30,6 +30,15 @@ function typeText(element, text) {
   }, 20);
 }
 
+// JavaScript code for ChatGPT AI
+const messageWrapper = document.getElementById("message_wrapper");
+function scrollToBottom() {
+  messageWrapper.scrollTop = messageWrapper.scrollHeight;
+}
+scrollToBottom(); // Call this function on page load to display messages at
+
+
+
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
 // without unique ID, typing text will work on every element
