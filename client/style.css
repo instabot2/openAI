@@ -36,8 +36,6 @@ body {
   scroll-behavior: smooth;
   
   overflow-y: auto;
-  flex-direction: column-reverse;
-  padding: 10px;
 }
 #chat_container::-webkit-scrollbar {
   display: none;
