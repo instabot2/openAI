@@ -56,7 +56,7 @@ function chatStripe(isAi, value, uniqueId) {
   `;
   
   // Add the chat stripe to the chat container
-  const chatContainer = document.getElementById('chat_container');
+  //const chatContainer = document.getElementById('chat_container');
   chatContainer.innerHTML += chatStripe;
   
   // Scroll the chat container to the bottom
