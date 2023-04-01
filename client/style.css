@@ -15,6 +15,7 @@ body {
   width: 100vw;
   height: 100vh;
   background: #343541;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,43 +23,31 @@ body {
 }
 
 #chat_container {
-  position: absolute;
-  top: 0;
-  left: 0;
   flex: 1;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  overflow: hidden;
-}
-
-#message_wrapper {
-  display: flex;
-  flex-direction: column-reverse;
   gap: 10px;
-  padding: 20px;
-  height: 100%;
-  overflow-y: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  padding-bottom: 20px;
+  scroll-behavior: smooth;
 }
 
-#message_wrapper::-webkit-scrollbar {
+/* hides scrollbar */
+#chat_container::-webkit-scrollbar {
   display: none;
 }
 
-.input-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+.wrapper {
   width: 100%;
-  padding: 10px;
+  padding: 15px;
 }
-
-
-
-
 
 .ai {
   background: #40414F;
@@ -79,7 +68,9 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 5px;
+
   background: #5436DA;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,8 +91,10 @@ body {
 
   color: #dcdcdc;
   font-size: 20px;
+
   max-width: 100%;
   overflow-x: scroll;
+
   /*
    * white space refers to any spaces, tabs, or newline characters that are used to format the CSS code
    * specifies how white space within an element should be handled. It is similar to the "pre" value, which tells the browser to treat all white space as significant and to preserve it exactly as it appears in the source code.
@@ -109,6 +102,7 @@ body {
    * The default value for the white-space property in CSS is "normal". This tells the browser to collapse multiple white space characters into a single space, and to wrap text onto multiple lines as needed to fit within its container.
   */
   white-space: pre-wrap; 
+
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -124,6 +118,7 @@ form {
   margin: 0 auto;
   padding: 10px;
   background: #40414F;
+
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -131,8 +126,10 @@ form {
 
 textarea {
   width: 100%;
+
   color: #fff;
   font-size: 18px;
+
   padding: 10px;
   background: transparent;
   border-radius: 5px;
