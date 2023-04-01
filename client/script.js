@@ -41,6 +41,7 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
+// Function to create the chat stripe
 function chatStripe(isAi, value, uniqueId) {
   return `
     <div class="wrapper ${isAi && 'ai'}">
@@ -54,17 +55,21 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+// Get the chat container element
+const chatContainer = document.getElementById('chat_container');
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
-  const chatContainer = document.getElementById('chat_container');
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Call the scrollToBottom function whenever a new message is added to the container
+// Function to add a new message to the chat container
 function addNewMessage(message) {
-  const newMessageElement = document.createElement('div');
-  newMessageElement.textContent = message;
-  chatContainer.appendChild(newMessageElement);
+  // Create a new chat stripe element
+  const newChatStripe = document.createElement('div');
+  newChatStripe.innerHTML = message;
+  // Add the new chat stripe element to the chat container
+  chatContainer.appendChild(newChatStripe);
+  // Scroll the chat container to the bottom
   scrollToBottom();
 }
 
