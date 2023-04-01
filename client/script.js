@@ -60,9 +60,17 @@ function scrollToBottom() {
   // Only scroll to the bottom if the chat container has the 'auto-scroll' class
   if (chatContainer.classList.contains('auto-scroll')) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
-    console.log(chatContainer.scrollTop, chatContainer.scrollHeight);
+
+    // Check if the user has manually scrolled up the chat container
+    const scrollDiff = chatContainer.scrollTop + chatContainer.offsetHeight - chatContainer.scrollHeight;
+    if (scrollDiff < 0) {
+      // The user has scrolled up, so remove the 'auto-scroll' class
+      chatContainer.classList.remove('auto-scroll');
+    }
   }
 }
+
+
 
 function addNewMessage(message) {
   // Create a new chat stripe element
