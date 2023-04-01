@@ -57,9 +57,9 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 // Function to scroll the chat container to the bottom
-//function scrollToBottom() {
-//  chatContainer.scrollTop = chatContainer.scrollHeight;
-//}
+function scrollToBottom() {
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 // Function to scroll the chat container to the top
 function scrollToTop() {
