@@ -60,12 +60,9 @@ function scrollToBottom() {
   // Only scroll to the bottom if the chat container has the 'auto-scroll' class
   if (chatContainer.classList.contains('auto-scroll')) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
-  } else {
-    chatContainer.scrollTop = 0;
+    console.log(chatContainer.scrollTop, chatContainer.scrollHeight);
   }
 }
-
-
 
 function addNewMessage(message) {
   // Create a new chat stripe element
@@ -83,10 +80,12 @@ function addNewMessage(message) {
         messageElement.scrollIntoView();
       }
     }
-    chatContainer.classList.add('auto-scroll');
+    chatContainer.classList.add('auto-scroll'); // add auto-scroll class
     scrollToBottom();
   }, 100);
 }
+
+
 
   
  
