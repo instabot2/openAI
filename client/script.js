@@ -41,11 +41,10 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-
 // Function to create the chat stripe
 function chatStripe(isAi, value, uniqueId) {
   return `
-    <div class="wrapper ${isAi && 'ai'}">
+    <div class="wrapper ${isAi && 'ai'} auto-scroll">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
@@ -58,12 +57,10 @@ function chatStripe(isAi, value, uniqueId) {
 
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-// Function to scroll the chat container to the top
-function scrollToTop() {
-  chatContainer.scrollTop = 0;
+  // Only scroll to the bottom if the chat container has the 'auto-scroll' class
+  if (chatContainer.classList.contains('auto-scroll')) {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 }
 
 // Function to add a new message to the chat container
@@ -75,7 +72,7 @@ function addNewMessage(message) {
   const isBotMessage = message.includes('bot');
   // Add the new chat stripe element to the chat container
   chatContainer.appendChild(newChatStripe);
-  // Scroll the chat container to the top after a small delay
+  // Scroll the chat container to the bottom after a small delay
   setTimeout(() => {
     if (isBotMessage) {
       const messageElement = newChatStripe.querySelector('.message');
@@ -83,11 +80,9 @@ function addNewMessage(message) {
         messageElement.scrollIntoView();
       }
     }
-    scrollToTop();
+    scrollToBottom();
   }, 100);
 }
-
-
 
 
 const handleSubmit = async (e) => {
