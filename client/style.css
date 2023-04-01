@@ -45,10 +45,9 @@ body {
 
 #message_wrapper > div {
   display: flex;
-  flex-direction: column-reverse;
+  /*flex-direction: column-reverse;*/
+  flex-direction: column;
 }
-
-
 
 .ai {
   background: #40414F;
