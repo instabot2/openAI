@@ -22,53 +22,12 @@ function typeText(element, text) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
-      element.textContent += text.charAt(index);
+      element.innerHTML += text.charAt(index);
       index++;
     } else {
       clearInterval(interval);
     }
   }, 20);
-}
-
-const messageWrapper = document.getElementById('message_wrapper');
-
-function displayMessage(message) {
-  const messageElement = document.createElement('div');
-  messageElement.textContent = message;
-  messageWrapper.appendChild(messageElement); // append the new message to the end
-  messageWrapper.scrollTo(0, 0); // scroll to the top
-}
-
-function addMessage(value, isAi) {
-  const messageWrapper = document.getElementById('message_wrapper');
-  const uniqueId = Date.now();
-
-  const messageDiv = document.createElement('div');
-  messageDiv.classList.add('wrapper', isAi && 'ai');
-
-  const chatDiv = document.createElement('div');
-  chatDiv.classList.add('chat');
-
-  const profileDiv = document.createElement('div');
-  profileDiv.classList.add('profile');
-
-  const profileImg = document.createElement('img');
-  profileImg.src = isAi ? bot : user;
-  profileImg.alt = isAi ? 'bot' : 'user';
-
-  const messageContent = document.createElement('div');
-  messageContent.classList.add('message');
-  messageContent.id = uniqueId;
-  messageContent.textContent = value;
-
-  profileDiv.appendChild(profileImg);
-  chatDiv.appendChild(profileDiv);
-  chatDiv.appendChild(messageContent);
-  messageDiv.appendChild(chatDiv);
-  messageWrapper.appendChild(messageDiv);
-
-  // Scroll to the bottom of the message wrapper
-  messageWrapper.scrollTop = messageWrapper.scrollHeight;
 }
 
 // generate unique ID for each message div of bot
@@ -82,22 +41,24 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-function handleSubmit(e) {
-  e.preventDefault();
-
-  const data = new FormData(form);
-  // user's chatstripe
-  addMessage(data.get('prompt'), false);
-  // to clear the textarea input
-  form.reset();
-  // bot's chatstripe
-  const uniqueId =
-
+function chatStripe(isAi, value, uniqueId) {
+  return `
+    <div class="wrapper ${isAi && 'ai'}">
+      <div class="chat">
+        <div class="profile">
+          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
+        </div>
+        <div class="message" id=${uniqueId}>${value}</div>
+      </div>
+    </div>
+  `;
+}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
+  
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -128,10 +89,9 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
-      // focus on the latest message
+      // scroll to the latest message
       messageDiv.scrollIntoView();
-      // scroll up to see new messages
-      chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
+
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -145,7 +105,6 @@ const handleSubmit = async (e) => {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
-  
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
