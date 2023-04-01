@@ -7,14 +7,17 @@
     <title>ChatGPT AI</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <div id="app">
-      <div id="chat_container"></div>
-      <form>
-        <textarea name="prompt" rows="1" cols="1" style="overflow:auto;" placeholder="Ask anything..."></textarea>
-        <button type="submit"><img src="assets/send.svg" alt="send" /></button>
-      </form>
+<body>
+  <div id="app">
+    <div id="chat_container">
+      <!-- Add a wrapper div for the messages to enable scrolling -->
+      <div id="message_wrapper"></div>
     </div>
-    <script type="module" src="script.js"></script>
-  </body>
+    <form>
+      <textarea name="prompt" rows="1" cols="1" style="overflow:auto;" placeholder="Ask anything..."></textarea>
+      <button type="submit"><img src="assets/send.svg" alt="send" /></button>
+    </form>
+  </div>
+  <script type="module" src="script.js"></script>
+</body>
 </html>
