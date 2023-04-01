@@ -2,6 +2,7 @@ import botSvg from './assets/bot.svg';
 import userSvg from './assets/user.svg';
 
 const form = document.querySelector('form');
+const chatContainer = document.querySelector('#chat_container');
 
 function loader(element) {
   element.textContent = '';
