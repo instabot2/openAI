@@ -30,6 +30,20 @@ function typeText(element, text) {
   }, 20);
 }
 
+function addMessage(value, isAi) {
+  const messageWrapper = document.getElementById("message_wrapper");
+  const uniqueId = Date.now();
+
+  const messageDiv = document.createElement("div");
+  messageDiv.innerHTML = chatStripe(isAi, value, uniqueId);
+
+  // Add the new message div to the bottom of the message wrapper
+  messageWrapper.append(messageDiv);
+
+  // Scroll to the bottom of the message wrapper
+  messageWrapper.scrollTop = messageWrapper.scrollHeight;
+}
+
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
 // without unique ID, typing text will work on every element
