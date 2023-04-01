@@ -53,10 +53,8 @@ function chatStripe(isAi, value, uniqueId) {
     </div>
   `;
 
-  chatContainer.innerHTML += newChatStripe;
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  return newChatStripe;
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -64,12 +62,14 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
   
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  const userChatStripe = chatStripe(false, data.get('prompt'));
+  chatContainer.innerHTML += userChatStripe;
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  const botChatStripe = chatStripe(true, ' ', uniqueId);
+  chatContainer.innerHTML += botChatStripe;
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -104,7 +104,7 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = `Something went wrong: ${err}`;
     console.error(err);
   }
-
+  
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
