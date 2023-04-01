@@ -3,9 +3,7 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
-//const messageWrapper = document.getElementById("message_wrapper");
-
-
+const messageWrapper = document.getElementById("message_wrapper");
 
 let loadInterval;
 
@@ -41,17 +39,6 @@ function scrollToTop() {
   messageWrapper.scrollTop = 0;
 }
 
-
-
-// JavaScript code for ChatGPT AI
-const messageWrapper = document.getElementById("message_wrapper");
-function scrollToBottom() {
-  messageWrapper.scrollTop = messageWrapper.scrollHeight;
-}
-scrollToBottom(); // Call this function on page load to display messages at
-
-
-
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
 // without unique ID, typing text will work on every element
@@ -80,7 +67,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
   //chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   chatContainer.innerHTML = chatStripe(false, data.get('prompt')) + chatContainer.innerHTML;
@@ -127,6 +114,7 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
