@@ -2,7 +2,9 @@ import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
 const form = document.querySelector('form');
-const chatContainer = document.querySelector('#chat_container');
+//const chatContainer = document.querySelector('#chat_container');
+const chatContainer = document.querySelector('#chat_container .chat');
+// ...
 
 let loadInterval;
 
@@ -56,23 +58,19 @@ function chatStripe(isAi, value, uniqueId) {
   return newChatStripe;
 }
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  const data = new FormData(form);
-  
+const handleSubmit = async (e) => {
+  // ...
+
   // user's chatstripe
   const userChatStripe = chatStripe(false, data.get('prompt'));
-  chatContainer.innerHTML += userChatStripe;
-  // focus on the bottom of the chat
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-
+  chatContainer.insertAdjacentHTML('beforeend', userChatStripe);
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botChatStripe = chatStripe(true, ' ', uniqueId);
-  chatContainer.innerHTML += botChatStripe;
+  chatContainer.insertAdjacentHTML('beforeend', botChatStripe);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -107,9 +105,9 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = `Something went wrong: ${err}`;
     console.error(err);
   }
-  
-  // focus on the bottom of the chat after the bot's response
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+
+  // scroll up the old chat when new messages populate
+  chatContainer.scrollTo(0, chatContainer.scrollHeight);
 };
 
 
