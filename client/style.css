@@ -47,6 +47,8 @@ body {
   padding: 15px;
   height: auto;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse; /* reverse the order of the messages */
 }
 
 .ai {
@@ -68,9 +70,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 5px;
-
   background: #5436DA;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,10 +91,8 @@ body {
 
   color: #dcdcdc;
   font-size: 20px;
-
   max-width: 100%;
   overflow-x: scroll;
-
   /*
    * white space refers to any spaces, tabs, or newline characters that are used to format the CSS code
    * specifies how white space within an element should be handled. It is similar to the "pre" value, which tells the browser to treat all white space as significant and to preserve it exactly as it appears in the source code.
@@ -102,7 +100,6 @@ body {
    * The default value for the white-space property in CSS is "normal". This tells the browser to collapse multiple white space characters into a single space, and to wrap text onto multiple lines as needed to fit within its container.
   */
   white-space: pre-wrap; 
-
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -118,7 +115,6 @@ form {
   margin: 0 auto;
   padding: 10px;
   background: #40414F;
-
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -126,10 +122,8 @@ form {
 
 textarea {
   width: 100%;
-
   color: #fff;
   font-size: 18px;
-
   padding: 10px;
   background: transparent;
   border-radius: 5px;
