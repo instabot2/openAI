@@ -3,6 +3,7 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
+const messageWrapper = document.querySelector('#message_wrapper');
 
 let loadInterval;
 
@@ -18,7 +19,7 @@ function loader(element) {
   }, 300);
 }
 
-function typeText(element, text) {
+function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
@@ -26,6 +27,9 @@ function typeText(element, text) {
       index++;
     } else {
       clearInterval(interval);
+      if (callback) {
+        callback();
+      }
     }
   }, 20);
 }
@@ -58,14 +62,14 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -106,8 +110,6 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
-
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
