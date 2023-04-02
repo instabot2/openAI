@@ -112,4 +112,20 @@ form.addEventListener('keyup', (e) => {
   }
 });
 
+window.addEventListener('resize', () => {
+  // check if user has scrolled up before resizing
+  const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
+  // scroll to the bottom of the chat container if user is already at the bottom
+  if (isScrolledToBottom) {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+  // if user has scrolled up, keep their scroll position after resizing
+  else {
+    // calculate new scroll position based on percentage of current position
+    const scrollPosition = chatContainer.scrollTop / (chatContainer.scrollHeight - chatContainer.clientHeight);
+    // calculate new scroll position after resizing
+    const newScrollTop = (chatContainer.scrollHeight - chatContainer.clientHeight) * scrollPosition;
+    chatContainer.scrollTop = newScrollTop;
+  }
+});
 
