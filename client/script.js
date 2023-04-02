@@ -54,23 +54,19 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
-  // user's chatstripe
-  chatContainer.innerHTML = chatStripe(false, data.get('prompt')) + chatContainer.innerHTML;
-  // to clear the textarea input
-  form.reset();
-
   // Scroll to the top of the chat container
   chatContainer.scrollTop = 0;
 
-  // bot's chatstripe
+  // user's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML = chatStripe(true, ' ', uniqueId) + chatContainer.innerHTML;
+  chatContainer.innerHTML = chatStripe(false, data.get('prompt'), uniqueId) + chatContainer.innerHTML;
+  // to clear the textarea input
+  form.reset();
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -93,7 +89,9 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      typeText(messageDiv, parsedData);
+
+      // bot's chatstripe
+      chatContainer.innerHTML = chatStripe(true, parsedData) + chatContainer.innerHTML;
 
       // scroll to the latest message
       const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
@@ -113,9 +111,6 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
-
-
 
 
 form.addEventListener('submit', handleSubmit);
