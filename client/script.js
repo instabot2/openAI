@@ -62,16 +62,6 @@ const handleSubmit = async (e) => {
   // Scroll to the top of the chat container
   chatContainer.scrollTop = 0;
 
-  // user's chatstripe
-  const uniqueId = generateUniqueId();
-  chatContainer.innerHTML = chatStripe(false, data.get('prompt'), uniqueId) + chatContainer.innerHTML;
-  // to clear the textarea input
-  form.reset();
-  // specific message div
-  const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
-  loader(messageDiv);
-
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -83,22 +73,12 @@ const handleSubmit = async (e) => {
       }),
     });
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = '';
-
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
 
       // bot's chatstripe
       chatContainer.innerHTML = chatStripe(true, parsedData) + chatContainer.innerHTML;
-
-      // scroll to the latest message
-      const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
-      messageDiv.scrollIntoView();
-      if (isScrolledToBottom) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -108,9 +88,29 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+  // user's chatstripe
+  const uniqueId = generateUniqueId();
+  chatContainer.innerHTML = chatStripe(false, data.get('prompt'), uniqueId) + chatContainer.innerHTML;
+
+  // specific message div
+  const messageDiv = document.getElementById(uniqueId);
+  // messageDiv.innerHTML = '...'
+  loader(messageDiv);
+
+  // scroll to the latest message
+  const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
+  messageDiv.scrollIntoView();
+  if (isScrolledToBottom) {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  // to clear the textarea input
+  form.reset();
+
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 
 form.addEventListener('submit', handleSubmit);
