@@ -60,13 +60,14 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
-  // Scroll to the top of the chat container
-  chatContainer.scrollTop = 0;
-
   // user's chatstripe
   chatContainer.innerHTML = chatStripe(false, data.get('prompt')) + chatContainer.innerHTML;
   // to clear the textarea input
   form.reset();
+
+  // Scroll to the top of the chat container
+  chatContainer.scrollTop = 0;
+
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML = chatStripe(true, ' ', uniqueId) + chatContainer.innerHTML;
