@@ -124,7 +124,7 @@ form.addEventListener('keyup', (e) => {
 });
 
 // Call this function on page load to display messages at the bottom
-scrollToBottom();
+//scrollToBottom();
 
 // Call this function to scroll to the top of the messages
 scrollToTop();
