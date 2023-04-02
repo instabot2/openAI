@@ -18,7 +18,7 @@ function loader(element) {
   }, 300);
 }
 
-function typeText(element, text) {
+function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
@@ -26,9 +26,21 @@ function typeText(element, text) {
       index++;
     } else {
       clearInterval(interval);
+      if (typeof callback === 'function') {
+        callback();
+      }
     }
   }, 20);
 }
+
+typeText(messageDiv, parsedData, () => {
+  // scroll to the latest message
+  messageDiv.scrollIntoView();
+  // scroll up to the new message and display it on top of the browser
+  chatContainer.scrollTop = messageDiv.offsetTop;
+});
+
+
 
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
