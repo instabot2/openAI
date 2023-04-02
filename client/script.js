@@ -59,10 +59,14 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  // to clear the textarea input
+  form.reset();
+  // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML = chatStripe(false, data.get('prompt'), uniqueId) + chatContainer.innerHTML;
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -85,16 +89,9 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-
-      // bot's chatstripe
-      chatContainer.innerHTML = chatStripe(true, parsedData) + chatContainer.innerHTML;
-
+      typeText(messageDiv, parsedData);
       // scroll to the latest message
-      const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
       messageDiv.scrollIntoView();
-      if (isScrolledToBottom) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -104,11 +101,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // to clear the textarea input
-  form.reset();
+  // focus scroll to the bottom again
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
-
 
 
 form.addEventListener('submit', handleSubmit);
