@@ -59,7 +59,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -90,6 +90,7 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
+
       // scroll to the latest message
       const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
       messageDiv.scrollIntoView();
@@ -108,6 +109,7 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 
 
