@@ -101,9 +101,13 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+  // scroll up to the new message and display it on top of the browser
+  chatContainer.scrollTop = 0;
+
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 
 form.addEventListener('submit', handleSubmit);
