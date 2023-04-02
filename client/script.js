@@ -85,7 +85,7 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       // user's chatstripe
-      chatContainer.innerHTML = chatStripe(false, data.get('prompt')) + chatContainer.innerHTML;
+      chatContainer.innerHTML = chatStripe(false, data.get('prompt'), uniqueId) + chatContainer.innerHTML;
       // typing text effect for bot's message
       typeText(messageDiv, parsedData);
       // scroll to the latest message
