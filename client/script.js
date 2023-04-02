@@ -89,14 +89,10 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // check if user has scrolled up before adding new message
-        const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
         // scroll to the latest message
         messageDiv.scrollIntoView();
-        // if user has scrolled up, keep their current scroll position
-        if (!isScrolledToBottom) {
-          chatContainer.scrollTop -= messageDiv.clientHeight;
-        }
+        // scroll up to the new message and display it on top of the browser
+        chatContainer.scrollTop = messageDiv.offsetTop;
       });
     } else {
       const err = await response.text();
@@ -107,7 +103,7 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // scroll to the bottom of the chat container
+  // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
