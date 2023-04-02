@@ -99,8 +99,10 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+  // scroll to top when new message arrives
+  chatContainer.scrollTop = 0;
   // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  //chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
 
