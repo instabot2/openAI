@@ -58,7 +58,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -91,7 +91,6 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData);
       // scroll to the latest message
       messageDiv.scrollIntoView();
-
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -101,7 +100,7 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // scroll to the bottom of the chat container
+  // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
@@ -111,3 +110,5 @@ form.addEventListener('keyup', (e) => {
     handleSubmit(e);
   }
 });
+
+// add an event listener to the window object that triggers the scroll event on the chat container
