@@ -48,16 +48,10 @@ function chatStripe(isAi, value, uniqueId) {
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        <div class="message-container">
-          <div class="message" id=${uniqueId}>${value}</div>
-        </div>
+        <div class="message" id=${uniqueId}>${value}</div>
       </div>
     </div>
   `;
-}
-
-function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 const handleSubmit = async (e) => {
@@ -107,9 +101,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  scrollToBottom();
+  // scroll to the bottom of the chat container
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
