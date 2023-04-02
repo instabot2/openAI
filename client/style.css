@@ -44,6 +44,12 @@ body {
   display: none;
 }
 
+#message_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .wrapper {
   width: 100%;
   padding: 15px;
