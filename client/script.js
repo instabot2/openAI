@@ -90,8 +90,11 @@ const handleSubmit = async (e) => {
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
       // scroll to the latest message
+      const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
       messageDiv.scrollIntoView();
-
+      if (isScrolledToBottom) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -104,6 +107,7 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
