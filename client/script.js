@@ -54,11 +54,11 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-  
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
+  
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -72,32 +72,38 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
-    // Send the user's input to the server for processing
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: input,
+        prompt: data.get('prompt'),
       }),
     });
 
-    // Update the bot's message with the response from the server
+    clearInterval(loadInterval);
+    messageDiv.innerHTML = '';
+
     if (response.ok) {
       const data = await response.json();
-      const botResponse = data.bot.trim(); // trim any trailing spaces or newlines
-      botMessageDiv.textContent = botResponse;
+      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      typeText(messageDiv, parsedData, () => {
+        // scroll to the latest message
+        messageDiv.scrollIntoView();
+        // scroll up to the new message and display it on top of the browser
+        chatContainer.scrollTop = messageDiv.offsetTop;
+      });
     } else {
-      const error = await response.text();
-      botMessageDiv.textContent = `Error: ${error}`;
+      const err = await response.text();
+      messageDiv.innerHTML = `Error: ${err}`;
     }
-  } catch (error) {
-    console.error(error);
-    botMessageDiv.textContent = 'Something went wrong. Please try again.';
+  } catch (err) {
+    messageDiv.innerHTML = `Something went wrong: ${err}`;
+    console.error(err);
   }
 
-  // Scroll to the bottom of the chat container
+  // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
