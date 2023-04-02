@@ -54,6 +54,7 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -107,6 +108,7 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 
 form.addEventListener('submit', handleSubmit);
