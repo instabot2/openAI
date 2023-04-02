@@ -58,10 +58,14 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
+  // user's chatstripe
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  // to clear the textarea input
+  form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML = chatStripe(true, ' ', uniqueId) + chatContainer.innerHTML;
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -84,9 +88,6 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      // user's chatstripe
-      chatContainer.innerHTML = chatStripe(false, data.prompt) + chatContainer.innerHTML;
-      // typing text effect for bot's message
       typeText(messageDiv, parsedData);
       // scroll to the latest message
       messageDiv.scrollIntoView();
