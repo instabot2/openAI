@@ -26,7 +26,6 @@ function typeText(element, text) {
       index++;
     } else {
       clearInterval(interval);
-      messageDiv.parentElement.parentElement.scroll(0, messageDiv.parentElement.parentElement.scrollHeight);
     }
   }, 20);
 }
