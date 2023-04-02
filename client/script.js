@@ -59,32 +59,33 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get("prompt"));
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  chatContainer.innerHTML += chatStripe(true, " ", uniqueId);
+  const botChatStripe = chatStripe(true, '', uniqueId);
+  chatContainer.prepend(botChatStripe); // prepend to add the new message to the top
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
-    const response = await fetch("https://chatgpt-ai-lujs.onrender.com", {
-      method: "POST",
+    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get("prompt"),
+        prompt: data.get('prompt'),
       }),
     });
 
     clearInterval(loadInterval);
-    messageDiv.innerHTML = "";
+    messageDiv.innerHTML = '';
 
     if (response.ok) {
       const data = await response.json();
@@ -99,10 +100,8 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // scroll to the top of chat container
-  //chatContainer.scrollTop = 0;
-  // set the scrollTop property of chatContainer to its scrollHeight value
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  // scroll to the top of the chat container
+  chatContainer.scrollTop = 0;
 };
 
 
