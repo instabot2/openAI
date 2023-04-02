@@ -55,7 +55,8 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 //const form = document.querySelector('form');
-const chatContainer = document.getElementById('message_wrapper');
+//const chatContainer = document.getElementById('message_wrapper');
+chatContainer = document.getElementById('message_wrapper');
 
 const handleSubmit = async (e) => {
   e.preventDefault();
