@@ -1,15 +1,11 @@
-// Import the images for the bot and user avatars
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
-// Select the form and chat container from the HTML document
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
 
-// Declare a variable to store the interval ID of the loading animation
 let loadInterval;
 
-// Function to display a loading animation
 function loader(element) {
   element.textContent = '';
   loadInterval = setInterval(() => {
@@ -22,7 +18,6 @@ function loader(element) {
   }, 300);
 }
 
-// Function to simulate typing text in a chat bubble
 function typeText(element, text) {
   let index = 0;
   let interval = setInterval(() => {
@@ -48,12 +43,12 @@ function generateUniqueId() {
 
 function chatStripe(isAi, value, uniqueId) {
   return `
-    <div class="wrapper ${isAi ? 'ai' : ''}">
+    <div class="wrapper ${isAi && 'ai'}">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        <div class="message" id="${uniqueId}">${value}</div>
+        <div class="message" id=${uniqueId}>${value}</div>
       </div>
     </div>
   `;
@@ -63,19 +58,17 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-
   // to clear the textarea input
   form.reset();
-
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
-
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
+  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -96,9 +89,9 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
-
       // scroll to the latest message
-      messageDiv.scrollIntoView({ behavior: 'smooth' });
+      messageDiv.scrollIntoView();
+
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -117,3 +110,4 @@ form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
     handleSubmit(e);
   }
+});
