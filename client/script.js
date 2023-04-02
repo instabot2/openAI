@@ -46,46 +46,18 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-function loader(element) {
-  element.textContent = '';
-  const loadInterval = setInterval(() => {
-    // Update the text content of the loading indicator
-    element.textContent += '.';
-    // If the loading indicator has reached three dots, reset it
-    if (element.textContent === '....') {
-      element.textContent = '';
-    }
-  }, 300);
-  return loadInterval;
-}
-
-function typeText(element, text) {
-  let index = 0;
-  const interval = setInterval(() => {
-    if (index < text.length) {
-      element.innerHTML += text.charAt(index);
-      index++;
-    } else {
-      clearInterval(interval);
-    }
-  }, 20);
-}
-
 function chatStripe(isAi, value, uniqueId) {
   return `
-    <div class="wrapper ${isAi && 'ai'}">
+    <div class="wrapper ${isAi ? 'ai' : ''}">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        <div class="message" id=${uniqueId}>${value}</div>
+        <div class="message" id="${uniqueId}">${value}</div>
       </div>
     </div>
   `;
 }
-
-const form = document.querySelector('form');
-const chatContainer = document.querySelector('#chat_container');
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -104,7 +76,7 @@ const handleSubmit = async (e) => {
 
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
-  const loadInterval = loader(messageDiv);
+  loader(messageDiv);
 
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
@@ -145,4 +117,3 @@ form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
     handleSubmit(e);
   }
-});
