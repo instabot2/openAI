@@ -113,4 +113,6 @@ form.addEventListener('keyup', (e) => {
 });
 
 window.addEventListener('resize', () => {
-  // scroll to the bottom of the
+  // scroll to the bottom of the chat container
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+});
