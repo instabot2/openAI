@@ -54,11 +54,14 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+//const form = document.querySelector('form');
+const chatContainer = document.getElementById('message_wrapper');
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -106,7 +109,6 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 
 form.addEventListener('submit', handleSubmit);
