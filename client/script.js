@@ -48,17 +48,23 @@ function chatStripe(isAi, value, uniqueId) {
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        <div class="message" id=${uniqueId}>${value}</div>
+        <div class="message-container">
+          <div class="message" id=${uniqueId}>${value}</div>
+        </div>
       </div>
     </div>
   `;
+}
+
+function scrollToBottom() {
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -101,9 +107,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  scrollToBottom();
 };
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
