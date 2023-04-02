@@ -19,7 +19,7 @@ function loader(element) {
   }, 300);
 }
 
-function typeText(element, text, callback) {
+function typeText(element, text) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
@@ -27,12 +27,19 @@ function typeText(element, text, callback) {
       index++;
     } else {
       clearInterval(interval);
-      if (callback) {
-        callback();
-      }
+      // scroll to the latest message
+      element.scrollIntoView();
+      // scroll up to the new message and display it on top of the browser
+      chatContainer.scrollTop = element.offsetTop;
     }
   }, 20);
 }
+// scroll to the latest message
+element.scrollIntoView();
+// scroll up to the new message and display it on top of the browser
+chatContainer.scrollTop = element.offsetTop;
+
+
 
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
