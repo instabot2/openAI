@@ -3,7 +3,6 @@ import user from './assets/user.svg';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
-const messageWrapper = document.getElementById("message_wrapper");
 
 let loadInterval;
 
@@ -29,14 +28,6 @@ function typeText(element, text) {
       clearInterval(interval);
     }
   }, 20);
-}
-
-function scrollToBottom() {
-  messageWrapper.scrollTop = messageWrapper.scrollHeight;
-}
-
-function scrollToTop() {
-  messageWrapper.scrollTop = 0;
 }
 
 // generate unique ID for each message div of bot
@@ -67,10 +58,9 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
+  
   // user's chatstripe
-  //chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-  chatContainer.innerHTML = chatStripe(false, data.get('prompt')) + chatContainer.innerHTML;
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -115,17 +105,9 @@ const handleSubmit = async (e) => {
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
-
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
     handleSubmit(e);
   }
 });
-
-// Call this function on page load to display messages at the bottom
-//scrollToBottom();
-
-// Call this function to scroll to the top of the messages
-scrollToTop();
-
