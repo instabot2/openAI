@@ -41,6 +41,31 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
+function loader(element) {
+  element.textContent = '';
+  const loadInterval = setInterval(() => {
+    // Update the text content of the loading indicator
+    element.textContent += '.';
+    // If the loading indicator has reached three dots, reset it
+    if (element.textContent === '....') {
+      element.textContent = '';
+    }
+  }, 300);
+  return loadInterval;
+}
+
+function typeText(element, text) {
+  let index = 0;
+  const interval = setInterval(() => {
+    if (index < text.length) {
+      element.innerHTML += text.charAt(index);
+      index++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 20);
+}
+
 function chatStripe(isAi, value, uniqueId) {
   return `
     <div class="wrapper ${isAi && 'ai'}">
@@ -54,22 +79,27 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+const form = document.querySelector('form');
+const chatContainer = document.querySelector('#chat_container');
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-  
+
   // user's chatstripe
   chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+
   // to clear the textarea input
   form.reset();
+
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
-  loader(messageDiv);
+  const loadInterval = loader(messageDiv);
 
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
@@ -89,9 +119,9 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData);
-      // scroll to the latest message
-      messageDiv.scrollIntoView();
 
+      // scroll to the latest message
+      messageDiv.scrollIntoView({ behavior: 'smooth' });
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
