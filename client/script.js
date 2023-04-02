@@ -54,29 +54,23 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
+  
 const handleSubmit = async (e) => {
   e.preventDefault();
-  
-  const input = form.elements.prompt.value;
-  
-  // Create a new div element for the user's message
-  const userMessageDiv = document.createElement('div');
-  userMessageDiv.classList.add('chat-stripe', 'user');
-  userMessageDiv.textContent = input;
-  chatContainer.appendChild(userMessageDiv);
-  
-  // Clear the input field
-  form.elements.prompt.value = '';
-  
-  // Create a new div element for the bot's message
-  const botMessageDiv = document.createElement('div');
-  botMessageDiv.classList.add('chat-stripe', 'bot');
-  chatContainer.appendChild(botMessageDiv);
-  
-  // Display a loading message while waiting for the response from the server
-  botMessageDiv.textContent = 'Thinking...';
-  
+
+  const data = new FormData(form);
+  // user's chatstripe
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  // to clear the textarea input
+  form.reset();
+  // bot's chatstripe
+  const uniqueId = generateUniqueId();
+  chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
+  // specific message div
+  const messageDiv = document.getElementById(uniqueId);
+  // messageDiv.innerHTML = '...'
+  loader(messageDiv);
+
   try {
     // Send the user's input to the server for processing
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
