@@ -1,11 +1,15 @@
+// Import the images for the bot and user avatars
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
+// Select the form and chat container from the HTML document
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
 
+// Declare a variable to store the interval ID of the loading animation
 let loadInterval;
 
+// Function to display a loading animation
 function loader(element) {
   element.textContent = '';
   loadInterval = setInterval(() => {
@@ -18,6 +22,7 @@ function loader(element) {
   }, 300);
 }
 
+// Function to simulate typing text in a chat bubble
 function typeText(element, text) {
   let index = 0;
   let interval = setInterval(() => {
