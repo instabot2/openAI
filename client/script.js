@@ -132,3 +132,5 @@ window.addEventListener('resize', () => {
     chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
   }
 });
+
+
