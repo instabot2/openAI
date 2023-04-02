@@ -55,7 +55,6 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -104,6 +103,8 @@ const handleSubmit = async (e) => {
   // scroll to the top of the chat container
   chatContainer.scrollTop = 0;
 };
+
+
 
 
 form.addEventListener('submit', handleSubmit);
