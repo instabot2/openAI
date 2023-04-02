@@ -26,6 +26,7 @@ function typeText(element, text) {
       index++;
     } else {
       clearInterval(interval);
+      messageDiv.parentElement.parentElement.scroll(0, messageDiv.parentElement.parentElement.scrollHeight);
     }
   }, 20);
 }
@@ -88,12 +89,7 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      typeText(messageDiv, parsedData, () => {
-        // scroll to the latest message
-        messageDiv.scrollIntoView();
-        // scroll up to the new message and display it on top of the browser
-        chatContainer.scrollTop = messageDiv.offsetTop;
-      });
+      typeText(messageDiv, parsedData);
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -106,7 +102,6 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 
 form.addEventListener('submit', handleSubmit);
