@@ -33,13 +33,6 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
-typeText(messageDiv, parsedData, () => {
-  // scroll to the latest message
-  messageDiv.scrollIntoView();
-  // scroll up to the new message and display it on top of the browser
-  chatContainer.scrollTop = messageDiv.offsetTop;
-});
-
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
 // without unique ID, typing text will work on every element
@@ -53,63 +46,7 @@ function generateUniqueId() {
 
 function chatStripe(isAi, value, uniqueId) {
   return `
-    <div class="wrapper ${isAi && 'ai'}">
-      <div class="chat">
-        <div class="profile">
-          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
-        </div>
-        <div class="message" id=${uniqueId}>${value}</div>
-      </div>
-    </div>
-  `;
-}
-
-import bot from './assets/bot.svg';
-import user from './assets/user.svg';
-
-const form = document.querySelector('form');
-const chatContainer = document.querySelector('#chat_container');
-
-let loadInterval;
-
-function loader(element) {
-  element.textContent = '';
-  loadInterval = setInterval(() => {
-    // Update the text content of the loading indicator
-    element.textContent += '.';
-    // If the loading indicator has reached three dots, reset it
-    if (element.textContent === '....') {
-      element.textContent = '';
-    }
-  }, 300);
-}
-
-function typeText(element, text) {
-  let index = 0;
-  let interval = setInterval(() => {
-    if (index < text.length) {
-      element.innerHTML += text.charAt(index);
-      index++;
-    } else {
-      clearInterval(interval);
-    }
-  }, 20);
-}
-
-// generate unique ID for each message div of bot
-// necessary for typing text effect for that specific reply
-// without unique ID, typing text will work on every element
-function generateUniqueId() {
-  const timestamp = Date.now();
-  const randomNumber = Math.random();
-  const hexadecimalString = randomNumber.toString(16);
-
-  return `id-${timestamp}-${hexadecimalString}`;
-}
-
-function chatStripe(isAi, value, uniqueId) {
-  return `
-    <div class="wrapper ${isAi && 'ai'}">
+    <div class="wrapper ${isAi ? 'ai' : ''}">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
@@ -126,7 +63,7 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
   
   // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+  chatContainer.innerHTML += chatStripe(false, data.get('prompt'), generateUniqueId());
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -134,7 +71,6 @@ const handleSubmit = async (e) => {
   chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -152,9 +88,8 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = '';
 
     if (response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      typeText(messageDiv, parsedData, () => {
+      const { bot: parsedData } = await response.json(); // use object destructuring to extract the 'bot' property
+      typeText(messageDiv, parsedData.trim(), () => { // trim any trailing spaces/'\n'
         // scroll to the latest message
         messageDiv.scrollIntoView();
         // scroll up to the new message and display it on top of the browser
@@ -174,7 +109,6 @@ const handleSubmit = async (e) => {
 };
 
 
-
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
   if (e.keyCode === 13) {
@@ -198,30 +132,3 @@ window.addEventListener('resize', () => {
     chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
   }
 });
-
-
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
-  }
-});
-
-window.addEventListener('resize', () => {
-  // check if user has scrolled up before resizing
-  const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
-  // calculate new scroll position after resizing
-  const newScrollTop = (chatContainer.scrollHeight - chatContainer.clientHeight) * (chatContainer.scrollTop / (chatContainer.scrollHeight - chatContainer.clientHeight));
-  // set chat container height to its current height
-  chatContainer.style.height = `${chatContainer.clientHeight}px`;
-  // scroll to the bottom of the chat container if user is already at the bottom
-  if (isScrolledToBottom) {
-    chatContainer.scrollTop = newScrollTop;
-  }
-  // if user has scrolled up, keep their scroll position after resizing
-  else {
-    chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
-  }
-});
-
-
