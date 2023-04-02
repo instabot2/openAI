@@ -55,55 +55,58 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
-
-  const data = new FormData(form);
   
-  // user's chatstripe
-  chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
-  // to clear the textarea input
-  form.reset();
-  // bot's chatstripe
-  const uniqueId = generateUniqueId();
-  const botChatStripe = chatStripe(true, '', uniqueId);
-  chatContainer.prepend(botChatStripe); // prepend to add the new message to the top
-  // specific message div
-  const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
-  loader(messageDiv);
-
+  const input = form.elements.prompt.value;
+  
+  // Create a new div element for the user's message
+  const userMessageDiv = document.createElement('div');
+  userMessageDiv.classList.add('chat-stripe', 'user');
+  userMessageDiv.textContent = input;
+  chatContainer.appendChild(userMessageDiv);
+  
+  // Clear the input field
+  form.elements.prompt.value = '';
+  
+  // Create a new div element for the bot's message
+  const botMessageDiv = document.createElement('div');
+  botMessageDiv.classList.add('chat-stripe', 'bot');
+  chatContainer.appendChild(botMessageDiv);
+  
+  // Display a loading message while waiting for the response from the server
+  botMessageDiv.textContent = 'Thinking...';
+  
   try {
+    // Send the user's input to the server for processing
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
+        prompt: input,
       }),
     });
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = '';
-
+    // Update the bot's message with the response from the server
     if (response.ok) {
       const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      typeText(messageDiv, parsedData);
+      const botResponse = data.bot.trim(); // trim any trailing spaces or newlines
+      botMessageDiv.textContent = botResponse;
     } else {
-      const err = await response.text();
-      messageDiv.innerHTML = `Error: ${err}`;
+      const error = await response.text();
+      botMessageDiv.textContent = `Error: ${error}`;
     }
-  } catch (err) {
-    messageDiv.innerHTML = `Something went wrong: ${err}`;
-    console.error(err);
+  } catch (error) {
+    console.error(error);
+    botMessageDiv.textContent = 'Something went wrong. Please try again.';
   }
 
-  // scroll to the top of the chat container
-  chatContainer.scrollTop = 0;
+  // Scroll to the bottom of the chat container
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 
 
