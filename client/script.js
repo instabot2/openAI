@@ -91,6 +91,7 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData);
       // scroll to the latest message
       messageDiv.scrollIntoView();
+
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -111,4 +112,5 @@ form.addEventListener('keyup', (e) => {
   }
 });
 
-// add an event listener to the window object that triggers the scroll event on the chat container
+window.addEventListener('resize', () => {
+  // scroll to the bottom of the
