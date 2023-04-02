@@ -100,7 +100,9 @@ const handleSubmit = async (e) => {
   }
 
   // scroll to the top of chat container
-  chatContainer.scrollTop = 0;
+  //chatContainer.scrollTop = 0;
+  // set the scrollTop property of chatContainer to its scrollHeight value
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
 
