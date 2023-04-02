@@ -97,7 +97,7 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
-  padding-bottom: 50px; /* add padding to make space for the input field */
+  //padding-bottom: 50px; /* add padding to make space for the input field */
   
   white-space: pre-wrap; 
   -ms-overflow-style: none;
