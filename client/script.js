@@ -119,5 +119,13 @@ window.addEventListener('resize', () => {
   if (isScrolledToBottom) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
+  // if user has scrolled up, keep their scroll position after resizing
+  else {
+    // calculate new scroll position based on percentage of current position
+    const scrollPosition = chatContainer.scrollTop / (chatContainer.scrollHeight - chatContainer.clientHeight);
+    // calculate new scroll position after resizing
+    const newScrollTop = (chatContainer.scrollHeight - chatContainer.clientHeight) * scrollPosition;
+    chatContainer.scrollTop = newScrollTop;
+  }
 });
 
