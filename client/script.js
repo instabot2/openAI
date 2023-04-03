@@ -66,7 +66,6 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -81,7 +80,8 @@ const handleSubmit = async (e) => {
   });
 
   // user's chatstripe
-  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
+  const userMessage = data.get('prompt');
+  messageWrapper.innerHTML += chatStripe(false, userMessage);
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -89,7 +89,6 @@ const handleSubmit = async (e) => {
   messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
-  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -99,7 +98,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
+        prompt: userMessage,
       }),
     });
 
@@ -122,6 +121,10 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
+
+        // Display summarized data in new column or paragraph
+        const summarizedData = summarize(parsedData);
+        messageWrapper.innerHTML += chatStripe(true, summarizedData);
       });
     } else {
       const err = await response.text();
@@ -150,9 +153,10 @@ const handleSubmit = async (e) => {
   scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
+  messages.push({ isBot: false, message: userMessage });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
