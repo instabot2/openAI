@@ -66,13 +66,11 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const form = e.target;
   const data = new FormData(form);
-  const messageWrapper = document.getElementById('messageWrapper');
-  const chatContainer = document.getElementById('chatContainer');
 
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
@@ -83,8 +81,7 @@ const handleSubmit = async (e) => {
   });
 
   // user's chatstripe
-  const userMessage = data.get('prompt');
-  messageWrapper.innerHTML += chatStripe(false, userMessage);
+  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -92,6 +89,7 @@ const handleSubmit = async (e) => {
   messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
+  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -101,7 +99,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: userMessage,
+        prompt: data.get('prompt'),
       }),
     });
 
@@ -124,10 +122,6 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
-
-        // Display summarized data in new column or paragraph
-        const summarizedData = summarize(parsedData);
-        messageWrapper.innerHTML += chatStripe(true, summarizedData);
       });
     } else {
       const err = await response.text();
@@ -156,10 +150,9 @@ const handleSubmit = async (e) => {
   scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
-  messages.push({ isBot: false, message: userMessage });
+  messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 
 
