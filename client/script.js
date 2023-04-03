@@ -100,12 +100,12 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // scroll to the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        // scroll to the latest message
+        chatContainer.scrollTop = 0;
         // scroll to the new message
         scrollIntoView(messageDiv);
       });
@@ -118,8 +118,8 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  // focus scroll to the top of the container
+  chatContainer.scrollTop = 0;
 };
 
 
