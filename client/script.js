@@ -59,6 +59,7 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -98,19 +99,23 @@ const handleSubmit = async (e) => {
         messageDiv.scrollIntoView();
         // scroll up to the new message and display it on top of the browser
         chatContainer.scrollTop = messageDiv.offsetTop;
+        // focus scroll to the bottom again
+        chatContainer.scrollTop = chatContainer.scrollHeight;
       });
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
+      // focus scroll to the bottom again
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   } catch (err) {
     messageDiv.innerHTML = `Something went wrong: ${err}`;
     console.error(err);
+    // focus scroll to the bottom again
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   }
-
-  // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
