@@ -71,6 +71,14 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
+  // Retrieve stored messages from local storage
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+
+  // Display stored messages before populating new message
+  messages.forEach((message) => {
+    messageWrapper.innerHTML += chatStripe(message.isBot, message.message);
+  });
+
   // user's chatstripe
   messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -111,7 +119,6 @@ const handleSubmit = async (e) => {
         scrollIntoView(messageDiv);
 
         // Store the message in local storage
-        const messages = JSON.parse(localStorage.getItem('messages')) || [];
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
       });
@@ -142,10 +149,10 @@ const handleSubmit = async (e) => {
   scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
