@@ -118,6 +118,14 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+  // add event listener to chatContainer to force scroll old messages up when at bottom
+  chatContainer.addEventListener('scroll', () => {
+    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+    if (isAtBottom) {
+      chatContainer.scrollTop = 0;
+    }
+  });
+
   // focus scroll to the top of the container
   chatContainer.scrollTop = 0;
 };
