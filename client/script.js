@@ -110,6 +110,8 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
         // focus scroll to the bottom again
         chatContainer.scrollTop = chatContainer.scrollHeight;
+        // scroll to the top of the container
+        chatContainer.scrollTop = 0;
       });
     } else {
       const err = await response.text();
