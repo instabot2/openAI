@@ -146,10 +146,13 @@ const handleSubmit = async (e) => {
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-  
-  // Clear local storage
-  localStorage.clear();
 };
+
+const clearButton = document.getElementById('clear-button');
+clearButton.addEventListener('click', () => {
+  localStorage.clear();
+  console.log('Local storage cleared!');
+});
 
 
 
