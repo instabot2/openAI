@@ -108,7 +108,14 @@ const handleSubmit = async (e) => {
 
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
+  
+  // scroll up to the new message and display it on top of the browser
+  chatContainer.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 };
+
 
 
 
