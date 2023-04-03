@@ -19,22 +19,6 @@ function loader(element) {
   }, 300);
 }
 
-function typeText(element, text, callback) {
-  let index = 0;
-  let interval = setInterval(() => {
-    if (index < text.length) {
-      element.innerHTML += text.charAt(index);
-      index++;
-    } else {
-      clearInterval(interval);
-      if (callback) {
-        callback();
-      }
-    }
-  }, 20);
-}
-
-
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
 // without unique ID, typing text will work on every element
@@ -59,7 +43,22 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-function scrollIntoView(element, behavior = 'smooth', block = 'end') {
+function typeText(element, text, callback) {
+  let index = 0;
+  let interval = setInterval(() => {
+    if (index < text.length) {
+      element.innerHTML += text.charAt(index);
+      index++;
+    } else {
+      clearInterval(interval);
+      if (callback) {
+        callback();
+      }
+    }
+  }, 20);
+}
+
+function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   element.scrollIntoView({
     behavior,
     block,
@@ -119,8 +118,8 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  // focus scroll to the top of the container
+  chatContainer.scrollTop = 0;
 };
 
 
