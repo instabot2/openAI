@@ -65,18 +65,17 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
   // user's chatstripe
-  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
-  // to clear the textarea input
-  form.reset();
+  const userStripe = chatStripe(false, data.get('prompt'));
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
+  const botStripe = chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -109,6 +108,9 @@ const handleSubmit = async (e) => {
         // scroll to the new message
         scrollIntoView(messageDiv);
       });
+      // prepend the new message to the messageWrapper
+      messageWrapper.insertBefore(botStripe, messageWrapper.firstChild);
+      messageWrapper.insertBefore(userStripe, messageWrapper.firstChild);
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -126,12 +128,8 @@ const handleSubmit = async (e) => {
     }
   });
 
-  // scroll to the top of the container and display new input at the top
+  // focus scroll to the top of the container
   chatContainer.scrollTop = 0;
-  const firstMessageDiv = messageWrapper.firstChild;
-  if (firstMessageDiv) {
-    scrollIntoView(firstMessageDiv);
-  }
 };
 
 
