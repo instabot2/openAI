@@ -9,14 +9,9 @@
   </head>
   <body>
     <div id="app">
-      <header>
-        <h1>ChatGPT AI</h1>
-        <button id="clear-button">Clear</button>
-      </header>
       <div id="chat_container">
-        <div id="message_wrapper" style="overflow-y: auto;"></div>
+        <div id="message_wrapper"></div>
       </div>
-      
       <form>
         <textarea
           name="prompt"
@@ -29,41 +24,5 @@
       </form>
     </div>
     <script type="module" src="script.js"></script>
-    <script type="module">
-      import { chatStripe } from './chatStripe.js';
-      const clearButton = document.getElementById('clear-button');
-      const messageWrapper = document.getElementById('message_wrapper');
-      const form = document.querySelector('form');
-      const prompt = document.querySelector('textarea[name="prompt"]');
-      
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const input = prompt.value;
-        if (!input) return;
-        
-        const uniqueId = Date.now().toString();
-        const message = chatStripe(false, input, uniqueId);
-        messageWrapper.insertAdjacentHTML('beforeend', message);
-        prompt.value = '';
-        
-        fetch('/ask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: input })
-        })
-          .then(response => response.json())
-          .then(data => {
-            const message = chatStripe(true, data.response, uniqueId);
-            const messageElement = document.getElementById(uniqueId);
-            messageElement.innerHTML = message;
-          });
-      });
-
-      clearButton.addEventListener('click', () => {
-        localStorage.clear();
-        messageWrapper.innerHTML = '';
-        console.log('Local storage cleared!');
-      });
-    </script>
   </body>
 </html>
