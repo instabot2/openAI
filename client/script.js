@@ -60,7 +60,6 @@ function typeText(element, text, callback) {
     index++;
     if (index === textArray.length) {
       callback(); // execute the callback function when typing is complete
-      chatContainer.scrollTop = chatContainer.scrollHeight; // scroll to the top of the container
       return;
     }
     setTimeout(type, 10);
@@ -107,10 +106,8 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData, () => {
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
-        const previousMessageDivsHeight = Array.from(messageWrapper.children)
-          .slice(0, -1)
-          .reduce((acc, cur) => acc + cur.offsetHeight, 0); // exclude the current message div
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight;
+        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
         // focus scroll to the bottom again
         chatContainer.scrollTop = chatContainer.scrollHeight;
       });
