@@ -69,6 +69,7 @@ function typeText(element, text, callback) {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  const form = e.target;
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
@@ -134,7 +135,6 @@ const handleSubmit = async (e) => {
     }
   });
 };
-
 
 
 form.addEventListener('submit', handleSubmit);
