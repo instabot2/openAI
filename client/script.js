@@ -107,8 +107,10 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData, () => {
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        const previousMessageDivsHeight = Array.from(messageWrapper.children)
+          .slice(0, -1)
+          .reduce((acc, cur) => acc + cur.offsetHeight, 0); // exclude the current message div
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight;
         // focus scroll to the bottom again
         chatContainer.scrollTop = chatContainer.scrollHeight;
       });
