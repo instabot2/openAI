@@ -65,7 +65,6 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -105,16 +104,10 @@ const handleSubmit = async (e) => {
         const messageDivHeight = messageDiv.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-
-        // check if the scroll is at the bottom before resetting it
-        const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-        if (isAtBottom) {
-          // scroll to the new message
-          scrollIntoView(messageDiv);
-        } else {
-          // set the scrollbar back to the bottom
-          chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
-        }
+        // scroll to the latest message
+        chatContainer.scrollTop = 0;
+        // scroll to the new message
+        scrollIntoView(messageDiv);
       });
     } else {
       const err = await response.text();
@@ -133,7 +126,6 @@ const handleSubmit = async (e) => {
     }
   });
 };
-
 
 
 form.addEventListener('submit', handleSubmit);
