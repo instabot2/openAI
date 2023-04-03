@@ -71,12 +71,15 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // user's chatstripe
-  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
+  const userMessageDiv = chatStripe(false, data.get('prompt'));
+  messageWrapper.insertBefore(userMessageDiv, messageWrapper.firstChild);
+
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
+  const botMessageDiv = chatStripe(true, ' ', uniqueId);
+  messageWrapper.insertBefore(botMessageDiv, messageWrapper.firstChild);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -100,12 +103,12 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
+        // scroll to the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        const previousMessageDivsHeight = Array.from(messageWrapper.children).slice(2).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        // scroll to the latest message
-        chatContainer.scrollTop = 0;
         // scroll to the new message
         scrollIntoView(messageDiv);
       });
@@ -118,17 +121,10 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // add event listener to chatContainer to force scroll old messages up when at bottom
-  chatContainer.addEventListener('scroll', () => {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    if (isAtBottom) {
-      chatContainer.scrollTop = 0;
-    }
-  });
-
-  // focus scroll to the top of the container
-  chatContainer.scrollTop = 0;
+  // focus scroll to the bottom again
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
 
 
 form.addEventListener('submit', handleSubmit);
