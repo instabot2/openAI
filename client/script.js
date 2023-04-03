@@ -69,7 +69,10 @@ function typeText(element, text, callback) {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  const form = e.target;
   const data = new FormData(form);
+  const messageWrapper = document.getElementById('messageWrapper');
+  const chatContainer = document.getElementById('chatContainer');
 
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
