@@ -59,6 +59,13 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+function scrollIntoView(element, behavior = 'smooth', block = 'end') {
+  element.scrollIntoView({
+    behavior,
+    block,
+  });
+}
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -96,6 +103,12 @@ const handleSubmit = async (e) => {
       typeText(messageDiv, parsedData, () => {
         // scroll to the latest message
         chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
+        // scroll up to the new message and display it on top of the browser
+        const messageDivHeight = messageDiv.offsetHeight;
+        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        // scroll to the new message
+        scrollIntoView(messageDiv);
       });
     } else {
       const err = await response.text();
@@ -108,15 +121,7 @@ const handleSubmit = async (e) => {
 
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
-  
-  // scroll up to the new message and display it on top of the browser
-  chatContainer.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
 };
-
-
 
 
 form.addEventListener('submit', handleSubmit);
