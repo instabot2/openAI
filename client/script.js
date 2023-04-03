@@ -43,6 +43,13 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+function scrollIntoView(element, behavior = 'smooth', block = 'start') {
+  element.scrollIntoView({
+    behavior,
+    block,
+  });
+}
+
 function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
@@ -56,13 +63,6 @@ function typeText(element, text, callback) {
       }
     }
   }, 20);
-}
-
-function scrollIntoView(element, behavior = 'smooth', block = 'start') {
-  element.scrollIntoView({
-    behavior,
-    block,
-  });
 }
 
 const handleSubmit = async (e) => {
