@@ -71,15 +71,6 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
-  // Store the user's message in local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
-  messages.unshift({ isBot: false, message: data.get('prompt') });
-  localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Summarize the messages and display them in a new column
-  const summarizedMessages = summarizeMessages(messages);
-  displayMessages(summarizedMessages);
-
   // user's chatstripe
   messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
@@ -119,14 +110,10 @@ const handleSubmit = async (e) => {
         // scroll to the new message
         scrollIntoView(messageDiv);
 
-        // Store the bot's message in local storage
+        // Store the message in local storage
         const messages = JSON.parse(localStorage.getItem('messages')) || [];
-        messages.unshift({ isBot: true, message: parsedData });
+        messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
-
-        // Summarize the messages and display them in a new column
-        const summarizedMessages = summarizeMessages(messages);
-        displayMessages(summarizedMessages);
       });
     } else {
       const err = await response.text();
@@ -153,10 +140,12 @@ const handleSubmit = async (e) => {
   chatContainer.scrollTop = 0;
   // scroll to the new message
   scrollIntoView(messageDiv);
+
+  // Store the user's message in local storage
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  messages.push({ isBot: false, message: data.get('prompt') });
+  localStorage.setItem('messages', JSON.stringify(messages));
 };
-
-
-
 
 
 
