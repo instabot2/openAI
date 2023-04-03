@@ -126,8 +126,12 @@ const handleSubmit = async (e) => {
     }
   });
 
-  // focus scroll to the top of the container
+  // scroll to the top of the container and display new input at the top
   chatContainer.scrollTop = 0;
+  const firstMessageDiv = messageWrapper.firstChild;
+  if (firstMessageDiv) {
+    scrollIntoView(firstMessageDiv);
+  }
 };
 
 
