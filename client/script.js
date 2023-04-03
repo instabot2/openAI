@@ -60,6 +60,7 @@ function typeText(element, text, callback) {
     index++;
     if (index === textArray.length) {
       callback(); // execute the callback function when typing is complete
+      chatContainer.scrollTop = chatContainer.scrollHeight; // scroll to the top of the container
       return;
     }
     setTimeout(type, 10);
@@ -120,8 +121,6 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
-
-
 
 
 form.addEventListener('submit', handleSubmit);
