@@ -65,6 +65,7 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -108,6 +109,11 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = 0;
         // scroll to the new message
         scrollIntoView(messageDiv);
+
+        // Store the message in local storage
+        const messages = JSON.parse(localStorage.getItem('messages')) || [];
+        messages.push({ isBot: true, message: parsedData });
+        localStorage.setItem('messages', JSON.stringify(messages));
       });
     } else {
       const err = await response.text();
@@ -125,7 +131,28 @@ const handleSubmit = async (e) => {
       chatContainer.scrollTop = 0;
     }
   });
+
+  // scroll up to the new message and display it on top of the browser
+  const messageDivHeight = messageDiv.offsetHeight;
+  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  // scroll to the latest message
+  chatContainer.scrollTop = 0;
+  // scroll to the new message
+  scrollIntoView(messageDiv);
+
+  // Store the user's message in local storage
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  messages.push({ isBot: false, message: data.get('prompt') });
+  localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+
+
+
+
+
+
 
 
 form.addEventListener('submit', handleSubmit);
