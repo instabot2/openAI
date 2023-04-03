@@ -99,6 +99,8 @@ const handleSubmit = async (e) => {
         // scroll up to the new message and display it on top of the browser
         chatContainer.scrollTop = messageDiv.offsetTop - chatContainer.offsetTop;
       });
+      // update the scroll position while the bot is typing a response
+      chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -111,7 +113,6 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 
 form.addEventListener('submit', handleSubmit);
