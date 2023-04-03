@@ -126,13 +126,16 @@ const handleSubmit = async (e) => {
     }
   });
 
-  // scroll to the top of the container and display new input at the top
+  // scroll up to the new message and display it on top of the browser
+  const messageDivHeight = messageDiv.offsetHeight;
+  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  // scroll to the latest message
   chatContainer.scrollTop = 0;
-  const firstMessageDiv = messageWrapper.firstChild;
-  if (firstMessageDiv) {
-    scrollIntoView(firstMessageDiv);
-  }
+  // scroll to the new message
+  scrollIntoView(messageDiv);
 };
+
 
 
 form.addEventListener('submit', handleSubmit);
