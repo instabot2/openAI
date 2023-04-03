@@ -66,8 +66,13 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
+
+  const form = document.querySelector('form');
+  const messageWrapper = document.querySelector('#message-wrapper');
+  const chatContainer = document.querySelector('#chat-container');
 
   const data = new FormData(form);
 
@@ -85,7 +90,7 @@ const handleSubmit = async (e) => {
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
+  messageWrapper.innerHTML += chatStripe(true, '', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -112,7 +117,7 @@ const handleSubmit = async (e) => {
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
         // scroll to the latest message
         chatContainer.scrollTop = 0;
         // scroll to the new message
@@ -142,7 +147,7 @@ const handleSubmit = async (e) => {
   // scroll up to the new message and display it on top of the browser
   const messageDivHeight = messageDiv.offsetHeight;
   const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
   // scroll to the latest message
   chatContainer.scrollTop = 0;
   // scroll to the new message
@@ -152,6 +157,7 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
