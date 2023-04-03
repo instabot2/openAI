@@ -19,22 +19,6 @@ function loader(element) {
   }, 300);
 }
 
-function typeText(element, text, callback) {
-  let index = 0;
-  let interval = setInterval(() => {
-    if (index < text.length) {
-      element.innerHTML += text.charAt(index);
-      index++;
-    } else {
-      clearInterval(interval);
-      if (callback) {
-        callback();
-      }
-    }
-  }, 20);
-}
-
-
 // generate unique ID for each message div of bot
 // necessary for typing text effect for that specific reply
 // without unique ID, typing text will work on every element
@@ -64,6 +48,23 @@ function scrollIntoView(element, behavior = 'smooth', block = 'end') {
     behavior,
     block,
   });
+}
+
+function typeText(element, text, callback) {
+  const textArray = text.split('');
+  let index = 0;
+
+  function type() {
+    const nextChar = textArray[index];
+    element.innerHTML += nextChar;
+    index++;
+    if (index === textArray.length) {
+      callback(); // execute the callback function when typing is complete
+      return;
+    }
+    setTimeout(type, 10);
+  }
+  setTimeout(type, 10);
 }
 
 const handleSubmit = async (e) => {
@@ -100,15 +101,15 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      // scroll to the latest message
+      chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
       typeText(messageDiv, parsedData, () => {
-        // scroll to the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        // scroll to the new message
-        scrollIntoView(messageDiv);
+        // focus scroll to the bottom again
+        chatContainer.scrollTop = chatContainer.scrollHeight;
       });
     } else {
       const err = await response.text();
@@ -118,10 +119,9 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = `Something went wrong: ${err}`;
     console.error(err);
   }
-
-  // focus scroll to the bottom again
-  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+
+
 
 
 form.addEventListener('submit', handleSubmit);
