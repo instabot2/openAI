@@ -105,8 +105,8 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
         // scroll up to the new message and display it on top of the browser
         chatContainer.scrollTop = messageDiv.offsetTop - chatContainer.offsetTop;
-        // scroll to the new message
-        scrollIntoView(messageDiv);
+        // scroll the chat container to make all messages go up
+        chatContainer.scrollBy(0, -1000); // replace 1000 with a suitable value to scroll up
       });
     } else {
       const err = await response.text();
@@ -120,7 +120,6 @@ const handleSubmit = async (e) => {
   // focus scroll to the bottom again
   chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 
 
