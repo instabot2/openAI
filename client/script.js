@@ -69,6 +69,7 @@ function typeText(element, text, callback) {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  const form = e.target; // add this line to get the form element
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
@@ -81,12 +82,13 @@ const handleSubmit = async (e) => {
   });
 
   // user's chatstripe
-  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
+  const userMessage = data.get('prompt');
+  messageWrapper.innerHTML += chatStripe(false, userMessage);
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
+  messageWrapper.innerHTML += chatStripe(true, '', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   // messageDiv.innerHTML = '...'
@@ -99,7 +101,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
+        prompt: userMessage,
       }),
     });
 
@@ -146,10 +148,9 @@ const handleSubmit = async (e) => {
   scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
+  messages.push({ isBot: false, message: userMessage });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 
 
