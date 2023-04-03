@@ -109,12 +109,6 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
         // scroll to the new message
         scrollIntoView(messageDiv);
-
-        // decrease the loading interval to make the old message go up faster
-        loadInterval = setInterval(() => {
-          const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-          chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        }, 50);
       });
     } else {
       const err = await response.text();
