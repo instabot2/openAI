@@ -71,20 +71,15 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // user's chatstripe
-  const userPrompt = data.get('prompt');
-  const userChatStripe = chatStripe(false, userPrompt);
-  messageWrapper.appendChild(userChatStripe);
-
+  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
-
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botChatStripe = chatStripe(true, ' ', uniqueId);
-  messageWrapper.appendChild(botChatStripe);
-
+  messageWrapper.innerHTML += chatStripe(true, ' ', uniqueId);
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
+  // messageDiv.innerHTML = '...'
   loader(messageDiv);
 
   try {
@@ -94,7 +89,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: userPrompt,
+        prompt: data.get('prompt'),
       }),
     });
 
@@ -103,21 +98,17 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const data = await response.json();
-      const botResponse = data.bot && data.bot.trim(); // trims any trailing spaces/'\n'
-      if (botResponse) {
-        typeText(messageDiv, botResponse, () => {
-          // scroll to the latest message
-          chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
-          // scroll up to the new message and display it on top of the browser
-          const messageDivHeight = messageDiv.offsetHeight;
-          const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-          chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-          // scroll to the new message
-          scrollIntoView(messageDiv);
-        });
-      } else {
-        messageDiv.innerHTML = 'Error: Empty response';
-      }
+      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      typeText(messageDiv, parsedData, () => {
+        // scroll to the latest message
+        chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
+        // scroll up to the new message and display it on top of the browser
+        const messageDivHeight = messageDiv.offsetHeight;
+        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        // scroll to the new message
+        scrollIntoView(messageDiv);
+      });
     } else {
       const err = await response.text();
       messageDiv.innerHTML = `Error: ${err}`;
@@ -127,10 +118,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // focus scroll to the top of the container
-  chatContainer.scrollTop = 0;
+  // focus scroll to the bottom again
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 };
-
 
 
 form.addEventListener('submit', handleSubmit);
