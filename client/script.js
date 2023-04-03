@@ -65,7 +65,6 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -112,10 +111,10 @@ const handleSubmit = async (e) => {
       });
     } else {
       const err = await response.text();
-      messageDiv.innerHTML = `Error: ${err}`;
+      throw new Error(`Error ${response.status}: ${err}`);
     }
   } catch (err) {
-    messageDiv.innerHTML = `Something went wrong: ${err}`;
+    messageDiv.innerHTML = err.message;
     console.error(err);
   }
 
