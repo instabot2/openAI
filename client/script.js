@@ -65,15 +65,14 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
   // user's chatstripe
-  const userMessageDiv = chatStripe(false, data.get('prompt'));
-  messageWrapper.insertBefore(userMessageDiv, messageWrapper.firstChild);
-
+  messageWrapper.innerHTML += chatStripe(false, data.get('prompt'));
   // to clear the textarea input
   form.reset();
   // bot's chatstripe
@@ -130,7 +129,10 @@ const handleSubmit = async (e) => {
 
   // scroll to the top of the container and display new input at the top
   chatContainer.scrollTop = 0;
-  scrollIntoView(userMessageDiv);
+  const firstMessageDiv = messageWrapper.firstChild;
+  if (firstMessageDiv) {
+    scrollIntoView(firstMessageDiv);
+  }
 };
 
 
