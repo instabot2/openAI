@@ -51,13 +51,13 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
-
 function typeText(element, text, callback) {
   let index = 0;
   let message = document.createElement('div');
   message.classList.add('bot-message');
 
-  // insert new message at the top of the element
+  // temporarily set flex-direction to 'column' to add message at the top
+  element.style.flexDirection = 'column';
   element.insertBefore(message, element.firstChild);
 
   let interval = setInterval(() => {
@@ -71,6 +71,8 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
+      // reset flex-direction to 'column-reverse' after message has been added
+      element.style.flexDirection = 'column-reverse';
       // scroll to the new message
       message.scrollIntoView();
     }
