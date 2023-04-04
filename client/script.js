@@ -43,13 +43,13 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   element.scrollIntoView({
     behavior,
     block,
   });
 }
+
 
 
 function typeText(element, text, callback) {
@@ -72,9 +72,8 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
-  function scrollToBottom() {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-  }
+function scrollToBottom() {
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 const handleSubmit = async (e) => {
@@ -85,14 +84,14 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // user's chatstripe
+  // user's chat stripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
 
   // to clear the textarea input
   form.reset();
 
-  // bot's chatstripe
+  // bot's chat stripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
