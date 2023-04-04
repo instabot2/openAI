@@ -62,8 +62,9 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-      element.scrollTop = element.scrollHeight; // scroll to the bottom
+      element.scrollTop = 0; // scroll to the top
       element.style.bottom = "20px";
+      message.scrollIntoView(); // scroll to the new message
     } else {
       clearInterval(interval);
       if (callback) {
