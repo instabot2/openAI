@@ -54,11 +54,11 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 function typeText(element, text, callback) {
   let index = 0;
   const beforeHeight = element.scrollHeight;
-  let interval = setInterval(() => {
+  const interval = setInterval(() => {
     if (index < text.length) {
-      element.innerHTML += text.charAt(index);
+      element.textContent += text.charAt(index);
       index++;
-      element.scrollTop = element.scrollHeight; // Add this line to scroll the element to the bottom
+      element.scrollTop = element.scrollHeight;
     } else {
       clearInterval(interval);
       if (callback) {
@@ -79,22 +79,17 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
-  // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
 
-  // to clear the textarea input
   form.reset();
 
-  // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
 
-  // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -110,13 +105,12 @@ const handleSubmit = async (e) => {
     });
 
     clearInterval(loadInterval);
-    messageDiv.innerHTML = '';
+    messageDiv.textContent = '';
 
     if (response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      
-      // Force bot typing on screen
+      const { bot } = await response.json();
+      const parsedData = bot.trim();
+
       setTimeout(() => {
         const botTyping = chatStripe(true, '', uniqueId + '-typing');
         messageWrapper.insertAdjacentHTML('beforeend', botTyping);
@@ -124,26 +118,18 @@ const handleSubmit = async (e) => {
         botTypingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
         scrollToBottom();
       }, 500);
-      
-      // Type the bot's message and remove bot typing on screen
+
       setTimeout(() => {
         typeText(messageDiv, parsedData, () => {
-          // Remove bot typing on screen
           const botTypingDiv = document.getElementById(uniqueId + '-typing');
-          if (botTypingDiv) {
-            botTypingDiv.remove();
-          }
-          
-          // Store the message in local storage
+          botTypingDiv?.remove();
+
           messages.push({ isBot: true, message: parsedData });
           localStorage.setItem('messages', JSON.stringify(messages));
 
-          // Re-enable the form input
           input.disabled = false;
 
-          // Check if user has scrolled up in the chat history
           if (messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight) {
-            // User has not scrolled up, so scroll to bottom of chat container
             scrollToBottom();
           }
         });
@@ -154,11 +140,9 @@ const handleSubmit = async (e) => {
       throw new Error(`Error ${response.status}: ${err}`);
     }
   } catch (err) {
-    messageDiv.innerHTML = err;
+    messageDiv.textContent = err;
   }
 };
-
-
 
 function scrollToBottom(smooth = true, force = false) {
   const chatContainer = document.querySelector('#chat_container');
