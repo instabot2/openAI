@@ -59,7 +59,7 @@ function typeText(element, text, callback) {
       index++;
 
       // if user has scrolled to the bottom, auto-scroll to show new message
-      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
       if (isAtBottom) {
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
@@ -72,7 +72,7 @@ function typeText(element, text, callback) {
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
         // scroll to the latest message
-        chatContainer.scrollTop = 0;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
         // scroll to the new message
         scrollIntoView(element);
 
@@ -145,21 +145,18 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // add event listener to chatContainer to force scroll old messages up when at bottom
-  chatContainer.addEventListener('scroll', () => {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    if (isAtBottom) {
-      chatContainer.scrollTop = 0;
-    }
-  });
-
-  // Scroll to bottom of chat container
-  scrollToBottom();
-
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+// add event listener to chatContainer to force scroll old messages up when at bottom
+chatContainer.addEventListener('scroll', () => {
+  const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+  if (isAtBottom) {
+    chatContainer.scrollTop = 0;
+  }
+});
 
 function scrollToBottom() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
