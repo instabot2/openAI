@@ -52,15 +52,16 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 
+
 function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
+      element.scrollTop = 0; // scroll to the top of the element
       element.style.position = "fixed";
       element.style.bottom = "20px";
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
       clearInterval(interval);
       if (callback) {
