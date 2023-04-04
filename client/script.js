@@ -51,7 +51,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
-
 function typeText(element, text, callback) {
   let index = 0;
   const beforeHeight = chatContainer.scrollHeight;
@@ -63,17 +62,13 @@ function typeText(element, text, callback) {
       clearInterval(interval);
       if (callback) {
         callback();
-        const afterHeight = chatContainer.scrollHeight;
-        if (afterHeight - beforeHeight > 0) {
-          scrollToBottom();
-        }
+      }
+      const afterHeight = chatContainer.scrollHeight;
+      if (afterHeight - beforeHeight > 0) {
+        scrollToBottom();
       }
     }
   }, 20);
-}
-
-function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 const handleSubmit = async (e) => {
@@ -84,14 +79,14 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // user's chat stripe
+  // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
 
   // to clear the textarea input
   form.reset();
 
-  // bot's chat stripe
+  // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
@@ -125,6 +120,7 @@ const handleSubmit = async (e) => {
         // Re-enable the form input
         input.disabled = false;
       });
+
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
@@ -141,6 +137,12 @@ const handleSubmit = async (e) => {
   // Scroll to bottom of chat container
   scrollToBottom();
 };
+
+function scrollToBottom() {
+  //const chatContainer = document.querySelector('#chat_container');
+  //const messageWrapper = document.querySelector('#message_wrapper');
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 
 
