@@ -51,6 +51,9 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
+// Declare the messages array outside of the handleSubmit function so it can be accessed by other functions
+let messages = [];
+
 function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
@@ -59,8 +62,8 @@ function typeText(element, text, callback) {
       index++;
 
       // if user has scrolled to the bottom, auto-scroll to show new message
-      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
-      if (isAtBottom) {
+      const isAtBottomBefore = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
+      if (isAtBottomBefore) {
         chatContainer.scrollTop = chatContainer.scrollHeight;
       }
     } else {
@@ -79,6 +82,12 @@ function typeText(element, text, callback) {
         // Store the message in local storage
         messages.push({ isBot: true, message: text });
         localStorage.setItem('messages', JSON.stringify(messages));
+
+        // if user has scrolled to the bottom, auto-scroll to show new message
+        const isAtBottomAfter = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
+        if (isAtBottomAfter) {
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
       }
     }
   }, 20);
@@ -90,7 +99,7 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  messages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
@@ -149,14 +158,6 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
-// add event listener to chatContainer to force scroll old messages up when at bottom
-chatContainer.addEventListener('scroll', () => {
-  const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-  if (isAtBottom) {
-    chatContainer.scrollTop = 0;
-  }
-});
 
 function scrollToBottom() {
   chatContainer.scrollTop = chatContainer.scrollHeight;
