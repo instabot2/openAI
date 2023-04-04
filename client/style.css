@@ -38,7 +38,7 @@ body {
 /* hides scrollbar */
 /*#chat_container::-webkit-scrollbar {*/
 /*  display: none;*/
-}
+/*}*/
 
 #message_wrapper {
   display: flex;
