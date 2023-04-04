@@ -61,6 +61,18 @@ function typeText(element, text, callback) {
       clearInterval(interval);
       if (callback) {
         callback();
+        // scroll up to the new message and display it on top of the browser
+        const messageDivHeight = element.offsetHeight;
+        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        // scroll to the latest message
+        chatContainer.scrollTop = 0;
+        // scroll to the new message
+        scrollIntoView(element);
+
+        // Store the message in local storage
+        messages.push({ isBot: true, message: text });
+        localStorage.setItem('messages', JSON.stringify(messages));
       }
     }
   }, 20);
