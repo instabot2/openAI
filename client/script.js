@@ -103,14 +103,13 @@ function typeText(element, text, callback) {
   }
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
-  messages = JSON.parse(localStorage.getItem('messages')) || [];
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
