@@ -121,6 +121,12 @@ const handleSubmit = async (e) => {
 
         // Re-enable the form input
         input.disabled = false;
+
+        // Check if user has scrolled up in the chat history
+        if (messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight) {
+          // User has not scrolled up, so scroll to bottom of chat container
+          scrollToBottom();
+        }
       });
 
     } else {
@@ -135,9 +141,6 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Scroll to bottom of chat container
-  scrollToBottom();
 };
 
 function scrollToBottom(smooth = true) {
