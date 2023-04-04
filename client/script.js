@@ -72,7 +72,7 @@ function typeText(element, text, callback) {
   }, 20);
 }
 
-function scrollToBottom() {
+  function scrollToBottom() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
 }
