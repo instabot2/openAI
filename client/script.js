@@ -60,7 +60,7 @@ function typeText(element, text, callback) {
       element.innerHTML += text.charAt(index);
       index++;
       element.scrollTop = 0; // scroll to the top of the element
-      element.style.position = "fixed";
+      //element.style.position = "fixed";
       element.style.bottom = "20px";
     } else {
       clearInterval(interval);
