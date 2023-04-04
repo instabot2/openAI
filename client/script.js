@@ -76,7 +76,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
+
   // to clear the textarea input
   form.reset();
 
@@ -106,50 +106,44 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-      typeText(messageDiv, parsedData, () => {
-        // scroll up to the new message and display it on top of the browser
-        const messageDivHeight = messageDiv.offsetHeight;
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        // scroll to the latest message
-        chatContainer.scrollTop = 0;
-        // scroll to the new message
-        scrollIntoView(messageDiv);
 
-        // Store the message in local storage
-        messages.push({ isBot: true, message: parsedData });
-        localStorage.setItem('messages', JSON.stringify(messages));
-      });
+      // Force bot typing on screen
+      const botTyping = chatStripe(true, '', uniqueId + '-typing');
+      messageWrapper.insertAdjacentHTML('beforeend', botTyping);
+      const botTypingDiv = document.getElementById(uniqueId + '-typing');
+      botTypingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+
+      setTimeout(() => {
+        // Remove bot typing on screen
+        if (botTypingDiv) {
+          botTypingDiv.remove();
+        }
+
+        // Type the bot's message and store it in local storage
+        typeText(messageDiv, parsedData, () => {
+          messages.push({ isBot: true, message: parsedData });
+          localStorage.setItem('messages', JSON.stringify(messages));
+        });
+
+        // Check if user has scrolled up in the chat history
+        if (messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight) {
+          // User has not scrolled up, so scroll to bottom of chat container
+          scrollToBottom();
+        } else if (messageWrapper.scrollTop === 0) {
+          // User has scrolled to the top, so scroll to the bottom of the bot message
+          scrollToBottom(true, messageDiv);
+        }
+      }, 1500);
+
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
     }
   } catch (err) {
-    messageDiv.innerHTML = err.message;
-    console.error(err);
+    messageDiv.innerHTML = err;
   }
-
-  // add event listener to chatContainer to force scroll old messages up when at bottom
-  chatContainer.addEventListener('scroll', () => {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    if (isAtBottom) {
-      chatContainer.scrollTop = 0;
-    }
-  });
-
-  // scroll up to the new message and display it on top of the browser
-  const messageDivHeight = messageDiv.offsetHeight;
-  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  // scroll to the latest message
-  chatContainer.scrollTop = 0;
-  // scroll to the new message
-  scrollIntoView(messageDiv);
-
-  // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
-  localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
