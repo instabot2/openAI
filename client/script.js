@@ -50,12 +50,16 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
+
 function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
+      if (index === text.length - 1) {
+        element.scrollIntoView(false);
+      }
     } else {
       clearInterval(interval);
       if (callback) {
