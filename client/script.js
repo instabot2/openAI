@@ -149,9 +149,8 @@ const handleSubmit = async (e) => {
   // scroll up to the new message and display it on top of the browser
   const messageDivHeight = messageDiv.offsetHeight;
   const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  // scroll to the latest message
-  chatContainer.scrollTop = 0;
+  const scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  chatContainer.scrollTop = scrollTop > 0 ? scrollTop : 0;
   // scroll to the new message
   scrollIntoView(messageDiv);
 
