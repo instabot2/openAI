@@ -66,6 +66,8 @@ function typeText(element, text, callback) {
       const afterHeight = chatContainer.scrollHeight;
       if (afterHeight - beforeHeight > 0) {
         scrollToBottom();
+      } else {
+        scrollToBottom(false);
       }
     }
   }, 20);
@@ -138,11 +140,19 @@ const handleSubmit = async (e) => {
   scrollToBottom();
 };
 
-function scrollToBottom() {
-  //const chatContainer = document.querySelector('#chat_container');
-  //const messageWrapper = document.querySelector('#message_wrapper');
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+function scrollToBottom(smooth = true) {
+  const chatContainer = document.querySelector('#chat_container');
+  const messageWrapper = document.querySelector('#message_wrapper');
+  if (smooth) {
+    messageWrapper.scroll({
+      top: chatContainer.scrollHeight,
+      behavior: 'smooth'
+    });
+  } else {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
 }
+
 
 
 
