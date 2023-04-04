@@ -52,7 +52,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
-
 function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
@@ -86,20 +85,7 @@ function typeText(element, text, callback) {
   }
   
   function scrollToBottom() {
-    const scrollHeight = chatContainer.scrollHeight;
-    const scrollTop = chatContainer.scrollTop;
-    const clientHeight = chatContainer.clientHeight;
-    const difference = scrollHeight - scrollTop - clientHeight;
-    const duration = difference * 0.5;
-    const increment = 1 / duration * 20;
-    let progress = 0;
-    const animation = setInterval(() => {
-      progress += increment;
-      chatContainer.scrollTop = scrollTop + difference * progress;
-      if (progress >= 1) {
-        clearInterval(animation);
-      }
-    }, 20);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
   }
 }
 
@@ -168,7 +154,6 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 
 
