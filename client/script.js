@@ -57,6 +57,12 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
+
+      // if user has scrolled to the bottom, auto-scroll to show new message
+      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+      if (isAtBottom) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
     } else {
       clearInterval(interval);
       if (callback) {
@@ -89,7 +95,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
+
   // to clear the textarea input
   form.reset();
 
@@ -124,14 +130,11 @@ const handleSubmit = async (e) => {
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
 
-        // scroll up to the new message and display it on top of the browser
-        const messageDivHeight = messageDiv.offsetHeight;
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        // scroll to the latest message
-        chatContainer.scrollTop = 0;
-        // scroll to the new message
-        scrollIntoView(messageDiv);
+        // Scroll to bottom of chat container
+        scrollToBottom();
+
+        // Re-enable the form input
+        input.disabled = false;
       });
     } else {
       const err = await response.text();
@@ -150,10 +153,17 @@ const handleSubmit = async (e) => {
     }
   });
 
+  // Scroll to bottom of chat container
+  scrollToBottom();
+
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+function scrollToBottom() {
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 
 
