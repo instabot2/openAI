@@ -52,39 +52,18 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
-  const beforeHeight = element.scrollHeight;
-  const typingDelay = 500; // add a delay before typing the message
-  const interval = setInterval(() => {
-    if (index === 0) {
-      // display bot typing
-      const botTyping = chatStripe(true, '', 'bot-typing');
-      messageWrapper.insertAdjacentHTML('beforeend', botTyping);
-      scrollToBottom();
-    }
+  let interval = setInterval(() => {
     if (index < text.length) {
-      element.textContent += text.charAt(index);
+      element.innerHTML += text.charAt(index);
       index++;
-      element.scrollTop = element.scrollHeight;
     } else {
       clearInterval(interval);
       if (callback) {
         callback();
       }
-      const afterHeight = element.scrollHeight;
-      if (afterHeight - beforeHeight > 0) {
-        scrollToBottom();
-      } else {
-        scrollToBottom(false);
-      }
-      // remove bot typing
-      const botTypingDiv = document.querySelector('#bot-typing');
-      if (botTypingDiv) {
-        botTypingDiv.remove();
-      }
     }
   }, 20);
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
