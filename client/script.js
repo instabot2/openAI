@@ -51,8 +51,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-// Declare the messages array outside of the handleSubmit function so it can be accessed by other functions
-let messages = [];
+
 
 function typeText(element, text, callback) {
   let index = 0;
@@ -60,38 +59,50 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
-
-      // if user has scrolled to the bottom, auto-scroll to show new message
-      const isAtBottomBefore = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
+      const isAtBottomBefore = isAtBottom();
       if (isAtBottomBefore) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        scrollToBottom();
       }
     } else {
       clearInterval(interval);
       if (callback) {
         callback();
-        // scroll up to the new message and display it on top of the browser
         const messageDivHeight = element.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        // scroll to the latest message
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        // scroll to the new message
-        scrollIntoView(element);
-
-        // Store the message in local storage
+        scrollToBottom();
         messages.push({ isBot: true, message: text });
         localStorage.setItem('messages', JSON.stringify(messages));
-
-        // if user has scrolled to the bottom, auto-scroll to show new message
-        const isAtBottomAfter = chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
+        const isAtBottomAfter = isAtBottom();
         if (isAtBottomAfter) {
-          chatContainer.scrollTop = chatContainer.scrollHeight;
+          scrollToBottom();
         }
       }
     }
   }, 20);
+  
+  function isAtBottom() {
+    return chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
+  }
+  
+  function scrollToBottom() {
+    const scrollHeight = chatContainer.scrollHeight;
+    const scrollTop = chatContainer.scrollTop;
+    const clientHeight = chatContainer.clientHeight;
+    const difference = scrollHeight - scrollTop - clientHeight;
+    const duration = difference * 0.5;
+    const increment = 1 / duration * 20;
+    let progress = 0;
+    const animation = setInterval(() => {
+      progress += increment;
+      chatContainer.scrollTop = scrollTop + difference * progress;
+      if (progress >= 1) {
+        clearInterval(animation);
+      }
+    }, 20);
+  }
 }
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -159,9 +170,6 @@ const handleSubmit = async (e) => {
   localStorage.setItem('messages', JSON.stringify(messages));
 };
 
-function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
 
 
 
