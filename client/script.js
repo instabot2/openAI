@@ -143,16 +143,18 @@ const handleSubmit = async (e) => {
   localStorage.setItem('messages', JSON.stringify(messages));
 };
 
-function scrollToBottom(smooth = true) {
+function scrollToBottom(smooth = true, force = false) {
   const chatContainer = document.querySelector('#chat_container');
   const messageWrapper = document.querySelector('#message_wrapper');
-  if (smooth) {
-    messageWrapper.scroll({
-      top: chatContainer.scrollHeight,
-      behavior: 'smooth'
-    });
-  } else {
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+  if (force || messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight) {
+    if (smooth) {
+      messageWrapper.scroll({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+      });
+    } else {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
   }
 }
 
