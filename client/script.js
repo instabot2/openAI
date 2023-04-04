@@ -125,7 +125,6 @@ const handleSubmit = async (e) => {
       const messageDivHeight = messageDiv.offsetHeight;
       const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
       chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-      messageDiv.scrollIntoView(); // scroll to the new message
 
       // call typeText after scrolling
       typeText(messageDiv, parsedData, () => {
@@ -152,12 +151,6 @@ const handleSubmit = async (e) => {
       chatContainer.scrollTop = 0;
     }
   });
-
-  // scroll up to the new message and display it on top of the browser
-  const messageDivHeight = messageDiv.offsetHeight;
-  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  messageDiv.scrollIntoView(); // scroll to the new message
 
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
