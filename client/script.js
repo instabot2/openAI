@@ -54,37 +54,25 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
+  const beforeHeight = chatContainer.scrollHeight;
   let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
-      const isAtBottomBefore = isAtBottom();
-      if (isAtBottomBefore) {
-        scrollToBottom();
-      }
     } else {
       clearInterval(interval);
       if (callback) {
         callback();
-        const messageDivHeight = element.offsetHeight;
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        scrollToBottom();
-        messages.push({ isBot: true, message: text });
-        localStorage.setItem('messages', JSON.stringify(messages));
-        const isAtBottomAfter = isAtBottom();
-        if (isAtBottomAfter) {
+        const afterHeight = chatContainer.scrollHeight;
+        if (afterHeight - beforeHeight > 0) {
           scrollToBottom();
         }
       }
     }
   }, 20);
-  
-  function isAtBottom() {
-    return chatContainer.scrollHeight - chatContainer.scrollTop <= chatContainer.clientHeight + 1;
-  }
-  
-  function scrollToBottom() {
+}
+
+function scrollToBottom() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
 }
@@ -135,9 +123,6 @@ const handleSubmit = async (e) => {
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
 
-        // Scroll to bottom of chat container
-        scrollToBottom();
-
         // Re-enable the form input
         input.disabled = false;
       });
@@ -153,6 +138,9 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Scroll to bottom of chat container
+  scrollToBottom();
 };
 
 
