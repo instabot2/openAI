@@ -84,6 +84,11 @@ function typeText(element, text, callback) {
       // add message to chat window
       let newMessage = document.createElement('div');
       newMessage.classList.add('bot-message');
+      // remove typing dots animation before copying message innerHTML
+      let dots = message.querySelector('.typing-dots');
+      if (dots) {
+        message.removeChild(dots);
+      }
       newMessage.innerHTML = message.innerHTML;
       element.insertBefore(newMessage, element.firstChild);
       // remove temporary message
