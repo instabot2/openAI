@@ -54,6 +54,7 @@ function typeText(element, text, callback) {
   let index = 0;
   let message = document.createElement('div');
   message.classList.add('bot-message');
+  message.style.opacity = 0;
 
   // temporarily set flex-direction to 'column' to add message at the top
   element.style.flexDirection = 'column';
@@ -61,22 +62,21 @@ function typeText(element, text, callback) {
 
   const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
   const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
-  let messageHeight = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-      messageHeight += lineHeight;
-      element.scrollTop = Math.max(0, messageHeight - maxHeight);
+      element.scrollTop = Math.max(0, message.scrollHeight - maxHeight + lineHeight);
     } else {
       clearInterval(interval);
+      message.style.opacity = 1;
       if (callback) {
         callback();
       }
       // reset flex-direction to 'column-reverse' after message has been added
       element.style.flexDirection = 'column-reverse';
       // scroll to the new message
-      message.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      element.scrollTop = message.offsetTop - element.offsetTop;
     }
   }, 20);
 }
