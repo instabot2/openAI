@@ -61,18 +61,13 @@ function typeText(element, text, callback) {
 
   const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
   const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
+  let messageHeight = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-
-      // check if the message container is scrolled to the bottom
-      const isScrolledToBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
-
-      // if the message container is not scrolled to the bottom, scroll it to the bottom
-      if (!isScrolledToBottom) {
-        element.scrollTop = element.scrollHeight;
-      }
+      messageHeight += lineHeight;
+      element.scrollTop = Math.max(0, messageHeight - maxHeight);
     } else {
       clearInterval(interval);
       if (callback) {
@@ -80,9 +75,8 @@ function typeText(element, text, callback) {
       }
       // reset flex-direction to 'column-reverse' after message has been added
       element.style.flexDirection = 'column-reverse';
-
       // scroll to the new message
-      message.scrollIntoView({ behavior: 'smooth' });
+      message.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, 20);
 }
