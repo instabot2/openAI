@@ -60,11 +60,13 @@ function typeText(element, text, callback) {
   element.style.flexDirection = 'column';
   element.insertBefore(message, element.firstChild);
 
+  const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
+  const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
   let interval = setInterval(() => {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-      element.scrollTop = 0; // scroll to the top
+      element.scrollTop = Math.max(0, message.scrollHeight - maxHeight + lineHeight);
     } else {
       clearInterval(interval);
       if (callback) {
