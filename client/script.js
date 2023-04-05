@@ -58,7 +58,6 @@ function typeText(element, text, callback) {
       index++;
       if (element.scrollHeight > element.clientHeight) {
         element.scrollTop = element.scrollHeight - element.clientHeight;
-        element.style.transform = `translateY(-${element.scrollTop}px)`;
       }
     } else {
       clearInterval(interval);
