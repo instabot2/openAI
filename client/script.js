@@ -52,66 +52,20 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
-
-  // add typing animation
-  let message = document.createElement('div');
-  message.classList.add('bot-message');
-  message.style.opacity = 0;
-  message.style.transform = 'translateY(100%)'; // set initial position below the chat box
-
-  // temporarily set flex-direction to 'column' to add message at the top
-  element.style.flexDirection = 'column';
-  element.insertBefore(message, element.firstChild);
-
-  const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
-  const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
-
   let interval = setInterval(() => {
     if (index < text.length) {
-      message.innerHTML += text.charAt(index);
+      element.innerHTML += text.charAt(index);
       index++;
-      element.scrollTop = Math.max(0, message.scrollHeight - maxHeight + lineHeight);
-      message.style.transform = `translateY(-${message.offsetHeight}px)`; // animate message up
-      message.style.opacity = 1; // make message visible
+      if (element.scrollHeight > element.clientHeight) {
+        element.scrollTop = element.scrollHeight - element.clientHeight;
+      }
     } else {
       clearInterval(interval);
-      message.style.opacity = 1; // make message visible in case text was too short
       if (callback) {
         callback();
       }
-      // reset flex-direction to 'column-reverse' after message has been added
-      element.style.flexDirection = 'column-reverse';
-      // add message to chat window
-      let newMessage = document.createElement('div');
-      newMessage.classList.add('bot-message');
-      // remove typing dots animation before copying message innerHTML
-      let dots = message.querySelector('.typing-dots');
-      if (dots) {
-        message.removeChild(dots);
-      }
-      newMessage.innerHTML = message.innerHTML;
-      element.insertBefore(newMessage, element.firstChild);
-      // remove temporary message
-      element.removeChild(message);
-      // scroll to the bottom of the chat window
-      element.scrollTop = element.scrollHeight - element.clientHeight;
     }
-  }, 50); // increase interval to slow down typing animation
-
-  // add typing dots animation
-  let dotsInterval = setInterval(() => {
-    let dots = message.querySelector('.typing-dots');
-    if (!dots) {
-      dots = document.createElement('div');
-      dots.classList.add('typing-dots');
-      message.appendChild(dots);
-    }
-    if (dots.innerHTML.length > 2) {
-      dots.innerHTML = '';
-    } else {
-      dots.innerHTML += '.';
-    }
-  }, 400);
+  }, 20);
 }
 
 const handleSubmit = async (e) => {
