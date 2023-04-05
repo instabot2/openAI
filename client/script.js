@@ -62,6 +62,8 @@ function typeText(element, text, callback) {
       }
       requestAnimationFrame(update);
     } else {
+      element.scrollTop = 0;
+      element.style.transform = 'translateY(0)';
       if (callback) {
         callback();
       }
@@ -69,6 +71,7 @@ function typeText(element, text, callback) {
   };
   requestAnimationFrame(update);
 }
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
