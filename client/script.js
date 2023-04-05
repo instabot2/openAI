@@ -52,12 +52,13 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
-  function update() {
+  const update = () => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
       if (element.scrollHeight > element.clientHeight) {
         element.scrollTop = element.scrollHeight - element.clientHeight;
+        element.style.transform = `translateY(-${element.scrollTop}px)`;
       }
       requestAnimationFrame(update);
     } else {
@@ -65,7 +66,7 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }
+  };
   requestAnimationFrame(update);
 }
 
