@@ -54,7 +54,7 @@ function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
-      element.insertAdjacentHTML('afterbegin', text.charAt(index));
+      element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
     } else {
       clearInterval(intervalId);
