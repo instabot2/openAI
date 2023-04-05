@@ -55,23 +55,34 @@ function typeText(element, text, callback) {
   let message = document.createElement('div');
   message.classList.add('bot-message');
 
-  const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
-  let messageHeight = 0;
+  // temporarily set flex-direction to 'column' to add message at the top
+  element.style.flexDirection = 'column';
   element.insertBefore(message, element.firstChild);
 
+  const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
+  const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
   let interval = setInterval(() => {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-      messageHeight = message.scrollHeight;
-      element.scrollTop = Math.max(0, messageHeight - maxHeight);
+
+      // check if the message container is scrolled to the bottom
+      const isScrolledToBottom = element.scrollHeight - element.scrollTop === element.clientHeight;
+
+      // if the message container is not scrolled to the bottom, scroll it to the bottom
+      if (!isScrolledToBottom) {
+        element.scrollTop = element.scrollHeight;
+      }
     } else {
       clearInterval(interval);
       if (callback) {
         callback();
       }
-      messageHeight = message.scrollHeight;
-      element.scrollTop = Math.max(0, messageHeight - maxHeight);
+      // reset flex-direction to 'column-reverse' after message has been added
+      element.style.flexDirection = 'column-reverse';
+
+      // scroll to the new message
+      message.scrollIntoView({ behavior: 'smooth' });
     }
   }, 20);
 }
