@@ -61,28 +61,14 @@ function typeText(element, text, callback) {
 
   const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
   const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
+  let totalHeight = lineHeight;
+
   let interval = setInterval(() => {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-
-      // wait for message to be added to the DOM before scrolling
-      requestAnimationFrame(() => {
-        const messageHeight = message.scrollHeight;
-        const scrollHeight = element.scrollHeight;
-        const scrollTop = element.scrollTop;
-
-        if (scrollTop === 0) {
-          // if user has scrolled to the top, scroll to the new message
-          element.scrollTop = messageHeight;
-        } else if (scrollTop + maxHeight === scrollHeight) {
-          // if user has scrolled to the bottom, continue scrolling with new messages
-          element.scrollTop = scrollHeight - maxHeight;
-        } else {
-          // if user has scrolled in between, don't scroll
-        }
-      });
-
+      totalHeight += lineHeight;
+      element.scrollTop = Math.max(0, totalHeight - maxHeight);
     } else {
       clearInterval(interval);
       if (callback) {
@@ -91,9 +77,14 @@ function typeText(element, text, callback) {
       // reset flex-direction to 'column-reverse' after message has been added
       element.style.flexDirection = 'column-reverse';
       // scroll to the new message
+      element.scrollTop = Math.max(0, totalHeight - maxHeight);
       message.scrollIntoView({behavior: "smooth"});
     }
   }, 20);
+
+  window.addEventListener('resize', () => {
+    element.scrollTop = Math.max(0, totalHeight - maxHeight);
+  });
 }
 
 const handleSubmit = async (e) => {
