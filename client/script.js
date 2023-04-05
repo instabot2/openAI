@@ -56,9 +56,11 @@ function typeText(element, text, callback) {
   message.classList.add('bot-message');
   message.style.opacity = 0;
 
-  // temporarily set flex-direction to 'column' to add message at the top
-  element.style.flexDirection = 'column';
-  element.insertBefore(message, element.firstChild);
+  // add message at the bottom of the element
+  element.appendChild(message);
+
+  // set flex-direction to 'column-reverse' before typing out the message
+  element.style.flexDirection = 'column-reverse';
 
   const lineHeight = parseInt(window.getComputedStyle(message).lineHeight);
   const maxHeight = parseInt(window.getComputedStyle(element).maxHeight);
@@ -73,8 +75,6 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
-      // reset flex-direction to 'column-reverse' after message has been added
-      element.style.flexDirection = 'column-reverse';
       // scroll to the new message
       element.scrollTop = message.offsetTop - element.offsetTop;
     }
