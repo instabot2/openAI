@@ -50,19 +50,24 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(element, text, callback) {
+function typeText(elementSelector, text, callback) {
+  const element = document.querySelector(elementSelector);
+  if (!element) {
+    console.error(`Could not find element with selector "${elementSelector}".`);
+    return;
+  }
   let index = 0;
-  let interval = setInterval(() => {
+  const intervalId = setInterval(() => {
     if (index < text.length) {
-      element.innerHTML = text.charAt(index) + element.innerHTML; // add the new character to the beginning of the message
+      element.innerHTML += text.charAt(index);
       index++;
     } else {
-      clearInterval(interval);
+      clearInterval(intervalId);
       if (callback) {
         callback();
       }
     }
-  }, 20);
+  }, 50);
 }
 
 const handleSubmit = async (e) => {
