@@ -65,7 +65,6 @@ function typeText(element, text, callback) {
       message.innerHTML += text.charAt(index);
       index++;
       element.scrollTop = 0; // scroll to the top
-      element.style.bottom = "20px";
     } else {
       clearInterval(interval);
       if (callback) {
@@ -74,7 +73,7 @@ function typeText(element, text, callback) {
       // reset flex-direction to 'column-reverse' after message has been added
       element.style.flexDirection = 'column-reverse';
       // scroll to the new message
-      message.scrollIntoView();
+      message.scrollIntoView({behavior: "smooth"});
     }
   }, 20);
 }
