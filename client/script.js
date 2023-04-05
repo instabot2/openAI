@@ -50,31 +50,19 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(element, text, botElement, messageBot, callback) {
+function typeText(element, text, callback) {
   let index = 0;
-  const update = () => {
+  let interval = setInterval(() => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
-      botElement.style.transform = `translateY(${element.scrollHeight - element.clientHeight}px)`;
       index++;
-      if (element.scrollHeight > element.clientHeight) {
-        element.scrollTop = element.scrollHeight - element.clientHeight;
-        element.style.transform = `translateY(-${element.scrollTop}px)`;
-      }
-      requestAnimationFrame(update);
     } else {
-      element.scrollTop = 0;
-      element.style.transform = 'translateY(0)';
-      botElement.style.transform = 'translateY(0)';
-      if (messageBot) {
-        messageBot();
-      }
+      clearInterval(interval);
       if (callback) {
         callback();
       }
     }
-  };
-  requestAnimationFrame(update);
+  }, 20);
 }
 
 const handleSubmit = async (e) => {
