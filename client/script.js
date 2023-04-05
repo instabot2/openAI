@@ -81,12 +81,18 @@ function typeText(element, text, callback) {
       }
       // reset flex-direction to 'column-reverse' after message has been added
       element.style.flexDirection = 'column-reverse';
+      // add message to chat window
+      let newMessage = document.createElement('div');
+      newMessage.classList.add('bot-message');
+      newMessage.innerHTML = message.innerHTML;
+      element.insertBefore(newMessage, element.firstChild);
+      // remove temporary message
+      element.removeChild(message);
       // scroll to the bottom of the chat window
       element.scrollTop = element.scrollHeight - element.clientHeight;
     }
   }, 20);
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
