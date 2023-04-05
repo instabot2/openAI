@@ -56,15 +56,19 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
+
+      // Check if the element is already scrolled to the bottom and scroll it up
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        element.scrollTop = element.scrollHeight;
+      }
     } else {
       clearInterval(intervalId);
       if (callback) {
         callback();
       }
-      // Scroll the element to the top after the text is finished populating
-      element.scrollTop = 0;
     }
   }, 50);
+
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
