@@ -72,6 +72,7 @@ function typeText(element, text, callback) {
       message.style.opacity = 1; // make message visible
     } else {
       clearInterval(interval);
+      message.style.opacity = 1; // make message visible in case text was too short
       if (callback) {
         callback();
       }
