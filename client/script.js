@@ -51,22 +51,18 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 function typeText(element, text, callback) {
-  if (typeof element === 'string') {
-    element = document.querySelector(element);
-  }
-
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
-      element.innerHTML += text.charAt(index);
-      index = text.length - index - 1; // count down from the end of the text string
+      element.insertAdjacentHTML('afterbegin', text.charAt(index));
+      index++;
     } else {
       clearInterval(intervalId);
       if (callback) {
         callback();
       }
     }
-  }, 100); // Adjust the interval timing here
+  }, 50);
 
   // Add this line to clear the text before typing
   element.innerHTML = '';
