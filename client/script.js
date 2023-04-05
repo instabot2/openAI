@@ -91,7 +91,22 @@ function typeText(element, text, callback) {
       // scroll to the bottom of the chat window
       element.scrollTop = element.scrollHeight - element.clientHeight;
     }
-  }, 20);
+  }, 50); // increase interval to slow down typing animation
+
+  // add typing dots animation
+  let dotsInterval = setInterval(() => {
+    let dots = message.querySelector('.typing-dots');
+    if (!dots) {
+      dots = document.createElement('div');
+      dots.classList.add('typing-dots');
+      message.appendChild(dots);
+    }
+    if (dots.innerHTML.length > 2) {
+      dots.innerHTML = '';
+    } else {
+      dots.innerHTML += '.';
+    }
+  }, 400);
 }
 
 const handleSubmit = async (e) => {
