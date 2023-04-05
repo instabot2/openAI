@@ -61,9 +61,10 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
+      // Scroll the element to the top after the text is finished populating
+      element.scrollTop = 0;
     }
   }, 50);
-
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
