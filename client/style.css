@@ -151,5 +151,9 @@ form img {
   background-color: #f0f0f0;
   position: relative;
   z-index: 1;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
+
 
