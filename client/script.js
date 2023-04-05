@@ -54,7 +54,7 @@ function typeText(element, text, callback) {
   let index = 0;
   let interval = setInterval(() => {
     if (index < text.length) {
-      element.innerHTML += text.charAt(index);
+      element.innerHTML = text.charAt(index) + element.innerHTML; // add the new character to the beginning of the message
       index++;
     } else {
       clearInterval(interval);
