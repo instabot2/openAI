@@ -66,7 +66,10 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }, 50);
+  }, 100); // Adjust the interval timing here
+
+  // Add this line to clear the text before typing
+  element.innerHTML = '';
 }
 
 const handleSubmit = async (e) => {
