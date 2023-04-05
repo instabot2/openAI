@@ -58,8 +58,8 @@ function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
-      element.insertAdjacentHTML('afterbegin', text.charAt(index));
-      index++;
+      element.innerHTML += text.charAt(index);
+      index = text.length - index - 1; // count down from the end of the text string
     } else {
       clearInterval(intervalId);
       if (callback) {
