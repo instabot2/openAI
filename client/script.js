@@ -50,12 +50,11 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(elementSelector, text, callback) {
-  const element = document.querySelector(elementSelector);
-  if (!element) {
-    console.error(`Could not find element with selector "${elementSelector}".`);
-    return;
+function typeText(element, text, callback) {
+  if (typeof element === 'string') {
+    element = document.querySelector(element);
   }
+
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
