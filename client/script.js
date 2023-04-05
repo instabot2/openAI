@@ -52,20 +52,21 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
-  let interval = setInterval(() => {
+  function update() {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
       index++;
       if (element.scrollHeight > element.clientHeight) {
         element.scrollTop = element.scrollHeight - element.clientHeight;
       }
+      requestAnimationFrame(update);
     } else {
-      clearInterval(interval);
       if (callback) {
         callback();
       }
     }
-  }, 20);
+  }
+  requestAnimationFrame(update);
 }
 
 const handleSubmit = async (e) => {
