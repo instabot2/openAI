@@ -50,7 +50,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-
 function typeText(element, text, callback) {
   let index = 0;
   let message = document.createElement('div');
@@ -66,7 +65,24 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       message.innerHTML += text.charAt(index);
       index++;
-      element.scrollTop = Math.max(0, message.scrollHeight - maxHeight + lineHeight);
+
+      // wait for message to be added to the DOM before scrolling
+      requestAnimationFrame(() => {
+        const messageHeight = message.scrollHeight;
+        const scrollHeight = element.scrollHeight;
+        const scrollTop = element.scrollTop;
+
+        if (scrollTop === 0) {
+          // if user has scrolled to the top, scroll to the new message
+          element.scrollTop = messageHeight;
+        } else if (scrollTop + maxHeight === scrollHeight) {
+          // if user has scrolled to the bottom, continue scrolling with new messages
+          element.scrollTop = scrollHeight - maxHeight;
+        } else {
+          // if user has scrolled in between, don't scroll
+        }
+      });
+
     } else {
       clearInterval(interval);
       if (callback) {
