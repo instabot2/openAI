@@ -82,7 +82,18 @@ function typeText(element, text, callback) {
       element.scrollTop = message.offsetTop - element.offsetTop;
     }
   }, 20);
+
+  // add a bot typing message
+  let typingMessage = document.createElement('div');
+  typingMessage.classList.add('bot-typing-message');
+  typingMessage.innerHTML = 'Bot is typing...';
+  element.insertBefore(typingMessage, message); // insert before the actual message
+
+  setTimeout(() => {
+    typingMessage.style.display = 'none'; // hide the typing message
+  }, 2000); // hide after 2 seconds (adjust as needed)
 }
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
