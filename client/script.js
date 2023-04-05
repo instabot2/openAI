@@ -50,11 +50,12 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(element, text, callback) {
+function typeText(element, text, botElement, messageBot, callback) {
   let index = 0;
   const update = () => {
     if (index < text.length) {
       element.innerHTML += text.charAt(index);
+      botElement.style.transform = `translateY(${element.scrollHeight - element.clientHeight}px)`;
       index++;
       if (element.scrollHeight > element.clientHeight) {
         element.scrollTop = element.scrollHeight - element.clientHeight;
@@ -64,6 +65,10 @@ function typeText(element, text, callback) {
     } else {
       element.scrollTop = 0;
       element.style.transform = 'translateY(0)';
+      botElement.style.transform = 'translateY(0)';
+      if (messageBot) {
+        messageBot();
+      }
       if (callback) {
         callback();
       }
@@ -71,7 +76,6 @@ function typeText(element, text, callback) {
   };
   requestAnimationFrame(update);
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -121,7 +125,7 @@ const handleSubmit = async (e) => {
       chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
 
       // call typeText after scrolling
-      typeText(messageDiv, parsedData, () => {
+      typeText(messageDiv, parsedData, botMessage, () => {
         // scroll to the latest message
         chatContainer.scrollTop = 0;
 
