@@ -150,7 +150,7 @@ const handleSubmit = async (e) => {
   });
 
   // insert new messageWrapper at the beginning of messageWrapper container
-  messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
+  //messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
 
   // scroll up to the new message and display it on top of the browser
   const messageDivHeight = messageDiv.offsetHeight;
