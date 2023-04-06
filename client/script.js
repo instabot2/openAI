@@ -136,23 +136,12 @@ const handleSubmit = async (e) => {
           }
         });
 
-        // scroll up to the new message and display it on top of the browser after a delay
-        const scrollToNewMessage = () => {
+        // Wait for bot message to fully display before scrolling to the top
+        setTimeout(() => {
           const messageDivHeight = messageDiv.offsetHeight;
           const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-          const targetScrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-          const currentScrollTop = chatContainer.scrollTop;
-          const diff = targetScrollTop - currentScrollTop;
-
-          if (Math.abs(diff) > 5) {
-            chatContainer.scrollTop += diff / 5;
-            setTimeout(scrollToNewMessage, 10);
-          } else {
-            chatContainer.scrollTop = targetScrollTop;
-          }
-        };
-
-        setTimeout(scrollToNewMessage, 1000);
+          chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        }, parsedData.length * 50);
       });
     } else {
       const err = await response.text();
@@ -167,6 +156,7 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
