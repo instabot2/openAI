@@ -38,7 +38,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-
 function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
@@ -60,7 +59,6 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
-
 function chatStripe(isAi, value, uniqueId) {
   return `
     <div class="wrapper ${isAi && 'ai'}">
@@ -73,8 +71,6 @@ function chatStripe(isAi, value, uniqueId) {
     </div>
   `;
 }
-
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -157,8 +153,6 @@ chatContainer.addEventListener('scroll', () => {
     alert('Error checking if at bottom of chat container.');
   }
 });
-
-
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
