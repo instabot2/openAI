@@ -138,20 +138,22 @@ const handleSubmit = async (e) => {
   localStorage.setItem('messages', JSON.stringify(messages));
 };
 
-
-
-
 chatContainer.addEventListener('scroll', () => {
   try {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
     if (isAtBottom) {
-      //alert('You have reached the end of the chat.');
+      const messageDivs = Array.from(messageWrapper.children);
+      const lastMessageDiv = messageDivs[messageDivs.length - 1];
+      if (lastMessageDiv) {
+        const lastMessageDivHeight = lastMessageDiv.offsetHeight;
+        chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - lastMessageDivHeight;
+      }
     }
   } catch (error) {
     console.error('Error checking if at bottom of chat container:', error);
-    //alert('Error checking if at bottom of chat container.');
   }
 });
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
