@@ -169,9 +169,8 @@ window.addEventListener('resize', () => {
   chatContainer.style.height = `${chatContainer.clientHeight}px`;
   // scroll to the bottom of the chat container if user is already at the bottom
   if (isScrolledToBottom) {
-    //chatContainer.scrollTop = newScrollTop;
-    chatContainer.scrollTop = 0;
-    //alert('newScrollTop');
+    chatContainer.scrollTop = newScrollTop;
+    //chatContainer.scrollTop = 0;
   }
   // if user has scrolled up, keep their scroll position after resizing
   else {
