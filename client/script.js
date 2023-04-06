@@ -151,10 +151,10 @@ const handleSubmit = async (e) => {
   const messageDivHeight = messageDiv.offsetHeight;
   const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
   chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  // scroll to the latest message
-  chatContainer.scrollTop = 0;
   // scroll to the new message
   scrollIntoView(messageDiv);
+  // scroll to the latest message
+  chatContainer.scrollTop = 0;
 
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
