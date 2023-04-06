@@ -86,7 +86,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
+
   // to clear the textarea input
   form.reset();
 
@@ -123,9 +123,7 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
         // check if messageWrapper has reached the bottom of the browser
         const isAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
-        // scroll to the latest message
-        chatContainer.scrollTop = 0;
-        // scroll to the new message
+        // scroll to the latest message and display it on top of the browser
         scrollIntoView(messageDiv);
         
         // if messageWrapper is at the bottom, move chatContainer to the top
@@ -145,23 +143,13 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // add event listener to chatContainer to force scroll old messages up when at bottom
-  chatContainer.addEventListener('scroll', () => {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+  // add event listener to messageWrapper to force scroll old messages up when at bottom
+  messageWrapper.addEventListener('scroll', () => {
+    const isAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
     if (isAtBottom) {
       chatContainer.scrollTop = 0;
-      // scroll to the new message
-      scrollIntoView(messageDiv);
     }
   });
-
-  // scroll to the latest message
-  chatContainer.scrollTop = 0;
-  // scroll to the new message and display it on top of the browser
-  const messageDivHeight = messageDiv.offsetHeight;
-  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
