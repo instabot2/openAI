@@ -74,6 +74,7 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -82,17 +83,10 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // user's chatstripe
-  const userMessage = chatStripe(false, data.get('prompt'));
-  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
-  // to clear the textarea input
-  form.reset();
-
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
-  messageWrapper.insertAdjacentHTML('beforeend', botMessage);
+  messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
 
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
@@ -115,6 +109,11 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      
+      // user's chatstripe
+      const userMessage = chatStripe(false, data.get('prompt'));
+      messageWrapper.insertAdjacentHTML('afterbegin', userMessage);
+
       typeText(messageDiv, parsedData, () => {
         // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
@@ -126,7 +125,7 @@ const handleSubmit = async (e) => {
         scrollIntoView(messageDiv);
 
         // Store the message in local storage
-        messages.push({ isBot: true, message: parsedData });
+        messages.unshift({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
       });
     } else {
@@ -156,9 +155,10 @@ const handleSubmit = async (e) => {
   scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
+  messages.unshift({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
