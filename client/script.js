@@ -53,13 +53,13 @@ function typeText(element, text, callback) {
       clearInterval(intervalId);
       if (callback) {
         callback();
+        // scroll chat container to the top
+        chatContainer.scrollTop = 0;
       }
     }
   }, 20);
-
-  // Add this line to clear the text before typing
-  element.innerHTML = '';
 }
+
 
 function chatStripe(isAi, value, uniqueId) {
   return `
