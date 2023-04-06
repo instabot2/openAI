@@ -91,7 +91,7 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-  
+
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
@@ -114,9 +114,12 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // Add this code to scroll up to the new message and display it on top of the browser
+        // scroll up to the new message and display it on top of the browser
+        const messageDivHeight = messageDiv.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        // scroll to the latest message
+        chatContainer.scrollTop = 0;
         // scroll to the new message
         scrollIntoView(messageDiv);
 
@@ -132,6 +135,23 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = err.message;
     console.error(err);
   }
+
+  // add event listener to chatContainer to force scroll old messages up when at bottom
+  chatContainer.addEventListener('scroll', () => {
+    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+    if (isAtBottom) {
+      chatContainer.scrollTop = 0;
+    }
+  });
+
+  // scroll up to the new message and display it on top of the browser
+  const messageDivHeight = messageDiv.offsetHeight;
+  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  // scroll to the latest message
+  chatContainer.scrollTop = 0;
+  // scroll to the new message
+  scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
