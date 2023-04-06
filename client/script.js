@@ -87,15 +87,14 @@ const handleSubmit = async (e) => {
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
-  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
+  messageWrapper.insertAdjacentHTML('afterbegin', userMessage);
+  
   // to clear the textarea input
   form.reset();
 
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
-  // insert the new bot message div at the beginning of the message wrapper
   messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
 
   // specific message div
@@ -121,13 +120,13 @@ const handleSubmit = async (e) => {
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // Store the message in local storage
-        messages.push({ isBot: true, message: parsedData });
+        messages.unshift({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
       });
-
+      
       // scroll up to the new message and display it on top of the browser
       const messageDivHeight = messageDiv.offsetHeight;
-      const previousMessageDivsHeight = Array.from(messageWrapper.children).slice(1).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+      const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
       chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
       // scroll to the latest message
       chatContainer.scrollTop = 0;
@@ -146,13 +145,13 @@ const handleSubmit = async (e) => {
   chatContainer.addEventListener('scroll', () => {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
     if (isAtBottom) {
-      messageWrapper.insertAdjacentHTML('beforeend', '<div class="chatstripe"></div>');
-      chatContainer.scrollTop = 0;
+      messageWrapper.insertAdjacentHTML('afterbegin', '<div class="chatstripe"></div>');
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   });
-
+  
   // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
+  messages.unshift({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
 
