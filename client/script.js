@@ -83,7 +83,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
+  
   // to clear the textarea input
   form.reset();
 
@@ -91,7 +91,7 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-
+  
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
@@ -114,13 +114,9 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // scroll up to the new message and display it on top of the browser
-        const messageDivHeight = messageDiv.offsetHeight;
+        // Add this code to scroll up to the new message and display it on top of the browser
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        const scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight;
-        if (chatContainer.scrollTop >= scrollTop - 10) { // Check if user has scrolled up within 10 pixels of the bottom
-          chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        }
+        chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
         // scroll to the new message
         scrollIntoView(messageDiv);
 
@@ -141,6 +137,9 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+
+
 
 chatContainer.addEventListener('scroll', () => {
   try {
