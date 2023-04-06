@@ -67,7 +67,7 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }, 50);
+  }, 20);
 
   // Add this line to clear the text before typing
   element.innerHTML = '';
