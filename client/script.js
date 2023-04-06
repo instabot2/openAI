@@ -120,22 +120,19 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
+
+        // Scroll to the new message
+        messageDiv.scrollIntoView({ behavior: 'smooth' });
       });
 
-      // scroll up to the new message and display it on top of the browser
-      const messageDivHeight = messageDiv.offsetHeight;
-      const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-      chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-      // scroll to the latest message
-      chatContainer.scrollTop = 0;
-      // scroll to the new message
-      scrollIntoView(messageDiv);
-
-      // check if the page is hidden
-      if (document.hidden) {
-        // show typing indicator on browser tab title when the page is hidden
-        document.title = "Bot is typing...";
-      }
+      // add event listener to chatContainer to force scroll old messages up when at bottom
+      chatContainer.addEventListener('scroll', () => {
+        const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+        if (isAtBottom) {
+          messageWrapper.insertAdjacentHTML('beforeend', '<div class="chatstripe"></div>');
+          chatContainer.scrollTop = 0;
+        }
+      });
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
@@ -157,14 +154,8 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-
-  // reset the browser tab title when the page becomes visible
-  document.addEventListener("visibilitychange", function() {
-    if (!document.hidden) {
-      document.title = "Chat with Bot";
-    }
-  });
 };
+
 
 
 
