@@ -38,13 +38,13 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
+
 function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
-
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
@@ -53,11 +53,13 @@ function typeText(element, text, callback) {
       clearInterval(intervalId);
       if (callback) {
         callback();
-        // scroll chat container to the top
-        chatContainer.scrollTop = 0;
       }
+      // Scroll to the new message at the top of the chat container
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, 20);
+  // Add this line to clear the text before typing
+  element.innerHTML = '';
 }
 
 
