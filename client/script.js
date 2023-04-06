@@ -86,7 +86,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
+
   // to clear the textarea input
   form.reset();
 
@@ -121,7 +121,7 @@ const handleSubmit = async (e) => {
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
       });
-      
+
       // scroll up to the new message and display it on top of the browser
       const messageDivHeight = messageDiv.offsetHeight;
       const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
@@ -130,6 +130,12 @@ const handleSubmit = async (e) => {
       chatContainer.scrollTop = 0;
       // scroll to the new message
       scrollIntoView(messageDiv);
+
+      // check if the page is hidden
+      if (document.hidden) {
+        // show typing indicator on browser tab title when the page is hidden
+        document.title = "Bot is typing...";
+      }
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
@@ -147,12 +153,18 @@ const handleSubmit = async (e) => {
       chatContainer.scrollTop = 0;
     }
   });
-  
+
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-};
 
+  // reset the browser tab title when the page becomes visible
+  document.addEventListener("visibilitychange", function() {
+    if (!document.hidden) {
+      document.title = "Chat with Bot";
+    }
+  });
+};
 
 
 
