@@ -145,11 +145,11 @@ chatContainer.addEventListener('scroll', () => {
   try {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
     if (isAtBottom) {
-      alert('You have reached the end of the chat.');
+      //alert('You have reached the end of the chat.');
     }
   } catch (error) {
     console.error('Error checking if at bottom of chat container:', error);
-    alert('Error checking if at bottom of chat container.');
+    //alert('Error checking if at bottom of chat container.');
   }
 });
 
