@@ -41,6 +41,8 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
+  // scroll to the latest message
+  chatContainer.scrollTop = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
@@ -151,8 +153,6 @@ const handleSubmit = async (e) => {
 
 
 
-  // insert new messageWrapper at the beginning of messageWrapper container
-  //messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
   // scroll to the latest message
   chatContainer.scrollTop = 0;
   // scroll to the new message and display it on top of the browser
