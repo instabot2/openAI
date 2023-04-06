@@ -144,6 +144,8 @@ const handleSubmit = async (e) => {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
     if (isAtBottom) {
       chatContainer.scrollTop = 0;
+      // scroll to the new message
+      scrollIntoView(messageDiv);
     }
   });
 
