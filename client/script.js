@@ -110,9 +110,6 @@ const handleSubmit = async (e) => {
       }),
     });
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = '';
-
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
@@ -129,6 +126,9 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
+      }, () => {
+        // hide the typing indicator when done typing
+        messageDiv.querySelector('.typing-indicator').style.display = 'none';
       });
     } else {
       const err = await response.text();
@@ -160,7 +160,6 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 
 
