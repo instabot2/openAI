@@ -73,7 +73,7 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
-const handleSubmit = async (e, form) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
@@ -84,7 +84,7 @@ const handleSubmit = async (e, form) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
+  
   // to clear the textarea input
   form.reset();
 
@@ -114,17 +114,15 @@ const handleSubmit = async (e, form) => {
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
-
-      // scroll up to the new message and display it on top of the browser
-      const messageDivHeight = messageDiv.offsetHeight;
-      const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-      messageWrapper.scrollTop = previousMessageDivsHeight;
-      chatContainer.scrollTop = isAtBottom ? chatContainer.scrollHeight : chatContainer.scrollTop;
-      // call typeText after scrolling
-      typeText(messageDiv, parsedData, botMessage, () => {
+      typeText(messageDiv, parsedData, () => {
+        // scroll up to the new message and display it on top of the browser
+        const messageDivHeight = messageDiv.offsetHeight;
+        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
         // scroll to the latest message
         chatContainer.scrollTop = 0;
+        // scroll to the new message
+        scrollIntoView(messageDiv);
 
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
@@ -147,11 +145,19 @@ const handleSubmit = async (e, form) => {
     }
   });
 
+  // scroll up to the new message and display it on top of the browser
+  const messageDivHeight = messageDiv.offsetHeight;
+  const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+  chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  // scroll to the latest message
+  chatContainer.scrollTop = 0;
+  // scroll to the new message
+  scrollIntoView(messageDiv);
+
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
