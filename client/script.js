@@ -151,19 +151,28 @@ const handleSubmit = async (e) => {
 
   // insert new messageWrapper at the beginning of messageWrapper container
   //messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
+  // scroll up to the new message and display it on top of the browser
+  //const messageDivHeight = messageDiv.offsetHeight;
+  //const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+  //chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+  // scroll to the latest message
+  //chatContainer.scrollTop = 0;
+  // scroll to the new message
+  //scrollIntoView(messageDiv);
 
+  // insert new messageWrapper at the beginning of messageWrapper container
+  messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
   // scroll to the latest message
   chatContainer.scrollTop = 0;
-  
-  // scroll up to the new message and display it on top of the browser
+  // scroll to the new message and display it on top of the browser
   const messageDivHeight = messageDiv.offsetHeight;
   const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
   chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  // scroll to the latest message
-  chatContainer.scrollTop = 0;
-  // scroll to the new message
   scrollIntoView(messageDiv);
 
+  
+  
+  
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
