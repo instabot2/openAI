@@ -73,7 +73,7 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
-const handleSubmit = async (e) => {
+const handleSubmit = async (e, form) => {
   e.preventDefault();
 
   const data = new FormData(form);
@@ -118,8 +118,9 @@ const handleSubmit = async (e) => {
       // scroll up to the new message and display it on top of the browser
       const messageDivHeight = messageDiv.offsetHeight;
       const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-      chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-
+      const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+      messageWrapper.scrollTop = previousMessageDivsHeight;
+      chatContainer.scrollTop = isAtBottom ? chatContainer.scrollHeight : chatContainer.scrollTop;
       // call typeText after scrolling
       typeText(messageDiv, parsedData, botMessage, () => {
         // scroll to the latest message
