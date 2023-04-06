@@ -124,6 +124,7 @@ const handleSubmit = async (e) => {
         // check if messageWrapper has reached the bottom of the browser
         const isAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
         // scroll to the latest message and display it on top of the browser
+        chatContainer.scrollTop = 0;
         scrollIntoView(messageDiv);
         
         // if messageWrapper is at the bottom, move chatContainer to the top
