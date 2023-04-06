@@ -73,6 +73,7 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -124,6 +125,9 @@ const handleSubmit = async (e) => {
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
 
+        // scroll to the new message
+        scrollIntoView(messageDiv);
+
         // add event listener to chatContainer to force scroll old messages up when at bottom
         chatContainer.addEventListener('scroll', () => {
           const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
@@ -133,14 +137,22 @@ const handleSubmit = async (e) => {
         });
 
         // scroll up to the new message and display it on top of the browser after a delay
-        setTimeout(() => {
+        const scrollToNewMessage = () => {
           const messageDivHeight = messageDiv.offsetHeight;
           const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-          chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+          const targetScrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+          const currentScrollTop = chatContainer.scrollTop;
+          const diff = targetScrollTop - currentScrollTop;
 
-          // scroll to the new message
-          scrollIntoView(messageDiv);
-        }, 1000);
+          if (Math.abs(diff) > 5) {
+            chatContainer.scrollTop += diff / 5;
+            setTimeout(scrollToNewMessage, 10);
+          } else {
+            chatContainer.scrollTop = targetScrollTop;
+          }
+        };
+
+        setTimeout(scrollToNewMessage, 1000);
       });
     } else {
       const err = await response.text();
@@ -155,6 +167,8 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
