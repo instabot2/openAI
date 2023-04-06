@@ -110,6 +110,9 @@ const handleSubmit = async (e) => {
       }),
     });
 
+    clearInterval(loadInterval);
+    messageDiv.innerHTML = '';
+
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
@@ -126,9 +129,6 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
-      }, () => {
-        // hide the typing indicator when done typing
-        messageDiv.querySelector('.typing-indicator').style.display = 'none';
       });
     } else {
       const err = await response.text();
@@ -151,10 +151,10 @@ const handleSubmit = async (e) => {
   const messageDivHeight = messageDiv.offsetHeight;
   const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
   chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-  // scroll to the new message
-  scrollIntoView(messageDiv);
   // scroll to the latest message
   chatContainer.scrollTop = 0;
+  // scroll to the new message
+  scrollIntoView(messageDiv);
 
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
