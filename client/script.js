@@ -140,7 +140,8 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  chatContainer.addEventListener('scroll', () => {
+chatContainer.addEventListener('scroll', () => {
+  try {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
     if (isAtBottom) {
       alert('You have reached the end of the chat.');
@@ -154,7 +155,12 @@ const handleSubmit = async (e) => {
     chatContainer.scrollTop = 0;
     // scroll to the new message
     scrollIntoView(messageDiv);
-  });
+  } catch (error) {
+    console.error('Error scrolling chat container:', error);
+    alert('Error scrolling chat container.');
+  }
+});
+
 
  
   // Store the user's message in local storage
@@ -183,6 +189,7 @@ window.addEventListener('resize', () => {
   // scroll to the bottom of the chat container if user is already at the bottom
   if (isScrolledToBottom) {
     chatContainer.scrollTop = newScrollTop;
+    alert('newScrollTop');
   }
   // if user has scrolled up, keep their scroll position after resizing
   else {
