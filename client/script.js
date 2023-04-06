@@ -124,9 +124,6 @@ const handleSubmit = async (e) => {
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
 
-        // scroll to the new message
-        scrollIntoView(messageDiv);
-
         // add event listener to chatContainer to force scroll old messages up when at bottom
         chatContainer.addEventListener('scroll', () => {
           const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
@@ -134,11 +131,15 @@ const handleSubmit = async (e) => {
             chatContainer.scrollTop = 0;
           }
         });
+
         // scroll up to the new message and display it on top of the browser after a delay
         setTimeout(() => {
           const messageDivHeight = messageDiv.offsetHeight;
           const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
           chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+
+          // scroll to the new message
+          scrollIntoView(messageDiv);
         }, 1000);
       });
     } else {
