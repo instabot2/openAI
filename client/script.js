@@ -30,18 +30,6 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-function chatStripe(isAi, value, uniqueId) {
-  return `
-    <div class="wrapper ${isAi && 'ai'}">
-      <div class="chat">
-        <div class="profile">
-          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
-        </div>
-        <div class="message" id=${uniqueId}>${value}</div>
-      </div>
-    </div>
-  `;
-}
 
 function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   element.scrollIntoView({
@@ -73,6 +61,18 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
+function chatStripe(isAi, value, uniqueId) {
+  return `
+    <div class="wrapper ${isAi && 'ai'}">
+      <div class="chat">
+        <div class="profile">
+          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
+        </div>
+        <div class="message" id=${uniqueId}>${value}</div>
+      </div>
+    </div>
+  `;
+}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -159,6 +159,8 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+
 
 
 form.addEventListener('submit', handleSubmit);
