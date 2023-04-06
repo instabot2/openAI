@@ -152,6 +152,9 @@ const handleSubmit = async (e) => {
   // insert new messageWrapper at the beginning of messageWrapper container
   //messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
 
+  // scroll to the latest message
+  chatContainer.scrollTop = 0;
+  
   // scroll up to the new message and display it on top of the browser
   const messageDivHeight = messageDiv.offsetHeight;
   const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
