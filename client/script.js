@@ -116,11 +116,11 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // Add this code to scroll up to the new message and display it on top of the browser
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
         // scroll to the new message
         scrollIntoView(messageDiv);
+        
+        // scroll to the top of the chat container to show the new message
+        chatContainer.scrollTop = 0;
 
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
@@ -139,7 +139,6 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 
 
