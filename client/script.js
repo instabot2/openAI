@@ -76,23 +76,15 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
-  // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
-
-  // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
-  // to clear the textarea input
   form.reset();
 
-  // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
 
-  // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -112,20 +104,16 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      const parsedData = data.bot.trim();
       typeText(messageDiv, parsedData, () => {
-        // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
 
-        // scroll up to the new message and display it on top of the browser
         const messageDivHeight = messageDiv.offsetHeight;
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
-        // scroll to the new message
         scrollIntoView(messageDiv);
 
-        // If the chatContainer is at the bottom, scroll it up to display the new message on top of the browser
         const isContainerAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
         if (isContainerAtBottom) {
           chatContainer.scrollTop = 0;
@@ -140,34 +128,31 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // add event listener to chatContainer to force scroll old messages up when at bottom
-  chatContainer.addEventListener('scroll', () => {
-    alert('Scroll event detected!');
-    const isContainerAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    const isWrapperAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
-    if (isContainerAtBottom || isWrapperAtBottom) {
-      // Scroll up to the bot typing message
-      const botMessage = messageWrapper.querySelector('.chatStripe.bot.typing');
-      if (botMessage) {
-        botMessage.scrollIntoView({ behavior: "smooth" });
-
-        // Scroll back down to the bottom after a short delay
-        setTimeout(() => {
-          // Check if the chat container is still at the bottom before scrolling it up
-          if (chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight) {
-            chatContainer.scrollTop = 0;
-          }
-        }, 500);
-      }
-    }
-  });
-
-
-  
-  // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // add event listener to chatContainer to force scroll old messages up when at bottom
+  chatContainer.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', handleScroll);
 };
+
+// add the handleScroll function here
+const handleScroll = () => {
+  const isContainerAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+  const isWrapperAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
+  if (isContainerAtBottom || isWrapperAtBottom) {
+    const botMessage = messageWrapper.querySelector('.chatStripe.bot.typing');
+    if (botMessage) {
+      botMessage.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        if (chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight) {
+          chatContainer.scrollTop = 0;
+        }
+      }, 500);
+    }
+  }
+};
+
 
 
 
