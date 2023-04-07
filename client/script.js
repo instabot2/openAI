@@ -80,8 +80,27 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
+  // Store the user's message in local storage
+  messages.push({ isBot: false, message: data.get('prompt') });
+  localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Summarize old messages into topics
+  const topics = summarizeMessages(messages);
+
+  // Display the topics as a list
+  const topicsList = document.createElement('ul');
+  topicsList.classList.add('topics');
+  for (const topic of topics) {
+    const topicItem = document.createElement('li');
+    topicItem.textContent = topic;
+    topicsList.appendChild(topicItem);
+  }
+  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
+
+  // Add the topics list before the chat input form
+  form.parentNode.insertBefore(topicsList, form);
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
@@ -138,58 +157,7 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = err.message;
     console.error(err);
   }
-
-  // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
-
-  // Summarize old messages into topics
-  const topics = summarizeMessages(messages);
-
-  // Display the topics as a list
-  const topicsList = document.createElement('ul');
-  topicsList.classList.add('topics');
-  for (const topic of topics) {
-    const topicItem = document.createElement('li');
-    topicItem.textContent = topic;
-    topicsList.appendChild(topicItem);
-  }
-  
-  // Add the topics list before the chat input form
-  form.parentNode.insertBefore(topicsList, form);
-
-  // Store the updated messages in local storage
-  localStorage.setItem('messages', JSON.stringify(messages));
 };
-
-function summarizeMessages(messages) {
-  const topics = {};
-
-  // Loop through each message and extract the topics
-  for (const message of messages) {
-    const text = message.message.toLowerCase();
-    const words = text.split(/[^\w]+/);
-
-    for (const word of words) {
-      if (word.length < 3) {
-        continue;
-      }
-
-      if (topics[word]) {
-        topics[word]++;
-      } else {
-        topics[word] = 1;
-      }
-    }
-  }
-
-  // Sort the topics by frequency
-  const sortedTopics = Object.entries(topics).sort((a, b) => b[1] - a[1]);
-
-  // Take the top 5 topics
-  const topTopics = sortedTopics.slice(0, 5);
-
-  return topTopics.map(([topic]) => topic);
-}
 
 
 chatContainer.addEventListener('scroll', () => {
