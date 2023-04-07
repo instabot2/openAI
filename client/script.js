@@ -132,7 +132,7 @@ const handleSubmit = async (e) => {
         scrollIntoView(messageDiv);
         
         // scroll to the top of the chat container to show the new message
-        chatContainer.scrollTop = 0;
+        //chatContainer.scrollTop = 0;
 
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
