@@ -40,6 +40,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
+  const typingSpeed = 50; // set typing speed here
   const intervalId = setInterval(() => {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
@@ -50,14 +51,21 @@ function typeText(element, text, callback) {
       }
     } else {
       clearInterval(intervalId);
-      if (callback) {
-        callback();
+      // Add this code to scroll to the new message
+      const isAtBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
+      if (isAtBottom) {
+        setTimeout(() => {
+          const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+          chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
+          scrollIntoView(messageDiv);
+        }, 100);
       }
+      // call the callback function when typing animation is finished
+      setTimeout(() => callback && callback(), text.length * typingSpeed);
     }
-  }, 20);
-  // Add this line to clear the text before typing
-  element.innerHTML = '';
+  }, typingSpeed);
 }
+
 
 function chatStripe(isAi, value, uniqueId) {
   return `
@@ -76,15 +84,23 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
+
+  // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
+
+  // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
+  
+  // to clear the textarea input
   form.reset();
 
+  // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-
+  
+  // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -104,20 +120,17 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const data = await response.json();
-      const parsedData = data.bot.trim();
+      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        messages.push({ isBot: true, message: parsedData });
-        localStorage.setItem('messages', JSON.stringify(messages));
-
-        const messageDivHeight = messageDiv.offsetHeight;
+        // Add this code to scroll up to the new message and display it on top of the browser
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight + messageDivHeight - chatContainer.offsetHeight;
+        chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
+        // scroll to the new message
         scrollIntoView(messageDiv);
 
-        const isContainerAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-        if (isContainerAtBottom) {
-          chatContainer.scrollTop = 0;
-        }
+        // Store the message in local storage
+        messages.push({ isBot: true, message: parsedData });
+        localStorage.setItem('messages', JSON.stringify(messages));
       });
     } else {
       const err = await response.text();
@@ -128,31 +141,10 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+  // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-
-  // add event listener to chatContainer to force scroll old messages up when at bottom
-  chatContainer.addEventListener('scroll', handleScroll);
-  window.addEventListener('resize', handleScroll);
 };
-
-// add the handleScroll function here
-const handleScroll = () => {
-  const isContainerAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-  const isWrapperAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
-  if (isContainerAtBottom || isWrapperAtBottom) {
-    const botMessage = messageWrapper.querySelector('.chatStripe.bot.typing');
-    if (botMessage) {
-      botMessage.scrollIntoView({ behavior: "smooth" });
-      setTimeout(() => {
-        if (chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight) {
-          chatContainer.scrollTop = 0;
-        }
-      }, 500);
-    }
-  }
-};
-
 
 
 
