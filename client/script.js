@@ -153,8 +153,11 @@ const handleSubmit = async (e) => {
     topicItem.textContent = topic;
     topicsList.appendChild(topicItem);
   }
-  messageWrapper.appendChild(topicsList);
+  
+  // Add the topics list before the chat input form
+  form.parentNode.insertBefore(topicsList, form);
 
+  // Store the updated messages in local storage
   localStorage.setItem('messages', JSON.stringify(messages));
 };
 
