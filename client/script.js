@@ -38,20 +38,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function chatStripe(isAi, value, uniqueId) {
-  return `
-    <div class="wrapper ${isAi && 'ai'}">
-      <div class="chat">
-        <div class="profile">
-          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
-        </div>
-        <div class="message" id=${uniqueId}>${value}</div>
-      </div>
-    </div>
-  `;
-}
-
-
 function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
@@ -71,6 +57,37 @@ function typeText(element, text, callback) {
   }, 20);
   // Add this line to clear the text before typing
   element.innerHTML = '';
+}
+
+function chatStripe(isAi, value, topics = [], uniqueId) {
+  const messageRow = `
+    <div class="message-row">
+      <div class="message" id=${uniqueId}>${value}</div>
+    </div>
+  `;
+
+  const topicsRow = topics.length > 0
+    ? `
+        <div class="topics-row">
+          <div class="topics-title">Top topics:</div>
+          <ul>
+            ${topics.map(({ topic, count }) => `<li>${topic} (${count})</li>`).join('')}
+          </ul>
+        </div>
+      `
+    : '';
+
+  return `
+    <div class="wrapper ${isAi && 'ai'}">
+      <div class="chat">
+        <div class="profile">
+          <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
+        </div>
+        ${messageRow}
+        ${isAi ? topicsRow : ''}
+      </div>
+    </div>
+  `;
 }
 
 
