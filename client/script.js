@@ -92,6 +92,9 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
 
+  // Clear the text input field
+  form.querySelector('textarea').value = '';
+
   // Create a summary of topics
   const topics = summarizeTopics(messages);
 
