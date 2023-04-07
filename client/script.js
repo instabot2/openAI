@@ -88,13 +88,16 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
-  // to clear the textarea input
-  form.reset();
+
+  // Store the user's message in local storage
+  messages.push({ isBot: false, message: data.get('prompt') });
+
+  // Create a summary of topics
+  const topics = summarizeTopics(messages);
 
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatStripe(true, '', uniqueId);
+  const botMessage = chatStripe(true, topics, uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
   
   // specific message div
@@ -141,10 +144,35 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
-  localStorage.setItem('messages', JSON.stringify(messages));
+  // Update the summary of topics in local storage
+  localStorage.setItem('topics', JSON.stringify(topics));
 };
+
+// Function to summarize topics from messages
+function summarizeTopics(messages) {
+  const topics = {};
+
+  messages.forEach(({ isBot, message }) => {
+    if (!isBot) {
+      const words = message.split(' ');
+      words.forEach((word) => {
+        if (word in topics) {
+          topics[word]++;
+        } else {
+          topics[word] = 1;
+        }
+      });
+    }
+  });
+
+  // Sort topics by frequency
+  const sortedTopics = Object.entries(topics)
+    .sort((a, b) => b[1] - a[1])
+    .map(([topic, count]) => ({ topic, count }));
+
+  // Limit to top 5 topics
+  return sortedTopics.slice(0, 5);
+}
 
 
 
