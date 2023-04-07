@@ -117,14 +117,17 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
+        // Add this code to update previousMessagesHeight with the height of the newly added message div
         const messageHeight = messageDiv.offsetHeight;
         previousMessagesHeight += messageHeight;
 
+        // Add this code to scroll up to the new message and display it on top of the browser
         const containerHeight = chatContainer.offsetHeight;
         if (previousMessagesHeight > containerHeight) {
           chatContainer.scrollTop = previousMessagesHeight - containerHeight;
         }
 
+        // scroll to the new message
         scrollIntoView(messageDiv);
 
         // Store the message in local storage
@@ -145,6 +148,19 @@ const handleSubmit = async (e) => {
   localStorage.setItem('messages', JSON.stringify(messages));
 };
 
+chatContainer.addEventListener('scroll', () => {
+  try {
+    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+    if (isAtBottom) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  } catch (error) {
+    console.error('Error checking if at bottom of chat container:', error);
+    alert('Error checking if at bottom of chat container.');
+  }
+});
+
+
 
 window.addEventListener('resize', () => {
   // check if user has scrolled up before resizing
@@ -163,10 +179,6 @@ window.addEventListener('resize', () => {
     chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
   }
 });
-
-
-
-
 
 
 form.addEventListener('submit', handleSubmit);
