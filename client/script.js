@@ -59,37 +59,18 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
-function chatStripe(isAi, value, topics = [], uniqueId) {
-  const messageRow = `
-    <div class="message-row">
-      <div class="message" id=${uniqueId}>${value}</div>
-    </div>
-  `;
-
-  const topicsRow = topics.length > 0
-    ? `
-        <div class="topics-row">
-          <div class="topics-title">Top topics:</div>
-          <ul>
-            ${topics.map(({ topic, count }) => `<li>${topic} (${count})</li>`).join('')}
-          </ul>
-        </div>
-      `
-    : '';
-
+function chatStripe(isAi, value, uniqueId) {
   return `
     <div class="wrapper ${isAi && 'ai'}">
       <div class="chat">
         <div class="profile">
           <img src=${isAi ? bot : user} alt="${isAi ? 'bot' : 'user'}"/>
         </div>
-        ${messageRow}
-        ${isAi ? topicsRow : ''}
+        <div class="message" id=${uniqueId}>${value}</div>
       </div>
     </div>
   `;
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
