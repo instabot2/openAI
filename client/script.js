@@ -110,6 +110,9 @@ const handleSubmit = async (e) => {
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
+    // scroll to the latest message
+    chatContainer.scrollTop = 0;
+    
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
