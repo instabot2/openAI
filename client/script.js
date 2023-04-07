@@ -147,7 +147,7 @@ chatContainer.addEventListener('scroll', () => {
     }
   } catch (error) {
     console.error('Error checking if at bottom of chat container:', error);
-    //alert('Error checking if at bottom of chat container.');
+    alert('Error checking if at bottom of chat container.');
   }
 });
 
