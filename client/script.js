@@ -76,9 +76,12 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
+  const messageWrapper = document.getElementById('message-wrapper');
+  const chatContainer = document.getElementById('chat-container');
 
-  // Retrieve stored messages from local storage
+  // Retrieve stored messages and topics from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  const topics = JSON.parse(localStorage.getItem('topics')) || [];
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -93,21 +96,18 @@ const handleSubmit = async (e) => {
   // Clear the text input field
   form.querySelector('textarea').value = '';
 
-  // Create a summary of topics
-  const topics = summarizeTopics(messages);
-
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatStripe(true, topics.map(topic => topic.topic).join('<br/>'), uniqueId);
+  const botMessage = chatStripe(true, 'Thinking...', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-  
+
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
   // scroll to the top of the chat container to show the new message
-  //chatContainer.scrollTop = 0;
-  
+  chatContainer.scrollTop = 0;
+
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -121,20 +121,30 @@ const handleSubmit = async (e) => {
 
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
-    
+
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
         scrollIntoView(messageDiv);
-        
+
         // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
+
+        // Update the summary of topics in local storage
+        const newTopics = summarizeTopics(messages);
+        localStorage.setItem('topics', JSON.stringify(newTopics));
+
+        // bot's chatstripe with topics
+        const botTopicsMessage = chatStripe(true, newTopics.map(topic => topic.topic).join('<br/>'), uniqueId);
+        messageDiv.innerHTML = '';
+        messageWrapper.insertAdjacentHTML('beforeend', botTopicsMessage);
+        scrollIntoView(messageDiv);
       });
     } else {
       const err = await response.text();
