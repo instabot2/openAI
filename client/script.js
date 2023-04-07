@@ -40,7 +40,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
-  const typingSpeed = 50; // set typing speed here
+  const typingSpeed = 20; // set typing speed here
   const intervalId = setInterval(() => {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
