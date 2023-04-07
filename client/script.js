@@ -143,13 +143,14 @@ chatContainer.addEventListener('scroll', () => {
   try {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
     if (isAtBottom) {
-      //alert('You have reached the end of the chat.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   } catch (error) {
     console.error('Error checking if at bottom of chat container:', error);
     //alert('Error checking if at bottom of chat container.');
   }
 });
+
 
 window.addEventListener('resize', () => {
   // check if user has scrolled up before resizing
