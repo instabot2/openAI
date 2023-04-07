@@ -51,7 +51,7 @@ function typeText(element, text, callback) {
         element.scrollTop = element.scrollHeight;
         // Check if the bot typing animation has reached the bottom of the browser and give an alert
         if (element.scrollTop === 0) {
-          alert('Bot typing reached the bottom of the browser!');
+          //alert('Bot typing reached the bottom of the browser!');
         }
       }
     } else {
@@ -80,7 +80,7 @@ function typeText(element, text, callback) {
   const resizeObserver = new ResizeObserver(entries => {
     for (let entry of entries) {
       if (entry.target.scrollHeight - entry.target.clientHeight <= entry.target.scrollTop + 1) {
-        //alert('Message wrapper resized to the bottom of the browser!');
+        alert('Message wrapper resized to the bottom of the browser!');
       }
     }
   });
