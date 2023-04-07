@@ -38,83 +38,66 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(element, text, callback) {
+function typeText(element, text, typingSpeed = 20, callback) {
   element.scrollTop = 0;
   let index = 0;
-  const typingSpeed = 20; // set typing speed here
   const intervalId = setInterval(() => {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
-      // Check if the element is already scrolled to the bottom and scroll it up
+
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
-        // Check if the bot typing animation has reached the bottom of the browser and give an alert
-        if (element.scrollTop === 0) {
-          //alert('Bot typing reached the bottom of the browser!');
-        }
       }
     } else {
       clearInterval(intervalId);
-      // Add this code to scroll to the new message
-      const isMessageWrapperAtBottom = messageWrapper.scrollHeight - messageWrapper.clientHeight <= messageWrapper.scrollTop + 1;
-      const isChatContainerAtBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
-      if (isMessageWrapperAtBottom && isChatContainerAtBottom) {
+
+      const isElementAtBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1;
+
+      if (isElementAtBottom) {
         setTimeout(() => {
-          const messageDiv = messageWrapper.lastChild;
-          messageDiv.scrollIntoView();
-          chatContainer.scrollTop = chatContainer.scrollHeight;
-        }, 100);
-      } else if (isMessageWrapperAtBottom) {
-        setTimeout(() => {
-          const messageDiv = messageWrapper.lastChild;
+          const messageDiv = element.lastChild;
           messageDiv.scrollIntoView();
         }, 100);
       }
-      // call the callback function when typing animation is finished
+
       setTimeout(() => callback && callback(), text.length * typingSpeed);
     }
   }, typingSpeed);
 
-  // Add this code to give an alert when the messageWrapper is resized to the bottom of the browser
   const resizeObserver = new ResizeObserver(entries => {
     for (let entry of entries) {
       if (entry.target.scrollHeight - entry.target.clientHeight <= entry.target.scrollTop + 1) {
-        alert('Message wrapper resized to the bottom of the browser!');
+        console.log('Element resized to the bottom');
       }
     }
   });
 
   resizeObserver.observe(element);
 
-  // Add this code to check the browser size and give an alert with the resolution
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
+
     resizeTimeout = setTimeout(() => {
       const width = window.innerWidth;
       const height = window.innerHeight;
-      alert(`Browser size: ${width} x ${height}`);
 
-      // check if user has scrolled up before resizing
-      const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
-      // calculate new scroll position after resizing
-      const newScrollTop = (chatContainer.scrollHeight - chatContainer.clientHeight) * (chatContainer.scrollTop / (chatContainer.scrollHeight - chatContainer.clientHeight));
-      // set chat container height to its current height
-      chatContainer.style.height = `${chatContainer.clientHeight}px`;
-      // scroll to the bottom of the chat container if user is already at the bottom
+      console.log(`Browser size: ${width} x ${height}`);
+
+      const isScrolledToBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1;
+      const newScrollTop = (element.scrollHeight - element.clientHeight) * (element.scrollTop / (element.scrollHeight - element.clientHeight));
+
+      element.style.height = `${element.clientHeight}px`;
+
       if (isScrolledToBottom) {
-        chatContainer.scrollTop = newScrollTop;
-        //chatContainer.scrollTop = 0;
-      }
-      // if user has scrolled up, keep their scroll position after resizing
-      else {
-        chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
+        element.scrollTop = newScrollTop;
+      } else {
+        element.scrollTop = element.scrollHeight - element.clientHeight - (1 - (newScrollTop / element.clientHeight)) * (element.scrollHeight - element.clientHeight);
       }
     }, 500);
   });
 }
-
 
 
 
