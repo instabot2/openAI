@@ -52,54 +52,48 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-function typeText(element, text, typingSpeed = 20, callback) {
-  element.scrollTop = 0;
+function typeText(element, text, callback) {
   let index = 0;
-  let requestId;
-
-  function animate() {
-    requestId = requestAnimationFrame(animate);
-
+  const intervalId = setInterval(() => {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
-
+      // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
     } else {
-      cancelAnimationFrame(requestId);
-
-      const isElementAtBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1;
-
-      if (isElementAtBottom) {
-        setTimeout(() => {
-          const messageDiv = element.lastChild;
-          messageDiv.scrollIntoView();
-        }, 100);
+      clearInterval(intervalId);
+      if (callback) {
+        callback();
       }
-
-      setTimeout(() => callback && callback(), text.length * typingSpeed);
     }
-  }
-
-  requestId = requestAnimationFrame(animate);
+  }, 20);
+  // Add this line to clear the text before typing
+  element.innerHTML = '';
 }
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
+
+  // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  const userMessage = chatBubble(false, data.get('prompt'));
+  // user's chatstripe
+  const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
+  
+  // to clear the textarea input
   form.reset();
 
+  // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatBubble(true, '', uniqueId);
+  const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-
+  
+  // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -121,10 +115,13 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
+        // Add this code to scroll up to the new message and display it on top of the browser
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
+        // scroll to the new message
         scrollIntoView(messageDiv);
 
+        // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
       });
@@ -137,9 +134,42 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+  // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+chatContainer.addEventListener('scroll', () => {
+  try {
+    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+    if (isAtBottom) {
+      //alert('You have reached the end of the chat.');
+    }
+  } catch (error) {
+    console.error('Error checking if at bottom of chat container:', error);
+    //alert('Error checking if at bottom of chat container.');
+  }
+});
+
+window.addEventListener('resize', () => {
+  // check if user has scrolled up before resizing
+  const isScrolledToBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
+  // calculate new scroll position after resizing
+  const newScrollTop = (chatContainer.scrollHeight - chatContainer.clientHeight) * (chatContainer.scrollTop / (chatContainer.scrollHeight - chatContainer.clientHeight));
+  // set chat container height to its current height
+  chatContainer.style.height = `${chatContainer.clientHeight}px`;
+  // scroll to the bottom of the chat container if user is already at the bottom
+  if (isScrolledToBottom) {
+    chatContainer.scrollTop = newScrollTop;
+    //chatContainer.scrollTop = 0;
+  }
+  // if user has scrolled up, keep their scroll position after resizing
+  else {
+    chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
+  }
+});
+
+
 
 
 
