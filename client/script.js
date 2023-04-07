@@ -108,7 +108,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   // scroll to the top of the chat container to show the new message
-  //chatContainer.scrollTop = 0;
+  chatContainer.scrollTop = 0;
   
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
