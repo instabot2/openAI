@@ -85,6 +85,12 @@ const handleSubmit = async (e) => {
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
+  // Display old messages
+  for (const msg of messages) {
+    const msgHtml = chatStripe(msg.isBot, msg.message);
+    messageWrapper.insertAdjacentHTML('beforeend', msgHtml);
+  }
+
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
