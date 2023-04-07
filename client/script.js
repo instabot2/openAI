@@ -52,12 +52,18 @@ function typeText(element, text, callback) {
     } else {
       clearInterval(intervalId);
       // Add this code to scroll to the new message
-      const isAtBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
-      if (isAtBottom) {
+      const isMessageWrapperAtBottom = messageWrapper.scrollHeight - messageWrapper.clientHeight <= messageWrapper.scrollTop + 1;
+      const isChatContainerAtBottom = chatContainer.scrollHeight - chatContainer.clientHeight <= chatContainer.scrollTop + 1;
+      if (isMessageWrapperAtBottom && isChatContainerAtBottom) {
         setTimeout(() => {
-          const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-          chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
-          scrollIntoView(messageDiv);
+          const messageDiv = messageWrapper.lastChild;
+          messageDiv.scrollIntoView();
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 100);
+      } else if (isMessageWrapperAtBottom) {
+        setTimeout(() => {
+          const messageDiv = messageWrapper.lastChild;
+          messageDiv.scrollIntoView();
         }, 100);
       }
       // call the callback function when typing animation is finished
@@ -65,6 +71,7 @@ function typeText(element, text, callback) {
     }
   }, typingSpeed);
 }
+
 
 
 function chatStripe(isAi, value, uniqueId) {
