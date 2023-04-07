@@ -51,7 +51,8 @@ function typeText(element, text, callback) {
         element.scrollTop = element.scrollHeight;
         // Check if the bot typing animation has reached the bottom of the browser and give an alert
         if (element.scrollTop === 0) {
-          alert('Bot typing reached the bottom of the browser!');
+          //alert('Bot typing reached the bottom of the browser!');
+          
         }
       }
     } else {
