@@ -82,6 +82,9 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
+  // Clear existing chat messages
+  messageWrapper.innerHTML = '';
+
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
@@ -99,7 +102,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   // scroll to the top of the chat container to show the new message
-  chatContainer.scrollTop = 0;
+  //chatContainer.scrollTop = 0;
   
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
@@ -123,7 +126,7 @@ const handleSubmit = async (e) => {
         scrollIntoView(messageDiv);
         
         // scroll to the top of the chat container to show the new message
-        //chatContainer.scrollTop = 0;
+        chatContainer.scrollTop = 0;
 
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
@@ -142,6 +145,7 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
