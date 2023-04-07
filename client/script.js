@@ -73,8 +73,6 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
-let previousMessagesHeight = 0;
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -146,21 +144,10 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // scroll to the new message
+  scrollIntoView(messageWrapper.lastElementChild);
 };
-
-chatContainer.addEventListener('scroll', () => {
-  try {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    if (isAtBottom) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  } catch (error) {
-    console.error('Error checking if at bottom of chat container:', error);
-    alert('Error checking if at bottom of chat container.');
-  }
-});
-
-
 
 window.addEventListener('resize', () => {
   // check if user has scrolled up before resizing
@@ -179,6 +166,7 @@ window.addEventListener('resize', () => {
     chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
   }
 });
+
 
 
 form.addEventListener('submit', handleSubmit);
