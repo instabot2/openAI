@@ -73,6 +73,7 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -91,7 +92,9 @@ const handleSubmit = async (e) => {
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
-  messageWrapper.insertAdjacentHTML('beforeend', botMessage);
+
+  // Add this code to insert the bot's message at the top of the message wrapper
+  messageWrapper.insertAdjacentHTML('afterbegin', botMessage);
 
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
@@ -144,10 +147,9 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-
-  // scroll to the new message
-  scrollIntoView(messageWrapper.lastElementChild);
 };
+
+
 
 window.addEventListener('resize', () => {
   // check if user has scrolled up before resizing
