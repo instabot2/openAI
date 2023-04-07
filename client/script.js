@@ -75,8 +75,18 @@ function typeText(element, text, callback) {
       setTimeout(() => callback && callback(), text.length * typingSpeed);
     }
   }, typingSpeed);
-}
 
+  // Add this code to give an alert when the messageWrapper is resized to the bottom of the browser
+  const resizeObserver = new ResizeObserver(entries => {
+    for (let entry of entries) {
+      if (entry.target.scrollHeight - entry.target.clientHeight <= entry.target.scrollTop + 1) {
+        alert('Message wrapper resized to the bottom of the browser!');
+      }
+    }
+  });
+
+  resizeObserver.observe(element);
+}
 
 
 
