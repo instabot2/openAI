@@ -38,70 +38,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(element, text, typingSpeed = 20, callback) {
-  element.scrollTop = 0;
-  let index = 0;
-  const intervalId = setInterval(() => {
-    if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', text.charAt(index));
-      index++;
-
-      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-        element.scrollTop = element.scrollHeight;
-      }
-    } else {
-      clearInterval(intervalId);
-
-      const isElementAtBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1;
-
-      if (isElementAtBottom) {
-        setTimeout(() => {
-          const messageDiv = element.lastChild;
-          messageDiv.scrollIntoView();
-        }, 100);
-      }
-
-      setTimeout(() => callback && callback(), text.length * typingSpeed);
-    }
-  }, typingSpeed);
-
-  const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      if (entry.target.scrollHeight - entry.target.clientHeight <= entry.target.scrollTop + 1) {
-        console.log('Element resized to the bottom');
-      }
-    }
-  });
-
-  resizeObserver.observe(element);
-
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-
-    resizeTimeout = setTimeout(() => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      console.log(`Browser size: ${width} x ${height}`);
-
-      const isScrolledToBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1;
-      const newScrollTop = (element.scrollHeight - element.clientHeight) * (element.scrollTop / (element.scrollHeight - element.clientHeight));
-
-      element.style.height = `${element.clientHeight}px`;
-
-      if (isScrolledToBottom) {
-        element.scrollTop = newScrollTop;
-      } else {
-        element.scrollTop = element.scrollHeight - element.clientHeight - (1 - (newScrollTop / element.clientHeight)) * (element.scrollHeight - element.clientHeight);
-      }
-    }, 500);
-  });
-}
-
-
-
-
 function chatStripe(isAi, value, uniqueId) {
   return `
     <div class="wrapper ${isAi && 'ai'}">
@@ -115,27 +51,55 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
+function typeText(element, text, typingSpeed = 20, callback) {
+  element.scrollTop = 0;
+  let index = 0;
+  let requestId;
+
+  function animate() {
+    requestId = requestAnimationFrame(animate);
+
+    if (index < text.length) {
+      element.insertAdjacentHTML('beforeend', text.charAt(index));
+      index++;
+
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        element.scrollTop = element.scrollHeight;
+      }
+    } else {
+      cancelAnimationFrame(requestId);
+
+      const isElementAtBottom = element.scrollHeight - element.clientHeight <= element.scrollTop + 1;
+
+      if (isElementAtBottom) {
+        setTimeout(() => {
+          const messageDiv = element.lastChild;
+          messageDiv.scrollIntoView();
+        }, 100);
+      }
+
+      setTimeout(() => callback && callback(), text.length * typingSpeed);
+    }
+  }
+
+  requestId = requestAnimationFrame(animate);
+}
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
-  // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // user's chatstripe
-  const userMessage = chatStripe(false, data.get('prompt'));
+  const userMessage = chatBubble(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
-  // to clear the textarea input
   form.reset();
 
-  // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatStripe(true, '', uniqueId);
+  const botMessage = chatBubble(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-  
-  // specific message div
+
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -157,13 +121,10 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // Add this code to scroll up to the new message and display it on top of the browser
         const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
         chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
-        // scroll to the new message
         scrollIntoView(messageDiv);
 
-        // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
       });
@@ -176,10 +137,10 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
 
 
 
