@@ -39,6 +39,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 function typeText(element, text, callback) {
+  element.scrollTop = 0;
   let index = 0;
   const typingSpeed = 20; // set typing speed here
   const intervalId = setInterval(() => {
@@ -48,6 +49,10 @@ function typeText(element, text, callback) {
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
+        // Check if the bot typing animation has reached the bottom of the browser and give an alert
+        if (element.scrollTop === 0) {
+          alert('Bot typing reached the bottom of the browser!');
+        }
       }
     } else {
       clearInterval(intervalId);
@@ -71,6 +76,8 @@ function typeText(element, text, callback) {
     }
   }, typingSpeed);
 }
+
+
 
 
 
