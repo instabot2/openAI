@@ -154,8 +154,6 @@ const handleSubmit = async (e) => {
     }
   });
 
-
-
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
