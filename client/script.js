@@ -136,14 +136,25 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
+
+
   // add event listener to chatContainer to force scroll old messages up when at bottom
   chatContainer.addEventListener('scroll', () => {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    if (isAtBottom) {
-      chatContainer.scrollTop = 0;
+    const isContainerAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
+    const isWrapperAtBottom = messageWrapper.scrollHeight - messageWrapper.scrollTop === messageWrapper.clientHeight;
+    if (isContainerAtBottom || isWrapperAtBottom) {
+      // Scroll up to the bot typing message
+      const botMessage = messageWrapper.querySelector('.chat-stripe.bot.typing');
+      if (botMessage) {
+        botMessage.scrollIntoView();
+        //
+        //chatContainer.scrollTop = 0;
+      }
     }
   });
 
+  
+  
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
