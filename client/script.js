@@ -73,6 +73,9 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
+// Add this variable outside the handleSubmit function
+let previousMessagesHeight = 0;
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -116,11 +119,24 @@ const handleSubmit = async (e) => {
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // Add this code to scroll up to the new message and display it on top of the browser
-        const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
+        //const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
+        //chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
+        // scroll to the new message
+        //scrollIntoView(messageDiv);
+
+        // Add this code to update previousMessagesHeight with the height of the newly added message div
+        const messageHeight = messageDiv.offsetHeight;
+        previousMessagesHeight += messageHeight;
+
+        // Add this code to scroll up to the new message and display it on top of the browser
+        const containerHeight = chatContainer.offsetHeight;
+        if (previousMessagesHeight > containerHeight) {
+          chatContainer.scrollTop = previousMessagesHeight - containerHeight;
+        }
         // scroll to the new message
         scrollIntoView(messageDiv);
-
+        
+        
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
