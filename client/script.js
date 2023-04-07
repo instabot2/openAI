@@ -73,7 +73,6 @@ function typeText(element, text, callback) {
   element.innerHTML = '';
 }
 
-// Add this variable outside the handleSubmit function
 let previousMessagesHeight = 0;
 
 const handleSubmit = async (e) => {
@@ -87,7 +86,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
+
   // to clear the textarea input
   form.reset();
 
@@ -95,7 +94,7 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-  
+
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
@@ -118,25 +117,16 @@ const handleSubmit = async (e) => {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // Add this code to scroll up to the new message and display it on top of the browser
-        //const previousMessageDivsHeight = Array.from(messageWrapper.children).reduce((acc, cur) => acc + cur.offsetHeight, 0);
-        //chatContainer.scrollTop = previousMessageDivsHeight - chatContainer.offsetHeight;
-        // scroll to the new message
-        //scrollIntoView(messageDiv);
-
-        // Add this code to update previousMessagesHeight with the height of the newly added message div
         const messageHeight = messageDiv.offsetHeight;
         previousMessagesHeight += messageHeight;
 
-        // Add this code to scroll up to the new message and display it on top of the browser
         const containerHeight = chatContainer.offsetHeight;
         if (previousMessagesHeight > containerHeight) {
           chatContainer.scrollTop = previousMessagesHeight - containerHeight;
         }
-        // scroll to the new message
+
         scrollIntoView(messageDiv);
-        
-        
+
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
@@ -154,18 +144,6 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
-chatContainer.addEventListener('scroll', () => {
-  try {
-    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
-    if (isAtBottom) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  } catch (error) {
-    console.error('Error checking if at bottom of chat container:', error);
-    alert('Error checking if at bottom of chat container.');
-  }
-});
 
 
 window.addEventListener('resize', () => {
