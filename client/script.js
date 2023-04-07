@@ -100,7 +100,7 @@ const handleSubmit = async (e) => {
 
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatStripe(true, topics, uniqueId);
+  const botMessage = chatStripe(true, topics.map(topic => topic.topic).join('<br/>'), uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
   
   // specific message div
@@ -176,6 +176,7 @@ function summarizeTopics(messages) {
   // Limit to top 5 topics
   return sortedTopics.slice(0, 5);
 }
+
 
 
 
