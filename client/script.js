@@ -155,6 +155,13 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+import { Configuration, OpenAIApi } from "openai";
+
+const configuration = new Configuration({
+  organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 const openai = new OpenAIApi(configuration);
 const summarizeMessages = async (messages) => {
   try {
@@ -168,14 +175,17 @@ const summarizeMessages = async (messages) => {
       temperature: 0.7,
     });
 
-    const summary = completions.choices[0].text.trim();
-    return summary;
+    if (completions && completions.choices && completions.choices.length > 0) {
+      const summary = completions.choices[0].text.trim();
+      return summary;
+    } else {
+      throw new Error('Invalid response data format');
+    }
   } catch (err) {
     console.error(err);
     alert(`Error: ${err.message}`);
   }
 };
-
 
 
 
