@@ -149,36 +149,32 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
+import { Configuration, OpenAIApi } from "openai";
+const configuration = new Configuration({
+  organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 const summarizeMessages = async (messages) => {
   try {
-    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        prompt: `Summarize the following messages:\n\n${messages.join('\n')}`,
-        max_tokens: 500,
-        temperature: 0.7,
-        n: 1,
-        stop: ['\n\n'],
-      }),
+    const prompt = `Summarize the following messages:\n\n${messages.join('\n')}`;
+    const completions = await openai.completions.create({
+      engine: "davinci-codex",
+      prompt,
+      maxTokens: 500,
+      n: 1,
+      stop: ['\n\n'],
+      temperature: 0.7,
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      return data.choices[0].text.trim();
-    } else {
-      const err = await response.text();
-      throw new Error(`Error ${response.status}: ${err}`);
-    }
+    const summary = completions.choices[0].text.trim();
+    return summary;
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    alert(`Error: ${err.message}`);
   }
 };
-
 
 
 
