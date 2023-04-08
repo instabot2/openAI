@@ -155,23 +155,26 @@ const summarizeMessages = async (messages) => {
   }
 
   const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
+  try {
+    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        prompt,
+      }),
+    });
 
-  const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      prompt,
-    }),
-  });
-
-  if (response.ok) {
-    const data = await response.json();
-    const summary = data.summary.trim();
-    return summary;
-  } else {
-    throw new Error(`Error ${response.status}: ${await response.text()}`);
+    if (response.ok) {
+      const data = await response.json();
+      const summary = data.summary.trim();
+      return summary;
+    } else {
+      throw new Error(`Error ${response.status}: ${await response.text()}`);
+    }
+  } catch (error) {
+    alert(`Error: ${error.message}`);
   }
 };
 
