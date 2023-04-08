@@ -80,32 +80,13 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
-  localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Summarize old messages into topics
-  const topics = summarizeMessages(messages);
-
-  // Display the topics as a list
-  const topicsList = document.createElement('ul');
-  topicsList.classList.add('topics');
-  for (const topic of topics) {
-    const topicItem = document.createElement('li');
-    topicItem.textContent = topic;
-    topicsList.appendChild(topicItem);
-  }
-  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
-
-  // Add the topics list before the chat input form
-  form.parentNode.insertBefore(topicsList, form);
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
+  
   // to clear the textarea input
   form.reset();
 
@@ -113,14 +94,14 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-
+  
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
   // scroll to the top of the chat container to show the new message
   //chatContainer.scrollTop = 0;
-
+  
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -134,14 +115,14 @@ const handleSubmit = async (e) => {
 
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
-
+    
     if (response.ok) {
       const data = await response.json();
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
         scrollIntoView(messageDiv);
-
+        
         // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
@@ -157,6 +138,10 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = err.message;
     console.error(err);
   }
+
+  // Store the user's message in local storage
+  messages.push({ isBot: false, message: data.get('prompt') });
+  localStorage.setItem('messages', JSON.stringify(messages));
 };
 
 
