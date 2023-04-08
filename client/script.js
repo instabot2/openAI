@@ -157,11 +157,10 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
-
 const summarizeMessages = async (messages) => {
   try {
     const prompt = `Summarize the following messages:\n\n${messages.join('\n')}`;
-    const response = await openai.completions.createAsync({
+    const response = await openai.completions.create({
       engine: "davinci-codex",
       prompt,
       maxTokens: 500,
@@ -181,6 +180,7 @@ const summarizeMessages = async (messages) => {
     alert(`Error: ${err.message}`);
   }
 };
+
 
 
 
