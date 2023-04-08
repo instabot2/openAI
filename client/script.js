@@ -151,11 +151,16 @@ const handleSubmit = async (e) => {
 
 const summarizeMessages = async (messages) => {
   try {
-    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    //const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    //  method: 'POST',
+    //  headers: {
+    //    'Content-Type': 'application/json',
+    //    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+    //  },   
+    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         prompt: `Summarize the following messages:\n\n${messages.join('\n')}`,
