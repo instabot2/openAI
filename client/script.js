@@ -154,25 +154,29 @@ const summarizeMessages = async (messages) => {
     return '';
   }
 
-  try {
-    const response = await fetch('https://api.smrzr.io/summarize', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        text: messages.join('\n'),
-      }),
-    });
+  const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
 
-    if (response.ok) {
-      const data = await response.json();
-      return data.summary;
-    } else {
-      throw new Error(`Error ${response.status}: ${await response.text()}`);
-    }
-  } catch (err) {
-    alert(err.message);
+  const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${YOUR_API_KEY}`,
+    },
+    body: JSON.stringify({
+      prompt,
+      max_tokens: 100,
+      temperature: 0.5,
+      n: 1,
+      stop: '\n',
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    const summary = data.choices[0].text.trim();
+    return summary;
+  } else {
+    throw new Error(`Error ${response.status}: ${await response.text()}`);
   }
 };
 
@@ -180,8 +184,6 @@ const setSummary = (text) => {
   const summaryDiv = document.getElementById('summary');
   summaryDiv.textContent = text;
 };
-
-
 
 
 
