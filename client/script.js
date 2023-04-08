@@ -169,8 +169,8 @@ const summarizeMessages = async (messages) => {
       temperature: 0.7,
     });
 
-    if (response.data && response.data.choices && response.data.choices.length > 0) {
-      const summary = response.data.choices[0].text.trim();
+    if (response.choices && response.choices.length > 0) {
+      const summary = response.choices[0].text.trim();
       return summary;
     } else {
       throw new Error('Invalid response data format');
@@ -180,7 +180,6 @@ const summarizeMessages = async (messages) => {
     alert(`Error: ${err.message}`);
   }
 };
-
 
 
 
