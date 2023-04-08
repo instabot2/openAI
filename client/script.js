@@ -175,8 +175,10 @@ const summarizeMessages = async (messages) => {
     }
   } catch (err) {
     console.error(err);
+    alert(err.message);
   }
 };
+
 
 
 
