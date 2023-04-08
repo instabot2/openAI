@@ -72,6 +72,9 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+const [summary, setSummary] = useState('');
+const [topic, setTopic] = useState('');
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -118,6 +121,10 @@ const handleSubmit = async (e) => {
     
     if (response.ok) {
       const data = await response.json();
+      if (data.topic && data.summary) {
+        setTopic(data.topic);
+        setSummary(data.summary);
+      }
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
@@ -143,6 +150,15 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+return (
+  <div>
+    <h1>{topic}</h1>
+    <p>{summary}</p>
+    // Rest of the component code here
+  </div>
+);
+
 
 
 chatContainer.addEventListener('scroll', () => {
