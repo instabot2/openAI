@@ -154,21 +154,25 @@ const summarizeMessages = async (messages) => {
     return '';
   }
 
-  const response = await fetch('https://api.smrzr.io/summarize', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      text: messages.join('\n'),
-    }),
-  });
+  try {
+    const response = await fetch('https://api.smrzr.io/summarize', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: messages.join('\n'),
+      }),
+    });
 
-  if (response.ok) {
-    const data = await response.json();
-    return data.summary;
-  } else {
-    throw new Error(`Error ${response.status}: ${await response.text()}`);
+    if (response.ok) {
+      const data = await response.json();
+      return data.summary;
+    } else {
+      throw new Error(`Error ${response.status}: ${await response.text()}`);
+    }
+  } catch (err) {
+    alert(err.message);
   }
 };
 
@@ -176,6 +180,7 @@ const setSummary = (text) => {
   const summaryDiv = document.getElementById('summary');
   summaryDiv.textContent = text;
 };
+
 
 
 
