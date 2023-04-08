@@ -149,14 +149,8 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
-import { Configuration, OpenAIApi } from "openai";
-const configuration = new Configuration({
-  organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 import { Configuration, OpenAIApi } from "openai";
-
 const configuration = new Configuration({
   organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
   apiKey: process.env.OPENAI_API_KEY,
