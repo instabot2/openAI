@@ -156,24 +156,19 @@ const summarizeMessages = async (messages) => {
 
   const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
 
-  const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+  const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${YOUR_API_KEY}`,
     },
     body: JSON.stringify({
       prompt,
-      max_tokens: 100,
-      temperature: 0.5,
-      n: 1,
-      stop: '\n',
     }),
   });
 
   if (response.ok) {
     const data = await response.json();
-    const summary = data.choices[0].text.trim();
+    const summary = data.summary.trim();
     return summary;
   } else {
     throw new Error(`Error ${response.status}: ${await response.text()}`);
