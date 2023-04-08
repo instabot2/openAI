@@ -149,29 +149,33 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
-const captureMessage = (message) => {
-  // Retrieve stored messages from local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+const summarizeMessages = async (messages) => {
+  if (messages.length === 0) {
+    return '';
+  }
 
-  // Add the user's message to the message list
-  messages.push({ isBot: false, message });
+  const response = await fetch('https://api.smrzr.io/summarize', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text: messages.join('\n'),
+    }),
+  });
 
-  // Store the updated message list in local storage
-  localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Display the message in the chat window
-  const userMessage = chatStripe(false, message);
-  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
-  // Scroll to the top of the chat container to show the new message
-  chatContainer.scrollTop = 0;
-
-  // Summarize previous messages and display
-  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
-  const summarizedMessages = await summarizeMessages(previousMessages);
-  setSummary(summarizedMessages);
+  if (response.ok) {
+    const data = await response.json();
+    return data.summary;
+  } else {
+    throw new Error(`Error ${response.status}: ${await response.text()}`);
+  }
 };
 
+const setSummary = (text) => {
+  const summaryDiv = document.getElementById('summary');
+  summaryDiv.textContent = text;
+};
 
 
 
