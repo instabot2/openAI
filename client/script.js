@@ -149,37 +149,30 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
-import { Configuration, OpenAIApi } from "openai";
+const captureMessage = (message) => {
+  // Retrieve stored messages from local storage
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
-const configuration = new Configuration({
-  organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
-  apiKey: process.env.OPENAI_API_KEY,
-});
+  // Add the user's message to the message list
+  messages.push({ isBot: false, message });
 
-const openai = new OpenAIApi(configuration);
-const summarizeMessages = async (messages) => {
-  try {
-    const prompt = `Summarize the following messages:\n\n${messages.join('\n')}`;
-    const response = await openai.completions.create({
-      engine: "davinci-codex",
-      prompt,
-      maxTokens: 500,
-      n: 1,
-      stop: ['\n\n'],
-      temperature: 0.7,
-    });
+  // Store the updated message list in local storage
+  localStorage.setItem('messages', JSON.stringify(messages));
 
-    if (response.choices && response.choices.length > 0) {
-      const summary = response.choices[0].text.trim();
-      return summary;
-    } else {
-      throw new Error('Invalid response data format');
-    }
-  } catch (err) {
-    console.error(err);
-    alert(`Error: ${err.message}`);
-  }
+  // Display the message in the chat window
+  const userMessage = chatStripe(false, message);
+  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
+
+  // Scroll to the top of the chat container to show the new message
+  chatContainer.scrollTop = 0;
+
+  // Summarize previous messages and display
+  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
+  const summarizedMessages = await summarizeMessages(previousMessages);
+  setSummary(summarizedMessages);
 };
+
+
 
 
 
