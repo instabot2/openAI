@@ -149,22 +149,32 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
+import { Configuration, OpenAIApi } from "openai";
 
-import * as openai from 'openai';
+const configuration = new Configuration({
+  organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
 const summarizeMessages = async (messages) => {
   try {
     const prompt = `Summarize the following messages:\n\n${messages.join('\n')}`;
-    const completions = await openai.completions.create({
+    const response = await openai.completions.create({
       engine: "davinci-codex",
       prompt,
-      max_tokens: 500,
+      maxTokens: 500,
       n: 1,
       stop: ['\n\n'],
       temperature: 0.7,
     });
 
-    const summary = completions.choices[0].text.trim();
-    return summary;
+    if (response.data && response.data.choices && response.data.choices.length > 0) {
+      const summary = response.data.choices[0].text.trim();
+      return summary;
+    } else {
+      throw new Error('Invalid response data format');
+    }
   } catch (err) {
     console.error(err);
     alert(`Error: ${err.message}`);
