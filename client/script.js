@@ -150,36 +150,27 @@ const handleSubmit = async (e) => {
 };
 
 
-import { Configuration, OpenAIApi } from "openai";
-const configuration = new Configuration({
-  organization: "org-KcKlrrOI4DA7EZRvmmF2GNi5",
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
+import * as openai from 'openai';
 const summarizeMessages = async (messages) => {
   try {
     const prompt = `Summarize the following messages:\n\n${messages.join('\n')}`;
     const completions = await openai.completions.create({
       engine: "davinci-codex",
       prompt,
-      maxTokens: 500,
+      max_tokens: 500,
       n: 1,
       stop: ['\n\n'],
       temperature: 0.7,
     });
 
-    if (completions && completions.choices && completions.choices.length > 0) {
-      const summary = completions.choices[0].text.trim();
-      return summary;
-    } else {
-      throw new Error('Invalid response data format');
-    }
+    const summary = completions.choices[0].text.trim();
+    return summary;
   } catch (err) {
     console.error(err);
     alert(`Error: ${err.message}`);
   }
 };
+
 
 
 
