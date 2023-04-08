@@ -72,9 +72,6 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-const [summary, setSummary] = useState('');
-const [topic, setTopic] = useState('');
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -89,7 +86,7 @@ const handleSubmit = async (e) => {
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-  
+
   // to clear the textarea input
   form.reset();
 
@@ -97,14 +94,14 @@ const handleSubmit = async (e) => {
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-  
+
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
   // scroll to the top of the chat container to show the new message
   //chatContainer.scrollTop = 0;
-  
+
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -118,18 +115,14 @@ const handleSubmit = async (e) => {
 
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
-    
+
     if (response.ok) {
       const data = await response.json();
-      if (data.topic && data.summary) {
-        setTopic(data.topic);
-        setSummary(data.summary);
-      }
       const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
         scrollIntoView(messageDiv);
-        
+
         // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
@@ -149,15 +142,42 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Summarize previous messages and display
+  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
+  const summarizedMessages = await summarizeMessages(previousMessages);
+  setSummary(summarizedMessages);
 };
 
-return (
-  <div>
-    <h1>{topic}</h1>
-    <p>{summary}</p>
-    // Rest of the component code here
-  </div>
-);
+const summarizeMessages = async (messages) => {
+  try {
+    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        prompt: `Summarize the following messages:\n\n${messages.join('\n')}`,
+        max_tokens: 60,
+        temperature: 0.7,
+        n: 1,
+        stop: ['\n\n'],
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.choices[0].text.trim();
+    } else {
+      const err = await response.text();
+      throw new Error(`Error ${response.status}: ${err}`);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
 
 
