@@ -129,22 +129,6 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
-
-        // Summarize previous messages and display
-        const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
-        summarizeMessages(previousMessages)
-          .then((summarizedMessages) => {
-            if (summarizedMessages && summarizedMessages.trim() !== '') {
-              const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
-              messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
-              scrollIntoView(messageWrapper.lastElementChild);
-              window.alert(`Summary: ${summarizedMessages}`);
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            window.alert("Error summarizing messages. Please try again later.");
-          });
       });
     } else {
       const err = await response.text();
@@ -158,9 +142,12 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Summarize previous messages and display
+  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
+  const summarizedMessages = await summarizeMessages(previousMessages);
+  setSummary(summarizedMessages);
 };
-
-
 
 
 
