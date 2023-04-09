@@ -176,6 +176,7 @@ const summarizeMessages = async (messages) => {
     if (response.ok) {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
+      window.alert('Summarization successful!');
       return summary;
     } else {
       const err = await response.text();
@@ -183,6 +184,7 @@ const summarizeMessages = async (messages) => {
     }
   } catch (err) {
     console.error(err);
+    window.alert('Summarization failed!');
     return '';
   }
 };
