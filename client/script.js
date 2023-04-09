@@ -139,6 +139,7 @@ const handleSubmit = async (e) => {
               messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
               scrollIntoView(messageWrapper.lastElementChild);
               window.alert(`Summary: ${summarizedMessages}`);
+              window.alert('Summarization successful!');
             }
           })
           .catch((error) => {
@@ -159,7 +160,6 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
-
 
 
 
