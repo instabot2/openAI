@@ -170,7 +170,6 @@ const summarizeMessages = async (messages) => {
 
   // Limit the number of messages to 10
   messages = messages.slice(0, 10);
-
   // Truncate each message to the first 50 characters
   messages = messages.map((message) => message.slice(0, 50) + '...');
 
@@ -190,6 +189,7 @@ const summarizeMessages = async (messages) => {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
       window.alert('Summarization successful!');
+      window.alert(`Captured message: ${summary}`);
       return summary;
     } else {
       const err = await response.text();
