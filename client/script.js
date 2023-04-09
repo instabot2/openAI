@@ -146,7 +146,11 @@ const handleSubmit = async (e) => {
   // Summarize previous messages and display
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
-  setSummary(summarizedMessages);
+  if (summarizedMessages) {
+    const summaryMessage = chatStripe(true, `Here's a summary of the previous messages:\n${summarizedMessages}`);
+    messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
+    scrollIntoView(messageWrapper.lastElementChild);
+  }
 };
 
 
