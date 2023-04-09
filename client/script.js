@@ -145,7 +145,7 @@ const handleSubmit = async (e) => {
           .catch((error) => {
             console.error(error);
             window.alert("Error summarizing messages. Please try again later.");
-          });
+          }); 
       });
     } else {
       const err = await response.text();
