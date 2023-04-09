@@ -137,6 +137,7 @@ const handleSubmit = async (e) => {
             const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
             messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
             scrollIntoView(messageWrapper.lastElementChild);
+            window.alert(`Summary: ${summarizedMessages}`);
           }
         });
       });
