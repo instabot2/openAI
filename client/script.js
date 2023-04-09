@@ -72,13 +72,54 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+const xmlSerializer = new XMLSerializer();
+const parser = new DOMParser();
+const xmlFileName = 'chat_history.xml';
+let xmlFile = null;
+
+const createXmlFile = () => {
+  const xmlString = xmlSerializer.serializeToString(parser.parseFromString('<messages></messages>', 'text/xml'));
+  const blob = new Blob([xmlString], { type: 'text/xml' });
+  xmlFile = new File([blob], xmlFileName, { type: 'text/xml' });
+};
+
+const appendMessageToXmlFile = (isBot, message) => {
+  const xmlString = xmlSerializer.serializeToString(parser.parseFromString(`<message><isBot>${isBot}</isBot><text>${message}</text></message>`, 'text/xml'));
+  const blob = new Blob([xmlString], { type: 'text/xml' });
+  const reader = new FileReader();
+  reader.readAsText(blob);
+  reader.onloadend = () => {
+    const messageNode = parser.parseFromString(reader.result, 'text/xml').firstChild;
+    const messagesNode = parser.parseFromString(xmlFile.text, 'text/xml').firstChild;
+    messagesNode.appendChild(messageNode);
+    xmlFile = new File([messagesNode], xmlFileName, { type: 'text/xml' });
+    localStorage.setItem(xmlFileName, xmlSerializer.serializeToString(messagesNode));
+  };
+};
+
+const loadXmlFile = () => {
+  const xmlString = localStorage.getItem(xmlFileName);
+  if (xmlString) {
+    xmlFile = new File([xmlString], xmlFileName, { type: 'text/xml' });
+  } else {
+    createXmlFile();
+    localStorage.setItem(xmlFileName, xmlSerializer.serializeToString(xmlFile));
+  }
+};
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
-  // Retrieve stored messages from local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  // Retrieve stored messages from XML file
+  loadXmlFile();
+  const xmlString = await xmlFile.text();
+  const xml = parser.parseFromString(xmlString, 'text/xml');
+  const messages = Array.from(xml.getElementsByTagName('message')).map((message) => ({
+    isBot: message.getElementsByTagName('isBot')[0].textContent === 'true',
+    message: message.getElementsByTagName('text')[0].textContent,
+  }));
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -160,6 +201,8 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+
 
 
 
