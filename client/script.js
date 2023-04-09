@@ -149,8 +149,14 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
+
+const setSummary = (text) => {
+  const summaryDiv = document.getElementById('summary');
+  summaryDiv.textContent = text;
+};
 const summarizeMessages = async (messages) => {
   if (messages.length === 0) {
+    setSummary('');
     return '';
   }
 
@@ -175,7 +181,7 @@ const summarizeMessages = async (messages) => {
     if (response.ok) {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
-      alert(`Summary: ${summary}`);
+      setSummary(summary);
       return summary;
     } else {
       throw new Error(`Error ${response.status}: ${await response.text()}`);
@@ -183,11 +189,6 @@ const summarizeMessages = async (messages) => {
   } catch (error) {
     alert(`Error: ${error.message}`);
   }
-};
-
-const setSummary = (text) => {
-  const summaryDiv = document.getElementById('summary');
-  summaryDiv.textContent = text;
 };
 
 
