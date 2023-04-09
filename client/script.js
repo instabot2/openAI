@@ -147,7 +147,7 @@ const handleSubmit = async (e) => {
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
   if (summarizedMessages) {
-    const summaryMessage = chatStripe(true, `Here's a summary of the previous messages:\n${summarizedMessages}`);
+    const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
     messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
     scrollIntoView(messageWrapper.lastElementChild);
   }
