@@ -132,14 +132,19 @@ const handleSubmit = async (e) => {
 
         // Summarize previous messages and display
         const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
-        summarizeMessages(previousMessages).then((summarizedMessages) => {
-          if (summarizedMessages) {
-            const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
-            messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
-            scrollIntoView(messageWrapper.lastElementChild);
-            window.alert(`Summary: ${summarizedMessages}`);
-          }
-        });
+        summarizeMessages(previousMessages)
+          .then((summarizedMessages) => {
+            if (summarizedMessages) {
+              const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
+              messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
+              scrollIntoView(messageWrapper.lastElementChild);
+              window.alert(`Summary: ${summarizedMessages}`);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            window.alert("Error summarizing messages. Please try again later.");
+          });
       });
     } else {
       const err = await response.text();
