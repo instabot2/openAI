@@ -139,7 +139,7 @@ const handleSubmit = async (e) => {
               messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
               scrollIntoView(messageWrapper.lastElementChild);
               window.alert(`Summary: ${summarizedMessages}`);
-              window.alert('Summarization successful!');
+              window.alert('Summarization successful! 1');
             }
           })
           .catch((error) => {
@@ -190,7 +190,7 @@ const summarizeMessages = async (messages) => {
     if (response.ok) {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
-      window.alert('Summarization successful!');
+      window.alert('Summarization successful! 2');
       window.alert(`Captured message: ${summary}`);
       return summary;
     } else {
