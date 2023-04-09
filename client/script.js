@@ -72,6 +72,9 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
+
+
 const xmlSerializer = new XMLSerializer();
 const parser = new DOMParser();
 const xmlFileName = 'chat_history.xml';
@@ -120,6 +123,9 @@ const handleSubmit = async (e) => {
     isBot: message.getElementsByTagName('isBot')[0].textContent === 'true',
     message: message.getElementsByTagName('text')[0].textContent,
   }));
+
+  // Retrieve stored messages from local storage
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -170,23 +176,6 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
-
-        // Summarize previous messages and display
-        const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
-        summarizeMessages(previousMessages)
-          .then((summarizedMessages) => {
-            if (summarizedMessages && summarizedMessages.trim() !== '') {
-              const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
-              messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
-              scrollIntoView(messageWrapper.lastElementChild);
-              window.alert(`Summary: ${summarizedMessages}`);
-              window.alert('Summarization successful! 1');
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            window.alert("Error summarizing messages. Please try again later.");
-          }); 
       });
     } else {
       const err = await response.text();
@@ -200,9 +189,14 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Summarize previous messages and display
+  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
+  const summarizedMessages = await summarizeMessages(previousMessages);
+  setSummary(summarizedMessages);
 };
-
-
+  
+  
 
 
 
