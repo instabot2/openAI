@@ -173,7 +173,7 @@ const summarizeMessages = async (messages) => {
   // Truncate each message to the first 50 characters
   messages = messages.map((message) => message.slice(0, 50) + '...');
 
-  window.alert(`Captured message: ${messages}`);
+  //window.alert(`Captured message: ${messages}`);
   
   const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
   try {
@@ -196,6 +196,7 @@ const summarizeMessages = async (messages) => {
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
+      window.alert(`Error response: ${err}`);
     }
   } catch (err) {
     console.error(err);
