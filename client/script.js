@@ -137,9 +137,6 @@ const handleSubmit = async (e) => {
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
-  // scroll to the top of the chat container to show the new message
-  //chatContainer.scrollTop = 0;
-
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -192,10 +189,20 @@ const handleSubmit = async (e) => {
 
 
 
-const getMessagesFromCache = () => {
-  // Retrieve messages from browser cache or local storage
-  const cachedMessages = localStorage.getItem('cachedMessages');
-  return cachedMessages ? JSON.parse(cachedMessages) : [];
+
+const getMessagesFromCache = async () => {
+  try {
+    const response = await fetch('chat_history.xml');
+    const xmlString = await response.text();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlString, 'text/xml');
+    const messages = Array.from(xml.getElementsByTagName('message')).map((message) => message.textContent);
+    return messages;
+  } catch (err) {
+    console.error(err);
+    window.alert(`Error retrieving messages: ${err}`);
+    return [];
+  }
 };
 
 const summarizeMessages = async () => {
