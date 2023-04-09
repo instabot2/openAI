@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
         const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
         summarizeMessages(previousMessages)
           .then((summarizedMessages) => {
-            if (summarizedMessages) {
+            if (summarizedMessages && summarizedMessages.trim() !== '') {
               const summaryMessage = chatStripe(true, `<div>Summary of chatgpt</div><div>${summarizedMessages}</div>`);
               messageWrapper.insertAdjacentHTML('beforeend', summaryMessage);
               scrollIntoView(messageWrapper.lastElementChild);
@@ -159,6 +159,10 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 };
+
+
+
+
 
 const summarizeMessages = async (messages) => {
   if (messages.length === 0) {
