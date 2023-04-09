@@ -115,15 +115,6 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
-  // Retrieve stored messages from XML file
-  loadXmlFile();
-  const xmlString = await xmlFile.text();
-  const xml = parser.parseFromString(xmlString, 'text/xml');
-  const messages = Array.from(xml.getElementsByTagName('message')).map((message) => ({
-    isBot: message.getElementsByTagName('isBot')[0].textContent === 'true',
-    message: message.getElementsByTagName('text')[0].textContent,
-  }));
-
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
