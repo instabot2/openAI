@@ -150,13 +150,8 @@ const handleSubmit = async (e) => {
 };
 
 
-const setSummary = (text) => {
-  const summaryDiv = document.getElementById('summary');
-  summaryDiv.textContent = text;
-};
 const summarizeMessages = async (messages) => {
   if (messages.length === 0) {
-    setSummary('');
     return '';
   }
 
@@ -191,6 +186,10 @@ const summarizeMessages = async (messages) => {
   }
 };
 
+const setSummary = (text) => {
+  const summaryDiv = document.getElementById('summary');
+  summaryDiv.textContent = text;
+};
 
 
 
