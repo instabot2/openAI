@@ -173,8 +173,6 @@ const summarizeMessages = async (messages) => {
   // Truncate each message to the first 50 characters
   messages = messages.map((message) => message.slice(0, 50) + '...');
 
-  //window.alert(`Captured message: ${messages}`);
-  
   const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
@@ -186,21 +184,25 @@ const summarizeMessages = async (messages) => {
         prompt,
       }),
     });
-    
+
     if (response.ok) {
       const data = await response.json();
-      const summary = data.summary?.trim() ?? '';
+      if (data.summary === undefined) {
+        throw new Error(`Summary data not found`);
+        window.alert('Summary data not found');
+      }
+      const summary = data.summary.trim();
       window.alert('Summarization successful! 2');
       window.alert(`Captured message: ${summary}`);
       return summary;
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
-      window.alert(`Error response: ${err}`);
+      window.alert(`Captured error: ${err}`);
     }
   } catch (err) {
     console.error(err);
-    window.alert('Summarization failed!');
+    window.alert(`Summarization failed: ${err}`);
     return '';
   }
 };
