@@ -173,6 +173,8 @@ const summarizeMessages = async (messages) => {
   // Truncate each message to the first 50 characters
   messages = messages.map((message) => message.slice(0, 50) + '...');
 
+  window.alert(`Captured message: ${messages}`);
+  
   const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
@@ -184,7 +186,7 @@ const summarizeMessages = async (messages) => {
         prompt,
       }),
     });
-
+    
     if (response.ok) {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
