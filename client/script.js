@@ -176,19 +176,15 @@ const summarizeMessages = async (messages) => {
     if (response.ok) {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
-      setSummary(summary);
       return summary;
     } else {
-      throw new Error(`Error ${response.status}: ${await response.text()}`);
+      const err = await response.text();
+      throw new Error(`Error ${response.status}: ${err}`);
     }
-  } catch (error) {
-    alert(`Error: ${error.message}`);
+  } catch (err) {
+    console.error(err);
+    return '';
   }
-};
-
-const setSummary = (text) => {
-  const summaryDiv = document.getElementById('summary');
-  summaryDiv.textContent = text;
 };
 
 
