@@ -148,6 +148,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
+        xmlMessages: messages.filter((message) => message.isXML).map((message) => message.message),
       }),
     });
 
@@ -186,7 +187,7 @@ const handleSubmit = async (e) => {
   const summarizedMessages = await summarizeMessages(previousMessages);
   setSummary(summarizedMessages);
 };
-  
+
   
 
 
