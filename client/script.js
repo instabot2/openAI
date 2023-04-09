@@ -176,6 +176,7 @@ const summarizeMessages = async (messages) => {
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
       return summary;
+      alert(`Error: ${summary}`);
     } else {
       throw new Error(`Error ${response.status}: ${await response.text()}`);
     }
