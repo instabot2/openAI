@@ -163,17 +163,26 @@ const handleSubmit = async (e) => {
 
 
 
-const summarizeMessages = async (messages) => {
+const getMessagesFromCache = () => {
+  // Retrieve messages from browser cache or local storage
+  const cachedMessages = localStorage.getItem('cachedMessages');
+  return cachedMessages ? JSON.parse(cachedMessages) : [];
+};
+
+const summarizeMessages = async () => {
+  const messages = getMessagesFromCache();
+
   if (messages.length === 0) {
+    window.alert('No messages found');
     return '';
   }
 
   // Limit the number of messages to 10
-  messages = messages.slice(0, 10);
+  const truncatedMessages = messages.slice(0, 10);
   // Truncate each message to the first 50 characters
-  messages = messages.map((message) => message.slice(0, 50) + '...');
+  const truncatedAndFormattedMessages = truncatedMessages.map((message) => message.slice(0, 50) + '...');
 
-  const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
+  const prompt = `Please summarize the following messages:\n\n${truncatedAndFormattedMessages.join('\n')}\n`;
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
