@@ -188,8 +188,8 @@ const summarizeMessages = async (messages) => {
     if (response.ok) {
       const data = await response.json();
       if (data.summary === undefined) {
-        throw new Error(`Summary data not found`);
         window.alert('Summary data not found');
+        throw new Error(`Summary data not found`);
       }
       const summary = data.summary.trim();
       window.alert('Summarization successful! 2');
@@ -197,8 +197,8 @@ const summarizeMessages = async (messages) => {
       return summary;
     } else {
       const err = await response.text();
-      throw new Error(`Error ${response.status}: ${err}`);
       window.alert(`Captured error: ${err}`);
+      throw new Error(`Error ${response.status}: ${err}`);
     }
   } catch (err) {
     console.error(err);
