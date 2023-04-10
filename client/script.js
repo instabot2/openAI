@@ -170,12 +170,11 @@ const writeMessageToFile = (isBot, messageXml) => {
   const filename = `${Date.now()}.xml`;
 
   let platform = null;
-  const userAgent = navigator.userAgent.toLowerCase();
-  if (/android/.test(userAgent)) {
+  if (/android/i.test(navigator.platform)) {
     platform = { name: 'android', path: cordova.file.dataDirectory };
-  } else if (/ipad|iphone|ipod/.test(userAgent)) {
+  } else if (/iPad|iPhone|iPod/.test(navigator.platform)) {
     platform = { name: 'ios', path: cordova.file.dataDirectory };
-  } else if (/macintosh|windows/.test(userAgent)) {
+  } else if (/Mac|Win/.test(navigator.platform)) {
     platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
   }
   // Add more platforms as necessary
@@ -207,7 +206,6 @@ const writeMessageToFile = (isBot, messageXml) => {
     });
   } else {
     console.error(`Platform not supported: ${navigator.platform}`);
-    window.alert(`Platform not supported`);
   }
 };
 
