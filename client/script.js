@@ -171,6 +171,8 @@ const writeMessageToFile = (isBot, messageXml) => {
   
   // Check if the platform is Android or not
   if (os.platform() === 'android') {
+    window.alert(`XML message stored to android`); 
+    
     // Use the Android-specific filesystem API to write the file
     window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir) => {
       dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
@@ -195,6 +197,8 @@ const writeMessageToFile = (isBot, messageXml) => {
       console.error(`Error resolving local filesystem URL: ${err}`);
     });
   } else {
+    window.alert(`XML message stored to computer`);
+    
     // Use the generic filesystem API to write the file
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, (fs) => {
       fs.root.getDirectory('chatgpt/messages', { create: true }, (dir) => {
