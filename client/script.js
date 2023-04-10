@@ -155,7 +155,7 @@ const handleSubmit = async (e) => {
   // Write the message to an XML file
   const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
   writeMessageToFile(false, messageXml);
-  alert(`XML message stored to computer or android: ${messageXml}`);  
+  //alert(`XML message stored to computer or android: ${messageXml}`);  
 };
 
 
@@ -174,6 +174,8 @@ const writeMessageToFile = (isBot, messageXml) => {
             const blob = new Blob([messageXml], { type: 'text/xml' });
             fileWriter.write(blob);
             console.log(`Message written to file: ${fileEntry.nativeURL}`);
+            // Show alert message
+            alert(`Message written to file: ${fileEntry.nativeURL}`);
           }, (err) => {
             console.error(`Error creating file writer: ${err}`);
           });
@@ -196,6 +198,8 @@ const writeMessageToFile = (isBot, messageXml) => {
             const blob = new Blob([messageXml], { type: 'text/xml' });
             fileWriter.write(blob);
             console.log(`Message written to file: ${fileEntry.nativeURL}`);
+            // Show alert message
+            alert(`Message written to file: ${fileEntry.nativeURL}`);
           }, (err) => {
             console.error(`Error creating file writer: ${err}`);
           });
