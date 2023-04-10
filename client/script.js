@@ -145,10 +145,12 @@ const handleSubmit = async (e) => {
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 
-  // Write the message to an XML file
-  const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-  writeMessageToFile(false, messageXml);
+  // Summarize previous messages and display
+  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
+  const summarizedMessages = await summarizeMessages(previousMessages);
+  setSummary(summarizedMessages);
 };
+
 
 
 const fs = require('fs');
