@@ -164,39 +164,55 @@ const handleSubmit = async (e) => {
 
 
 const writeMessageToFile = (isBot, messageXml) => {
+  //window.alert(`writeMessageToFile activate`);
+
+  // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
 
   const platforms = [
-    { name: 'android', directory: 'chatgpt/messages', fileSystem: cordova.file.dataDirectory },
-    { name: 'ios', directory: 'Documents/chatgpt/messages', fileSystem: cordova.file.documentsDirectory },
-    { name: 'other', directory: 'chatgpt/messages', fileSystem: LocalFileSystem.PERSISTENT },
+    { name: 'android', path: cordova.file.dataDirectory },
+    { name: 'ios', path: cordova.file.dataDirectory },
+    { name: 'computer', path: LocalFileSystem.PERSISTENT }
+    // Add more platforms as necessary
   ];
 
-  for (const platform of platforms) {
-    if (os.platform() === platform.name) {
-      window.alert(`XML message stored to ${platform.name}`);
+  let platform = null;
 
-      window.resolveLocalFileSystemURL(platform.fileSystem, (dir) => {
-        dir.getDirectory(platform.directory, { create: true }, (subdir) => {
-          subdir.getFile(filename, { create: true }, (fileEntry) => {
-            fileEntry.createWriter((fileWriter) => {
-              const blob = new Blob([messageXml], { type: 'text/xml' });
-              fileWriter.write(blob);
-              console.log(`Message written to file: ${fileEntry.nativeURL}`);
-              alert(`Message written to file: ${fileEntry.nativeURL}`);
-            }, (err) => {
-              console.error(`Error creating file writer: ${err}`);
-            });
+  // Check which platform we're on
+  for (let i = 0; i < platforms.length; i++) {
+    if (os.platform() === platforms[i].name) {
+      platform = platforms[i];
+      break;
+    }
+  }
+
+  if (platform) {
+    window.alert(`XML message stored to ${platform.name}`);
+
+    window.resolveLocalFileSystemURL(platform.path, (dir) => {
+      dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
+        subdir.getFile(filename, { create: true }, (fileEntry) => {
+          fileEntry.createWriter((fileWriter) => {
+            // Write the message XML to the file
+            const blob = new Blob([messageXml], { type: 'text/xml' });
+            fileWriter.write(blob);
+            console.log(`Message written to file: ${fileEntry.nativeURL}`);
+            // Show alert message
+            alert(`Message written to file: ${fileEntry.nativeURL}`);
           }, (err) => {
-            console.error(`Error creating file: ${err}`);
+            console.error(`Error creating file writer: ${err}`);
           });
         }, (err) => {
-          console.error(`Error creating directory: ${err}`);
+          console.error(`Error creating file: ${err}`);
         });
       }, (err) => {
-        console.error(`Error resolving local filesystem URL: ${err}`);
+        console.error(`Error creating directory: ${err}`);
       });
-    }
+    }, (err) => {
+      console.error(`Error resolving local filesystem URL: ${err}`);
+    });
+  } else {
+    console.error(`Platform not supported: ${os.platform()}`);
   }
 };
 
