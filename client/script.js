@@ -130,7 +130,7 @@ const handleSubmit = async (e) => {
         // Write the message to an XML file
         const messageXml = `<message isBot="true">${parsedData}</message>`;
         writeMessageToFile(true, messageXml);
-        alert(`XML message stored to computer or android: ${messageXml}`);         
+        //alert(`XML message stored to computer or android: ${messageXml}`);         
         // add call to writeMessageToFile function
         writeMessageToFile(true, messageXml);
       });
