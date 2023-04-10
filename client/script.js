@@ -164,64 +164,39 @@ const handleSubmit = async (e) => {
 
 
 const writeMessageToFile = (isBot, messageXml) => {
-  //window.alert(`writeMessageToFile activate`);
-  
-  // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
-  
-  // Check if the platform is Android or not
-  if (os.platform() === 'android') {
-    window.alert(`XML message stored to android`); 
-    
-    // Use the Android-specific filesystem API to write the file
-    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir) => {
-      dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
-        subdir.getFile(filename, { create: true }, (fileEntry) => {
-          fileEntry.createWriter((fileWriter) => {
-            // Write the message XML to the file
-            const blob = new Blob([messageXml], { type: 'text/xml' });
-            fileWriter.write(blob);
-            console.log(`Message written to file: ${fileEntry.nativeURL}`);
-            // Show alert message
-            alert(`Message written to file: ${fileEntry.nativeURL}`);
+
+  const platforms = [
+    { name: 'android', directory: 'chatgpt/messages', fileSystem: cordova.file.dataDirectory },
+    { name: 'ios', directory: 'Documents/chatgpt/messages', fileSystem: cordova.file.documentsDirectory },
+    { name: 'other', directory: 'chatgpt/messages', fileSystem: LocalFileSystem.PERSISTENT },
+  ];
+
+  for (const platform of platforms) {
+    if (os.platform() === platform.name) {
+      window.alert(`XML message stored to ${platform.name}`);
+
+      window.resolveLocalFileSystemURL(platform.fileSystem, (dir) => {
+        dir.getDirectory(platform.directory, { create: true }, (subdir) => {
+          subdir.getFile(filename, { create: true }, (fileEntry) => {
+            fileEntry.createWriter((fileWriter) => {
+              const blob = new Blob([messageXml], { type: 'text/xml' });
+              fileWriter.write(blob);
+              console.log(`Message written to file: ${fileEntry.nativeURL}`);
+              alert(`Message written to file: ${fileEntry.nativeURL}`);
+            }, (err) => {
+              console.error(`Error creating file writer: ${err}`);
+            });
           }, (err) => {
-            console.error(`Error creating file writer: ${err}`);
+            console.error(`Error creating file: ${err}`);
           });
         }, (err) => {
-          console.error(`Error creating file: ${err}`);
+          console.error(`Error creating directory: ${err}`);
         });
       }, (err) => {
-        console.error(`Error creating directory: ${err}`);
+        console.error(`Error resolving local filesystem URL: ${err}`);
       });
-    }, (err) => {
-      console.error(`Error resolving local filesystem URL: ${err}`);
-    });
-  } else {
-    window.alert(`XML message stored to computer`);
-    
-    // Use the generic filesystem API to write the file
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, (fs) => {
-      fs.root.getDirectory('chatgpt/messages', { create: true }, (dir) => {
-        dir.getFile(filename, { create: true }, (fileEntry) => {
-          fileEntry.createWriter((fileWriter) => {
-            // Write the message XML to the file
-            const blob = new Blob([messageXml], { type: 'text/xml' });
-            fileWriter.write(blob);
-            console.log(`Message written to file: ${fileEntry.nativeURL}`);
-            // Show alert message
-            alert(`Message written to file: ${fileEntry.nativeURL}`);
-          }, (err) => {
-            console.error(`Error creating file writer: ${err}`);
-          });
-        }, (err) => {
-          console.error(`Error creating file: ${err}`);
-        });
-      }, (err) => {
-        console.error(`Error creating directory: ${err}`);
-      });
-    }, (err) => {
-      console.error(`Error requesting filesystem: ${err}`);
-    });
+    }
   }
 };
 
