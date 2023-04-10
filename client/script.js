@@ -149,7 +149,9 @@ const handleSubmit = async (e) => {
 };
 
 
+// Summarize an array of messages using ChatGPT
 const summarizeMessages = async (messages) => {
+  // Check if there are any messages to summarize
   if (messages.length === 0) {
     return '';
   }
@@ -160,8 +162,11 @@ const summarizeMessages = async (messages) => {
   // Truncate each message to the first 50 characters
   messages = messages.map((message) => message.slice(0, 50) + '...');
 
+  // Construct the prompt for the summarization API
   const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
+
   try {
+    // Call the summarization API with the prompt
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
@@ -172,21 +177,29 @@ const summarizeMessages = async (messages) => {
       }),
     });
 
+    // Check if the API call was successful
     if (response.ok) {
+      // Get the summary from the API response
       const data = await response.json();
       const summary = data.summary?.trim() ?? '';
-      window.alert('Summarization successful!');
+
+      // Show a success message with the summary
+      window.alert(`Summarization successful!: ${summary}`);
       return summary;
     } else {
+      // Show an error message with the status code and error message
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
     }
   } catch (err) {
+    // Show an error message if the API call failed
     console.error(err);
     window.alert('Summarization failed!');
     return '';
   }
 };
+
+
 
 chatContainer.addEventListener('scroll', () => {
   try {
