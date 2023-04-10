@@ -114,6 +114,8 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = '';
 
     if (response.ok) {
+      window.alert(`OK`);
+      
       const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
@@ -161,7 +163,7 @@ const handleSubmit = async (e) => {
 
 
 const writeMessageToFile = (isBot, messageXml) => {
-  window.alert(`writeMessageToFile activate`);
+  //window.alert(`writeMessageToFile activate`);
   
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
