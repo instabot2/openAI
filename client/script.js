@@ -152,7 +152,51 @@ const handleSubmit = async (e) => {
 };
 
 
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 
+const writeMessageToFile = (isBot, messageXml) => {
+  // Generate a unique filename based on the current timestamp
+  const filename = `${Date.now()}.xml`;
+
+  // Check if the platform is Android or not
+  if (os.platform() === 'android') {
+    // Write the message XML to a file in the app's private storage directory
+    const privateDir = '/data/data/com.example.myapp/files/chatgpt/messages';
+    fs.mkdir(privateDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error(`Error creating directory: ${err}`);
+      } else {
+        const filepath = path.join(privateDir, filename);
+        fs.writeFile(filepath, messageXml, (err) => {
+          if (err) {
+            console.error(`Error writing message to file: ${err}`);
+          } else {
+            console.log(`Message written to file: ${filepath}`);
+          }
+        });
+      }
+    });
+  } else {
+    // Write the message XML to a file in the chatgpt/messages directory
+    const dirPath = 'chatgpt/messages';
+    fs.mkdir(dirPath, { recursive: true }, (err) => {
+      if (err) {
+        console.error(`Error creating directory: ${err}`);
+      } else {
+        const filepath = path.join(dirPath, filename);
+        fs.writeFile(filepath, messageXml, (err) => {
+          if (err) {
+            console.error(`Error writing message to file: ${err}`);
+          } else {
+            console.log(`Message written to file: ${filepath}`);
+          }
+        });
+      }
+    });
+  }
+};
 
 
 
