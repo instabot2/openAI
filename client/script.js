@@ -71,6 +71,9 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
+const fs = require('fs');
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -125,9 +128,19 @@ const handleSubmit = async (e) => {
         // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
-        // Store the message in local storage
+        // Store the message in local storage and XML file
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
+        const xmlMessages = messages.map((message) => {
+          return `<message isBot="${message.isBot}">${message.message}</message>`;
+        }).join('');
+        fs.writeFile('messages.xml', `<messages>${xmlMessages}</messages>`, (err) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log('Messages saved to XML file');
+          }
+        });
       });
     } else {
       const err = await response.text();
@@ -138,15 +151,27 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // Store the user's message in local storage
+  // Store the user's message in local storage and XML file
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+  const xmlMessages = messages.map((message) => {
+    return `<message isBot="${message.isBot}">${message.message}</message>`;
+  }).join('');
+  fs.writeFile('messages.xml', `<messages>${xmlMessages}</messages>`, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log('Messages saved to XML file');
+    }
+  });
 
   // Summarize previous messages and display
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
   setSummary(summarizedMessages);
 };
+
+
 
 
 // Summarize an array of messages using ChatGPT
