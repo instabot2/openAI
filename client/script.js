@@ -71,10 +71,10 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  const form = e.target;
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
@@ -112,10 +112,10 @@ const handleSubmit = async (e) => {
 
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
-    
+
     if (response.ok) {
-      const data = await response.json();
-      const parsedData = data.bot.trim(); // trims any trailing spaces/'\n'
+      const responseData = await response.json();
+      const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
         scrollIntoView(messageDiv);
@@ -129,12 +129,9 @@ const handleSubmit = async (e) => {
 
         // Write the message to an XML file
         const messageXml = `<message isBot="true">${parsedData}</message>`;
-        writeMessageToFile(messageXml);
-        
-        // Write the message to an XML file
-        writeMessageToFile(true, parsedData);
+        writeMessageToFile(true, messageXml);
 
-        alert('XML message stored to computer or android. ${messageXml}');
+        alert(`XML message stored to computer or android: ${messageXml}`);
       });
     } else {
       const err = await response.text();
@@ -151,13 +148,11 @@ const handleSubmit = async (e) => {
 
   // Write the message to an XML file
   const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-  writeMessageToFile(messageXml);
+  writeMessageToFile(false, messageXml);
 };
 
 // Write message to an XML file
-const writeMessageToFile = (isBot, message) => {
-  // Construct the XML message string
-  const messageXml = `<message isBot="${isBot}">${message}</message>`;
+const writeMessageToFile = (isBot, messageXml) => {
   // For the sake of example, we can log the XML message string to the console instead
   console.log(messageXml);
 };
