@@ -150,17 +150,11 @@ const handleSubmit = async (e) => {
   writeMessageToFile(false, messageXml);
 };
 
-// Write message to an XML file
-const writeMessageToFile = (isBot, messageXml) => {
-  // For the sake of example, we can log the XML message string to the console instead
-  console.log(messageXml);
-};
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-// Write message to an XML file
 const writeMessageToFile = (isBot, messageXml) => {
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
@@ -202,9 +196,6 @@ const writeMessageToFile = (isBot, messageXml) => {
     });
   }
 };
-
-
-
 
 
 
