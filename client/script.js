@@ -30,7 +30,6 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-
 function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   element.scrollIntoView({
     behavior,
@@ -72,44 +71,6 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
-
-
-const xmlSerializer = new XMLSerializer();
-const parser = new DOMParser();
-const xmlFileName = 'chat_history.xml';
-let xmlFile = null;
-
-const createXmlFile = () => {
-  const xmlString = xmlSerializer.serializeToString(parser.parseFromString('<messages></messages>', 'text/xml'));
-  const blob = new Blob([xmlString], { type: 'text/xml' });
-  xmlFile = new File([blob], xmlFileName, { type: 'text/xml' });
-};
-
-const appendMessageToXmlFile = (isBot, message) => {
-  const xmlString = xmlSerializer.serializeToString(parser.parseFromString(`<message><isBot>${isBot}</isBot><text>${message}</text></message>`, 'text/xml'));
-  const blob = new Blob([xmlString], { type: 'text/xml' });
-  const reader = new FileReader();
-  reader.readAsText(blob);
-  reader.onloadend = () => {
-    const messageNode = parser.parseFromString(reader.result, 'text/xml').firstChild;
-    const messagesNode = parser.parseFromString(xmlFile.text, 'text/xml').firstChild;
-    messagesNode.appendChild(messageNode);
-    xmlFile = new File([messagesNode], xmlFileName, { type: 'text/xml' });
-    localStorage.setItem(xmlFileName, xmlSerializer.serializeToString(messagesNode));
-  };
-};
-
-const loadXmlFile = () => {
-  const xmlString = localStorage.getItem(xmlFileName);
-  if (xmlString) {
-    xmlFile = new File([xmlString], xmlFileName, { type: 'text/xml' });
-  } else {
-    createXmlFile();
-    localStorage.setItem(xmlFileName, xmlSerializer.serializeToString(xmlFile));
-  }
-};
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -137,6 +98,9 @@ const handleSubmit = async (e) => {
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
+  // scroll to the top of the chat container to show the new message
+  //chatContainer.scrollTop = 0;
+
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -145,7 +109,6 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        xmlMessages: messages.filter((message) => message.isXML).map((message) => message.message),
       }),
     });
 
@@ -185,40 +148,19 @@ const handleSubmit = async (e) => {
   setSummary(summarizedMessages);
 };
 
-  
 
-
-
-
-const getMessagesFromCache = async () => {
-  try {
-    const response = await fetch('chat_history.xml');
-    const xmlString = await response.text();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(xmlString, 'text/xml');
-    const messages = Array.from(xml.getElementsByTagName('message')).map((message) => message.textContent);
-    return messages;
-  } catch (err) {
-    console.error(err);
-    window.alert(`Error retrieving messages: ${err}`);
-    return [];
-  }
-};
-
-const summarizeMessages = async () => {
-  const messages = getMessagesFromCache();
-
+const summarizeMessages = async (messages) => {
   if (messages.length === 0) {
-    window.alert('No messages found');
     return '';
   }
 
   // Limit the number of messages to 10
-  const truncatedMessages = messages.slice(0, 10);
-  // Truncate each message to the first 50 characters
-  const truncatedAndFormattedMessages = truncatedMessages.map((message) => message.slice(0, 50) + '...');
+  messages = messages.slice(0, 10);
 
-  const prompt = `Please summarize the following messages:\n\n${truncatedAndFormattedMessages.join('\n')}\n`;
+  // Truncate each message to the first 50 characters
+  messages = messages.map((message) => message.slice(0, 50) + '...');
+
+  const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -232,29 +174,19 @@ const summarizeMessages = async () => {
 
     if (response.ok) {
       const data = await response.json();
-      if (data.summary === undefined) {
-        window.alert('Summary data not found');
-        throw new Error(`Summary data not found`);
-      }
-      const summary = data.summary.trim();
-      window.alert('Summarization successful! 2');
-      window.alert(`Captured message: ${summary}`);
+      const summary = data.summary?.trim() ?? '';
+      window.alert('Summarization successful!');
       return summary;
     } else {
       const err = await response.text();
-      window.alert(`Captured error: ${err}`);
       throw new Error(`Error ${response.status}: ${err}`);
     }
   } catch (err) {
     console.error(err);
-    window.alert(`Summarization failed: ${err}`);
+    window.alert('Summarization failed!');
     return '';
   }
 };
-
-
-
-
 
 chatContainer.addEventListener('scroll', () => {
   try {
