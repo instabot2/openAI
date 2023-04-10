@@ -159,6 +159,25 @@ const handleSubmit = async (e) => {
 };
 
 
+const writeMessageToFile = (isBot, messageXml) => {
+  // Generate a unique filename based on the current timestamp
+  const filename = `${Date.now()}.xml`;
+  // Create a new Blob with the message XML
+  const blob = new Blob([messageXml], { type: 'text/xml' });
+  // Create a new FileWriter
+  const fileWriter = new FileWriter();
+  // Define the onwriteend event handler
+  fileWriter.onwriteend = () => {
+    console.log(`Message written to file: ${filename}`);
+  };
+  // Define the onerror event handler
+  fileWriter.onerror = (err) => {
+    console.error(`Error writing message to file: ${err}`);
+  };
+  // Write the message XML to the file
+  fileWriter.write(blob);
+};
+
 
 
 
