@@ -217,9 +217,6 @@ const writeMessageToFile = (isBot, messageXml) => {
 
 
 
-
-
-
 chatContainer.addEventListener('scroll', () => {
   try {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
