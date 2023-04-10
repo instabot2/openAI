@@ -71,15 +71,15 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const form = e.target;
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
-
+  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
@@ -130,8 +130,7 @@ const handleSubmit = async (e) => {
         // Write the message to an XML file
         const messageXml = `<message isBot="true">${parsedData}</message>`;
         writeMessageToFile(true, messageXml);
-
-        alert(`XML message stored to computer or android: ${messageXml}`);
+        alert(`XML message stored to computer or android: ${messageXml}`);         
       });
     } else {
       const err = await response.text();
