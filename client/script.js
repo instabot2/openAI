@@ -114,7 +114,7 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = '';
 
     if (response.ok) {
-      window.alert(`OK`);
+      //window.alert(`OK`);
       
       const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
@@ -144,6 +144,7 @@ const handleSubmit = async (e) => {
   } catch (err) {
     messageDiv.innerHTML = err.message;
     console.error(err);
+    window.alert(`console.error: ${err}`);
   }
 
   // Store the user's message in local storage
