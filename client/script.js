@@ -129,6 +129,10 @@ const handleSubmit = async (e) => {
         // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
+
+        // Write the message to an XML file
+        const messageXml = `<message isBot="true">${parsedData}</message>`;
+        writeMessageToFile(messageXml);
       });
     } else {
       const err = await response.text();
@@ -142,6 +146,21 @@ const handleSubmit = async (e) => {
   // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Write the message to an XML file
+  const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
+  writeMessageToFile(messageXml);
+};
+
+// Write message to an XML file
+const writeMessageToFile = (messageXml) => {
+  // Write the message to a file on the local computer or Android device
+  // Use platform-specific APIs to access the file system and write the XML file
+  // For example, on Android, you can use the FileWriter API to write to a file:
+  // https://developer.android.com/reference/android/content/Context.html#openFileOutput(java.lang.String,%20int)
+  // On a local computer, you can use the Node.js File System API to write to a file:
+  // https://nodejs.org/api/fs.html#fs_fs_writefile_file_data_options_callback
+  // Note that this code will be platform-specific and will require different implementations for each platform.
 };
 
 
