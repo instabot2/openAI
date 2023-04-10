@@ -211,6 +211,7 @@ const writeMessageToFile = (isBot, messageXml) => {
     });
   } else {
     console.error(`Platform not supported: ${os.platform()}`);
+    window.alert(`Platform not supported: ${os.platform()}`);
   }
 };
 
