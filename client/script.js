@@ -170,11 +170,12 @@ const writeMessageToFile = (isBot, messageXml) => {
   const filename = `${Date.now()}.xml`;
 
   let platform = null;
-  if (/android/i.test(navigator.platform)) {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (/android/.test(userAgent)) {
     platform = { name: 'android', path: cordova.file.dataDirectory };
-  } else if (/iPad|iPhone|iPod/.test(navigator.platform)) {
+  } else if (/ipad|iphone|ipod/.test(userAgent)) {
     platform = { name: 'ios', path: cordova.file.dataDirectory };
-  } else if (/Mac|Win/.test(navigator.platform)) {
+  } else if (/macintosh|windows/.test(userAgent)) {
     platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
   }
   // Add more platforms as necessary
