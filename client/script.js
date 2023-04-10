@@ -131,6 +131,8 @@ const handleSubmit = async (e) => {
         const messageXml = `<message isBot="true">${parsedData}</message>`;
         writeMessageToFile(true, messageXml);
         //alert(`XML message stored to computer or android: ${messageXml}`);         
+        // add call to writeMessageToFile function
+        writeMessageToFile(true, messageXml);
       });
     } else {
       const err = await response.text();
@@ -149,8 +151,12 @@ const handleSubmit = async (e) => {
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
   setSummary(summarizedMessages);
-};
 
+  // Write the message to an XML file
+  const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
+  writeMessageToFile(false, messageXml);
+  //alert(`XML message stored to computer or android: ${messageXml}`);  
+};
 
 
 
