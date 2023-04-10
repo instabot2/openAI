@@ -130,7 +130,7 @@ const handleSubmit = async (e) => {
         // Write the message to an XML file
         const messageXml = `<message isBot="true">${parsedData}</message>`;
         writeMessageToFile(true, messageXml);
-        alert(`XML message stored to computer or android: ${messageXml}`);         
+        //alert(`XML message stored to computer or android: ${messageXml}`);         
       });
     } else {
       const err = await response.text();
@@ -155,6 +155,57 @@ const writeMessageToFile = (isBot, messageXml) => {
   // For the sake of example, we can log the XML message string to the console instead
   console.log(messageXml);
 };
+
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
+// Write message to an XML file
+const writeMessageToFile = (isBot, messageXml) => {
+  // Generate a unique filename based on the current timestamp
+  const filename = `${Date.now()}.xml`;
+
+  // Check if the platform is Android or not
+  if (os.platform() === 'android') {
+    // Write the message XML to a file in the app's private storage directory
+    const privateDir = '/data/data/com.example.myapp/files/chatgpt/messages';
+    fs.mkdir(privateDir, { recursive: true }, (err) => {
+      if (err) {
+        console.error(`Error creating directory: ${err}`);
+      } else {
+        const filepath = path.join(privateDir, filename);
+        fs.writeFile(filepath, messageXml, (err) => {
+          if (err) {
+            console.error(`Error writing message to file: ${err}`);
+          } else {
+            console.log(`Message written to file: ${filepath}`);
+          }
+        });
+      }
+    });
+  } else {
+    // Write the message XML to a file in the chatgpt/messages directory
+    const dirPath = 'chatgpt/messages';
+    fs.mkdir(dirPath, { recursive: true }, (err) => {
+      if (err) {
+        console.error(`Error creating directory: ${err}`);
+      } else {
+        const filepath = path.join(dirPath, filename);
+        fs.writeFile(filepath, messageXml, (err) => {
+          if (err) {
+            console.error(`Error writing message to file: ${err}`);
+          } else {
+            console.log(`Message written to file: ${filepath}`);
+          }
+        });
+      }
+    });
+  }
+};
+
+
+
+
 
 
 
