@@ -162,21 +162,56 @@ const handleSubmit = async (e) => {
 const writeMessageToFile = (isBot, messageXml) => {
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
-  // Create a new Blob with the message XML
-  const blob = new Blob([messageXml], { type: 'text/xml' });
-  // Create a new FileWriter
-  const fileWriter = new FileWriter();
-  // Define the onwriteend event handler
-  fileWriter.onwriteend = () => {
-    console.log(`Message written to file: ${filename}`);
-  };
-  // Define the onerror event handler
-  fileWriter.onerror = (err) => {
-    console.error(`Error writing message to file: ${err}`);
-  };
-  // Write the message XML to the file
-  fileWriter.write(blob);
+  
+  // Check if the platform is Android or not
+  if (os.platform() === 'android') {
+    // Use the Android-specific filesystem API to write the file
+    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, (dir) => {
+      dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
+        subdir.getFile(filename, { create: true }, (fileEntry) => {
+          fileEntry.createWriter((fileWriter) => {
+            // Write the message XML to the file
+            const blob = new Blob([messageXml], { type: 'text/xml' });
+            fileWriter.write(blob);
+            console.log(`Message written to file: ${fileEntry.nativeURL}`);
+          }, (err) => {
+            console.error(`Error creating file writer: ${err}`);
+          });
+        }, (err) => {
+          console.error(`Error creating file: ${err}`);
+        });
+      }, (err) => {
+        console.error(`Error creating directory: ${err}`);
+      });
+    }, (err) => {
+      console.error(`Error resolving local filesystem URL: ${err}`);
+    });
+  } else {
+    // Use the generic filesystem API to write the file
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, (fs) => {
+      fs.root.getDirectory('chatgpt/messages', { create: true }, (dir) => {
+        dir.getFile(filename, { create: true }, (fileEntry) => {
+          fileEntry.createWriter((fileWriter) => {
+            // Write the message XML to the file
+            const blob = new Blob([messageXml], { type: 'text/xml' });
+            fileWriter.write(blob);
+            console.log(`Message written to file: ${fileEntry.nativeURL}`);
+          }, (err) => {
+            console.error(`Error creating file writer: ${err}`);
+          });
+        }, (err) => {
+          console.error(`Error creating file: ${err}`);
+        });
+      }, (err) => {
+        console.error(`Error creating directory: ${err}`);
+      });
+    }, (err) => {
+      console.error(`Error requesting filesystem: ${err}`);
+    });
+  }
 };
+
+
 
 
 
