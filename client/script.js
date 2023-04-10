@@ -72,8 +72,6 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-const fs = require('fs');
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -128,19 +126,9 @@ const handleSubmit = async (e) => {
         // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
-        // Store the message in local storage and XML file
+        // Store the message in local storage
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
-        const xmlMessages = messages.map((message) => {
-          return `<message isBot="${message.isBot}">${message.message}</message>`;
-        }).join('');
-        fs.writeFile('messages.xml', `<messages>${xmlMessages}</messages>`, (err) => {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log('Messages saved to XML file');
-          }
-        });
       });
     } else {
       const err = await response.text();
@@ -151,78 +139,11 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 
-  // Store the user's message in local storage and XML file
+  // Store the user's message in local storage
   messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
-  const xmlMessages = messages.map((message) => {
-    return `<message isBot="${message.isBot}">${message.message}</message>`;
-  }).join('');
-  fs.writeFile('messages.xml', `<messages>${xmlMessages}</messages>`, (err) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log('Messages saved to XML file');
-    }
-  });
-
-  // Summarize previous messages and display
-  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
-  const summarizedMessages = await summarizeMessages(previousMessages);
-  setSummary(summarizedMessages);
 };
 
-
-
-
-// Summarize an array of messages using ChatGPT
-const summarizeMessages = async (messages) => {
-  // Check if there are any messages to summarize
-  if (messages.length === 0) {
-    return '';
-  }
-
-  // Limit the number of messages to 10
-  messages = messages.slice(0, 10);
-
-  // Truncate each message to the first 50 characters
-  messages = messages.map((message) => message.slice(0, 50) + '...');
-
-  // Construct the prompt for the summarization API
-  const prompt = `Please summarize the following messages:\n\n${messages.join('\n')}\n`;
-
-  try {
-    // Call the summarization API with the prompt
-    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt,
-      }),
-    });
-
-    // Check if the API call was successful
-    if (response.ok) {
-      // Get the summary from the API response
-      const data = await response.json();
-      const summary = data.summary?.trim() ?? '';
-
-      // Show a success message with the summary
-      window.alert(`Summarization successful!: ${summary}`);
-      return summary;
-    } else {
-      // Show an error message with the status code and error message
-      const err = await response.text();
-      throw new Error(`Error ${response.status}: ${err}`);
-    }
-  } catch (err) {
-    // Show an error message if the API call failed
-    console.error(err);
-    window.alert('Summarization failed!');
-    return '';
-  }
-};
 
 
 
