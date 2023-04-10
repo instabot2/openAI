@@ -137,6 +137,7 @@ const handleSubmit = async (e) => {
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
+      window.alert(`Error: ${err}`);
     }
   } catch (err) {
     messageDiv.innerHTML = err.message;
