@@ -130,7 +130,7 @@ const handleSubmit = async (e) => {
         // Write the message to an XML file
         const messageXml = `<message isBot="true">${parsedData}</message>`;
         writeMessageToFile(true, messageXml);
-        alert(`XML message stored to computer or android: ${messageXml}`);         
+        window.alert(`XML message stored to computer or android: ${messageXml}`);         
         // add call to writeMessageToFile function
         writeMessageToFile(true, messageXml);
       });
@@ -155,11 +155,13 @@ const handleSubmit = async (e) => {
   // Write the message to an XML file
   const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
   writeMessageToFile(false, messageXml);
-  alert(`XML message stored to computer or android: ${messageXml}`);  
+  window.alert(`XML message stored to computer or android: ${messageXml}`);  
 };
 
 
 const writeMessageToFile = (isBot, messageXml) => {
+  window.alert(`writeMessageToFile activate`);
+  
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
   
