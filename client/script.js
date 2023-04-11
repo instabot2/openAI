@@ -176,53 +176,55 @@ const handleSubmit = async (e) => {
 const writeMessageToFile = (isBot, messageXml) => {
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
-  let platform = null;
-  if (/android/i.test(navigator.platform)) {
-    platform = { name: 'android', path: cordova.file.dataDirectory };
-  } else if (/iPad|iPhone|iPod/.test(navigator.platform)) {
-    platform = { name: 'ios', path: cordova.file.dataDirectory };
-  } else if (/Mac|Win/.test(navigator.platform)) {
-    if (window.LocalFileSystem) {
-      platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
-    }
-  }
-  // Add more platforms as necessary
-  alert(`Platform: ${navigator.platform}`);
   
-  if (platform) { 
-    window.resolveLocalFileSystemURL(platform.path, (dir) => {
-      dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
-        subdir.getFile(filename, { create: true }, (fileEntry) => {
-          fileEntry.createWriter((fileWriter) => {
-            // Write the message XML to the file
-            const blob = new Blob([messageXml], { type: 'text/xml' });
-            fileWriter.write(blob);
-            console.log(`Message written to file: ${fileEntry.nativeURL}`);
-            // Show alert message
-            alert(`Message written to file: ${fileEntry.nativeURL}`);
+  const platforms = [
+    { name: 'android', test: /android/i, path: cordova.file.dataDirectory },
+    { name: 'ios', test: /iPad|iPhone|iPod/.test(navigator.platform), path: cordova.file.dataDirectory },
+    { name: 'computer', test: /Mac|Win/.test(navigator.platform) && window.LocalFileSystem, path: LocalFileSystem.PERSISTENT }
+    // Add more platforms as necessary
+  ];
+  
+  let platformMatched = false;
+  for (let i = 0; i < platforms.length; i++) {
+    const platform = platforms[i];
+    
+    if (platform.test) {
+      window.resolveLocalFileSystemURL(platform.path, (dir) => {
+        dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
+          subdir.getFile(filename, { create: true }, (fileEntry) => {
+            fileEntry.createWriter((fileWriter) => {
+              // Write the message XML to the file
+              const blob = new Blob([messageXml], { type: 'text/xml' });
+              fileWriter.write(blob);
+              console.log(`Message written to file: ${fileEntry.nativeURL}`);
+              // Show alert message
+              alert(`Message written to file: ${fileEntry.nativeURL}\n\nUsing platform: ${platform.name}`);
+            }, (err) => {
+              console.error(`Error creating file writer: ${err}`);
+              alert(`Error creating file writer: ${err}`);
+            });
           }, (err) => {
-            console.error(`Error creating file writer: ${err}`);
-            alert(`Error creating file writer: ${err}`);
+            console.error(`Error creating file: ${err}`);
+            alert(`Error creating file: ${err}`);
           });
         }, (err) => {
-          console.error(`Error creating file: ${err}`);
-          alert(`Error creating file: ${err}`);
+          console.error(`Error creating directory: ${err}`);
+          alert(`Error creating directory: ${err}`);
         });
       }, (err) => {
-        console.error(`Error creating directory: ${err}`);
-        alert(`Error creating directory: ${err}`);
+        console.error(`Error resolving local filesystem URL: ${err}`);
+        alert(`Error resolving local filesystem URL: ${err}`);
       });
-    }, (err) => {
-      console.error(`Error resolving local filesystem URL: ${err}`);
-      alert(`Error resolving local filesystem URL: ${err}`);
-    });
-  } else {
+      platformMatched = true;
+      break; // exit loop when a platform is matched
+    }
+  }
+  
+  if (!platformMatched) {
     console.error(`Platform not supported: ${navigator.platform}`);
     alert(`Platform not supported: ${navigator.platform}`);
   }
 };
-
-
 
 
 
