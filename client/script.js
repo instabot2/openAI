@@ -182,15 +182,15 @@ const writeMessageToFile = (isBot, messageXml) => {
   const directory = isBot ? 'cache' : 'data';
   const filename = `${Date.now()}.xml`;
   const filePath = path.join('chatgpt', 'messages', filename);
-  const fullPath = path.join(directory, filePath);
+  const fullPath = path.join(__dirname, directory, filePath);
 
   try {
     // Convert XML to JSON
     const messageJson = xml.xml2json(messageXml, { compact: true, spaces: 2 });
 
     // Check if the directory exists
-    if (!fs.existsSync(directory)) {
-      fs.mkdirSync(directory, { recursive: true });
+    if (!fs.existsSync(path.join(__dirname, directory))) {
+      fs.mkdirSync(path.join(__dirname, directory), { recursive: true });
     }
 
     // Write JSON to file
@@ -208,6 +208,7 @@ const writeMessageToFile = (isBot, messageXml) => {
 
 
 
+
 chatContainer.addEventListener('scroll', () => {
   try {
     const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop === chatContainer.clientHeight;
@@ -219,7 +220,6 @@ chatContainer.addEventListener('scroll', () => {
     //alert('Error checking if at bottom of chat container.');
   }
 });
-
 
 window.addEventListener('resize', () => {
   // check if user has scrolled up before resizing
