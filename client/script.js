@@ -173,24 +173,21 @@ const handleSubmit = async (e) => {
   }
 };
 
-
 const writeMessageToFile = (isBot, messageXml) => {
-  //window.alert(`writeMessageToFile activate`);
-  window.alert(`platform`);
-  
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
-
   let platform = null;
   if (/android/i.test(navigator.platform)) {
     platform = { name: 'android', path: cordova.file.dataDirectory };
   } else if (/iPad|iPhone|iPod/.test(navigator.platform)) {
     platform = { name: 'ios', path: cordova.file.dataDirectory };
   } else if (/Mac|Win/.test(navigator.platform)) {
-    platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
+    if (window.LocalFileSystem) {
+      platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
+    }
   }
   // Add more platforms as necessary
-  
+
   if (platform) {
     window.alert(`XML message stored to ${platform.name}`);
 
@@ -206,20 +203,26 @@ const writeMessageToFile = (isBot, messageXml) => {
             alert(`Message written to file: ${fileEntry.nativeURL}`);
           }, (err) => {
             console.error(`Error creating file writer: ${err}`);
+            alert(`Error creating file writer: ${err}`);
           });
         }, (err) => {
           console.error(`Error creating file: ${err}`);
+          alert(`Error creating file: ${err}`);
         });
       }, (err) => {
         console.error(`Error creating directory: ${err}`);
+        alert(`Error creating directory: ${err}`);
       });
     }, (err) => {
       console.error(`Error resolving local filesystem URL: ${err}`);
+      alert(`Error resolving local filesystem URL: ${err}`);
     });
   } else {
     console.error(`Platform not supported: ${navigator.platform}`);
+    alert(`Platform not supported: ${navigator.platform}`);
   }
 };
+
 
 
 
