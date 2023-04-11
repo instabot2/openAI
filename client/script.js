@@ -181,7 +181,7 @@ const path = require('path');
 const writeMessageToFile = (isBot, messageXml) => {
   const directory = isBot ? 'cache' : 'data';
   const filename = `${Date.now()}.xml`;
-  const filePath = path.join('chatgpt', 'messages', filename);
+  const filePath = path.join('messages', filename);
   const fullPath = path.join(__dirname, directory, filePath);
 
   try {
