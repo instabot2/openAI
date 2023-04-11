@@ -173,58 +173,60 @@ const handleSubmit = async (e) => {
   }
 };
 
-const writeMessageToFile = (isBot, messageXml) => {
+
+import { FilesystemDirectory, FilesystemEncoding, Plugins } from '@capacitor/core';
+const { Filesystem } = Plugins;
+const writeMessageToFile = async (isBot, messageXml) => {
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
+  const directory = isBot ? FilesystemDirectory.Cache : FilesystemDirectory.Data;
   
-  const platforms = [
-    { name: 'android', test: /android/i, path: cordova.file.dataDirectory },
-    { name: 'ios', test: /iPad|iPhone|iPod/.test(navigator.platform), path: cordova.file.dataDirectory },
-    { name: 'computer', test: /Mac|Win/.test(navigator.platform) && window.LocalFileSystem, path: LocalFileSystem.PERSISTENT }
-    // Add more platforms as necessary
-  ];
-  
-  let platformMatched = false;
-  for (let i = 0; i < platforms.length; i++) {
-    const platform = platforms[i];
+  try {
+    // Check if the directory already exists
+    const directoryExists = await Filesystem.readdir({
+      path: 'chatgpt/messages',
+      directory
+    });
     
-    if (platform.test) {
-      window.resolveLocalFileSystemURL(platform.path, (dir) => {
-        dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
-          subdir.getFile(filename, { create: true }, (fileEntry) => {
-            fileEntry.createWriter((fileWriter) => {
-              // Write the message XML to the file
-              const blob = new Blob([messageXml], { type: 'text/xml' });
-              fileWriter.write(blob);
-              console.log(`Message written to file: ${fileEntry.nativeURL}`);
-              // Show alert message
-              alert(`Message written to file: ${fileEntry.nativeURL}\n\nUsing platform: ${platform.name}`);
-            }, (err) => {
-              console.error(`Error creating file writer: ${err}`);
-              alert(`Error creating file writer: ${err}`);
-            });
-          }, (err) => {
-            console.error(`Error creating file: ${err}`);
-            alert(`Error creating file: ${err}`);
-          });
-        }, (err) => {
-          console.error(`Error creating directory: ${err}`);
-          alert(`Error creating directory: ${err}`);
-        });
-      }, (err) => {
-        console.error(`Error resolving local filesystem URL: ${err}`);
-        alert(`Error resolving local filesystem URL: ${err}`);
+    // Write the message XML to the file if the directory exists
+    if (directoryExists) {
+      await Filesystem.writeFile({
+        path: `chatgpt/messages/${filename}`,
+        directory,
+        data: messageXml,
+        encoding: FilesystemEncoding.UTF8,
+        recursive: true
       });
-      platformMatched = true;
-      break; // exit loop when a platform is matched
+      
+      console.log(`Message written to file: ${directory}/${filename}`);
+      // Show alert message
+      alert(`Message written to file: ${directory}/${filename}`);
+    } else {
+      // Create the directory and then write the message XML to the file
+      await Filesystem.mkdir({
+        path: 'chatgpt/messages',
+        directory,
+        recursive: true
+      });
+      
+      await Filesystem.writeFile({
+        path: `chatgpt/messages/${filename}`,
+        directory,
+        data: messageXml,
+        encoding: FilesystemEncoding.UTF8,
+        recursive: true
+      });
+      
+      console.log(`Message written to file: ${directory}/${filename}`);
+      // Show alert message
+      alert(`Message written to file: ${directory}/${filename}`);
     }
-  }
-  
-  if (!platformMatched) {
-    console.error(`Platform not supported: ${navigator.platform}`);
-    alert(`Platform not supported: ${navigator.platform}`);
+  } catch (err) {
+    console.error(`Error writing message to file: ${err}`);
+    alert(`Error writing message to file: ${err}`);
   }
 };
+
 
 
 
