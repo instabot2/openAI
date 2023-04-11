@@ -79,7 +79,7 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
-  
+
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
@@ -114,8 +114,8 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = '';
 
     if (response.ok) {
-      //window.alert(`OK`);
-      
+      // window.alert(`OK`);
+
       const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
@@ -130,11 +130,15 @@ const handleSubmit = async (e) => {
         localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the message to an XML file
-        const messageXml = `<message isBot="true">${parsedData}</message>`;
-        writeMessageToFile(true, messageXml);
-        window.alert(`response ok 1`);         
-        // add call to writeMessageToFile function
-        writeMessageToFile(true, messageXml);
+        let messageXml;
+        try {
+          messageXml = `<message isBot="true">${parsedData}</message>`;
+          writeMessageToFile(true, messageXml);
+          window.alert(`response ok 1`);
+        } catch (err) {
+          console.error(err);
+          window.alert(`Error in writing message to file: ${err.message}`);
+        }
       });
     } else {
       const err = await response.text();
@@ -158,9 +162,15 @@ const handleSubmit = async (e) => {
   window.alert(`summarizedMessages`);
 
   // Write the message to an XML file
-  const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-  writeMessageToFile(false, messageXml);
-  window.alert(`response ok 2`);  
+  let messageXml;
+  try {
+    messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
+    writeMessageToFile(false, messageXml);
+    window.alert(`response ok 2`);
+  } catch (err) {
+    console.error(err);
+    window.alert(`Error in writing message to file: ${err.message}`);
+  }
 };
 
 
