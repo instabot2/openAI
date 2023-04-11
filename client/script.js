@@ -178,8 +178,7 @@ const writeMessageToFile = (isBot, messageXml) => {
     platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
   }
   // Add more platforms as necessary
-  window.alert(`platform: ${platform}`);
-  
+  //window.alert(`platform: ${platform}`);
   
   if (platform) {
     window.alert(`XML message stored to ${platform.name}`);
