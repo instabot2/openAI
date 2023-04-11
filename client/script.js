@@ -177,28 +177,48 @@ const handleSubmit = async (e) => {
 function writeMessageToFile(isBot, messageXml) {
   // Set the filename and path for the XML file
   const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const dirPath = './chatgpt_xml/';
+  const dirPath = 'chatgpt_xml/';
   const filePath = `${dirPath}${filename}`;
-  
+
   // Create a new XML document and add the message to it
   const xmlDoc = document.implementation.createDocument(null, 'messages');
   const messageNode = xmlDoc.createElement('message');
   messageNode.setAttribute('isBot', isBot.toString());
   messageNode.textContent = messageXml;
   xmlDoc.documentElement.appendChild(messageNode);
-  
-  // Convert the XML document to a Blob object
+
+  // Convert the XML document to a string
   const serializer = new XMLSerializer();
   const xmlString = serializer.serializeToString(xmlDoc);
+
+  // Create a new Blob object with the XML data
   const blob = new Blob([xmlString], { type: 'text/xml' });
 
   // Create a new directory if it doesn't exist
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath);
-  }
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/create-directory', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({ path: dirPath }));
 
-  // Save the file to the specified path
-  fs.writeFileSync(filePath, blob, { flag: 'w+' });
+  xhr.onload = function () {
+    if (xhr.status !== 200) {
+      console.error('Error creating directory:', xhr.statusText);
+    } else {
+      console.log('Directory created:', xhr.responseText);
+      // Save the file to the specified path
+      const xhr2 = new XMLHttpRequest();
+      xhr2.open('POST', '/save-file', true);
+      xhr2.setRequestHeader('Content-Type', 'application/json');
+      xhr2.send(JSON.stringify({ path: filePath, data: xmlString }));
+      xhr2.onload = function () {
+        if (xhr2.status !== 200) {
+          console.error('Error saving file:', xhr2.statusText);
+        } else {
+          console.log('File saved:', xhr2.responseText);
+        }
+      };
+    }
+  };
 }
 
 
