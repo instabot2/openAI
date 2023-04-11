@@ -132,7 +132,7 @@ const handleSubmit = async (e) => {
         // Write the message to an XML file
         const messageXml = `<message isBot="true">${parsedData}</message>`;
         writeMessageToFile(true, messageXml);
-        window.alert(`response ok`);         
+        window.alert(`response ok 1`);         
         // add call to writeMessageToFile function
         writeMessageToFile(true, messageXml);
       });
@@ -155,6 +155,7 @@ const handleSubmit = async (e) => {
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
   setSummary(summarizedMessages);
+  window.alert(`summarizedMessages`);
 
   // Write the message to an XML file
   const messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
