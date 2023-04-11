@@ -174,33 +174,33 @@ const handleSubmit = async (e) => {
 };
 
 
-const fs = require('fs');
-const path = require('path');
-
 function writeMessageToFile(isBot, messageXml) {
+  // Set the filename and path for the XML file
   const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const dirPath = 'chatgpt_xml';
-  const filePath = path.join(dirPath, filename);
-
-  const xmlDoc = new DOMParser().parseFromString(messageXml, 'application/xml');
-  xmlDoc.documentElement.setAttribute('isBot', isBot.toString());
-
-  const xmlString = new XMLSerializer().serializeToString(xmlDoc);
-
-  // create the directory if it doesn't exist
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath);
-  }
-
-  // write the XML file
-  fs.writeFile(filePath, xmlString, (err) => {
-    if (err) {
-      console.error('Error writing file:', err);
-    } else {
-      console.log(`File saved to ${filePath}`);
-    }
-  });
+  const filePath = `/path/to/directory/${filename}`;
+  
+  // Create a new XML document and add the message to it
+  const xmlDoc = document.implementation.createDocument(null, 'messages');
+  const messageNode = xmlDoc.createElement('message');
+  messageNode.setAttribute('isBot', isBot.toString());
+  messageNode.textContent = messageXml;
+  xmlDoc.documentElement.appendChild(messageNode);
+  
+  // Convert the XML document to a Blob object
+  const serializer = new XMLSerializer();
+  const xmlString = serializer.serializeToString(xmlDoc);
+  const blob = new Blob([xmlString], { type: 'text/xml' });
+  
+  // Save the Blob object to a file using the File API
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
+
+
 
 
 
