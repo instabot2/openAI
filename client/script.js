@@ -177,27 +177,46 @@ const handleSubmit = async (e) => {
 function writeMessageToFile(isBot, messageXml) {
   // Set the filename and path for the XML file
   const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const filePath = `/path/to/directory/${filename}`;
-  
+  const dirPath = 'chatgpt_xml/';
+  const filePath = `${dirPath}chatgpt.xml`;
+
   // Create a new XML document and add the message to it
   const xmlDoc = document.implementation.createDocument(null, 'messages');
   const messageNode = xmlDoc.createElement('message');
   messageNode.setAttribute('isBot', isBot.toString());
   messageNode.textContent = messageXml;
   xmlDoc.documentElement.appendChild(messageNode);
-  
+
   // Convert the XML document to a Blob object
   const serializer = new XMLSerializer();
   const xmlString = serializer.serializeToString(xmlDoc);
   const blob = new Blob([xmlString], { type: 'text/xml' });
-  
-  // Save the Blob object to a file using the File API
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+
+  // Create a new directory if it doesn't exist
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/create-directory', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({ path: dirPath }));
+
+  xhr.onload = function () {
+    if (xhr.status !== 200) {
+      console.error('Error creating directory:', xhr.statusText);
+    } else {
+      console.log('Directory created:', xhr.responseText);
+      // Save the file to the specified path
+      const xhr2 = new XMLHttpRequest();
+      xhr2.open('POST', '/save-file', true);
+      xhr2.setRequestHeader('Content-Type', 'application/json');
+      xhr2.send(JSON.stringify({ path: filePath, data: xmlString }));
+      xhr2.onload = function () {
+        if (xhr2.status !== 200) {
+          console.error('Error saving file:', xhr2.statusText);
+        } else {
+          console.log('File saved:', xhr2.responseText);
+        }
+      };
+    }
+  };
 }
 
 
