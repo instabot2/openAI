@@ -186,11 +186,18 @@ function writeMessageToFile(isBot, messageXml) {
   messageNode.textContent = messageXml;
   xmlDoc.documentElement.appendChild(messageNode);
   
-  // Convert the XML document to a string and write it to the file
+  // Convert the XML document to a Blob object
   const serializer = new XMLSerializer();
   const xmlString = serializer.serializeToString(xmlDoc);
-  const fs = require('fs');
-  fs.writeFileSync(filePath, xmlString);
+  const blob = new Blob([xmlString], { type: 'text/xml' });
+  
+  // Save the Blob object to a file using the File API
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 
