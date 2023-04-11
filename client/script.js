@@ -187,11 +187,9 @@ const writeMessageToFile = (isBot, messageXml) => {
     }
   }
   // Add more platforms as necessary
-
-  if (platform) {
-    
-    window.alert(`XML message stored to ${platform}`);
-    
+  alert(`Platform: ${navigator.platform}`);
+  
+  if (platform) { 
     window.resolveLocalFileSystemURL(platform.path, (dir) => {
       dir.getDirectory('chatgpt/messages', { create: true }, (subdir) => {
         subdir.getFile(filename, { create: true }, (fileEntry) => {
