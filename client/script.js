@@ -164,8 +164,9 @@ const handleSubmit = async (e) => {
 
 
 const writeMessageToFile = (isBot, messageXml) => {
-  window.alert(`writeMessageToFile activate`);
-
+  //window.alert(`writeMessageToFile activate`);
+  window.alert(`platform`);
+  
   // Generate a unique filename based on the current timestamp
   const filename = `${Date.now()}.xml`;
 
@@ -178,7 +179,6 @@ const writeMessageToFile = (isBot, messageXml) => {
     platform = { name: 'computer', path: LocalFileSystem.PERSISTENT };
   }
   // Add more platforms as necessary
-  window.alert(`platform`);
   
   if (platform) {
     window.alert(`XML message stored to ${platform.name}`);
