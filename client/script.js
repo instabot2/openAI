@@ -174,59 +174,36 @@ const handleSubmit = async (e) => {
 };
 
 
-import { FilesystemDirectory, FilesystemEncoding, Plugins } from '@capacitor/core';
-const { Filesystem } = Plugins;
-const writeMessageToFile = async (isBot, messageXml) => {
-  // Generate a unique filename based on the current timestamp
+const xml = require('xml-js');
+const fs = require('fs');
+const path = require('path');
+
+const writeMessageToFile = (isBot, messageXml) => {
+  const directory = isBot ? 'cache' : 'data';
   const filename = `${Date.now()}.xml`;
-  const directory = isBot ? FilesystemDirectory.Cache : FilesystemDirectory.Data;
-  
+  const filePath = path.join('chatgpt', 'messages', filename);
+  const fullPath = path.join(directory, filePath);
+
   try {
-    // Check if the directory already exists
-    const directoryExists = await Filesystem.readdir({
-      path: 'chatgpt/messages',
-      directory
-    });
-    
-    // Write the message XML to the file if the directory exists
-    if (directoryExists) {
-      await Filesystem.writeFile({
-        path: `chatgpt/messages/${filename}`,
-        directory,
-        data: messageXml,
-        encoding: FilesystemEncoding.UTF8,
-        recursive: true
-      });
-      
-      console.log(`Message written to file: ${directory}/${filename}`);
-      // Show alert message
-      alert(`Message written to file: ${directory}/${filename}`);
-    } else {
-      // Create the directory and then write the message XML to the file
-      await Filesystem.mkdir({
-        path: 'chatgpt/messages',
-        directory,
-        recursive: true
-      });
-      
-      await Filesystem.writeFile({
-        path: `chatgpt/messages/${filename}`,
-        directory,
-        data: messageXml,
-        encoding: FilesystemEncoding.UTF8,
-        recursive: true
-      });
-      
-      console.log(`Message written to file: ${directory}/${filename}`);
-      // Show alert message
-      alert(`Message written to file: ${directory}/${filename}`);
+    // Convert XML to JSON
+    const messageJson = xml.xml2json(messageXml, { compact: true, spaces: 2 });
+
+    // Check if the directory exists
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory, { recursive: true });
     }
+
+    // Write JSON to file
+    fs.writeFileSync(fullPath, messageJson);
+
+    console.log(`Message written to file: ${fullPath}`);
+    // Show alert message
+    alert(`Message written to file: ${fullPath}`);
   } catch (err) {
     console.error(`Error writing message to file: ${err}`);
     alert(`Error writing message to file: ${err}`);
   }
 };
-
 
 
 
