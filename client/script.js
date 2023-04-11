@@ -177,7 +177,8 @@ const handleSubmit = async (e) => {
 function writeMessageToFile(isBot, messageXml) {
   // Set the filename and path for the XML file
   const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const filePath = `/path/to/directory/${filename}`;
+  const dirPath = './chatgpt_xml/';
+  const filePath = `${dirPath}${filename}`;
   
   // Create a new XML document and add the message to it
   const xmlDoc = document.implementation.createDocument(null, 'messages');
@@ -190,14 +191,14 @@ function writeMessageToFile(isBot, messageXml) {
   const serializer = new XMLSerializer();
   const xmlString = serializer.serializeToString(xmlDoc);
   const blob = new Blob([xmlString], { type: 'text/xml' });
-  
-  // Save the Blob object to a file using the File API
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+
+  // Create a new directory if it doesn't exist
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath);
+  }
+
+  // Save the file to the specified path
+  fs.writeFileSync(filePath, blob, { flag: 'w+' });
 }
 
 
