@@ -174,37 +174,24 @@ const handleSubmit = async (e) => {
 };
 
 
-const xml = require('xml-js');
-const fs = require('fs');
-const path = require('path');
-
-const writeMessageToFile = (isBot, messageXml) => {
-  const directory = isBot ? 'cache' : 'data';
-  const filename = `${Date.now()}.xml`;
-  const filePath = path.join('messages', filename);
-  const fullPath = path.join(__dirname, directory, filePath);
-
-  try {
-    // Convert XML to JSON
-    const messageJson = xml.xml2json(messageXml, { compact: true, spaces: 2 });
-
-    // Check if the directory exists
-    if (!fs.existsSync(path.join(__dirname, directory))) {
-      fs.mkdirSync(path.join(__dirname, directory), { recursive: true });
-    }
-
-    // Write JSON to file
-    fs.writeFileSync(fullPath, messageJson);
-
-    console.log(`Message written to file: ${fullPath}`);
-    // Show alert message
-    alert(`Message written to file: ${fullPath}`);
-  } catch (err) {
-    console.error(`Error writing message to file: ${err}`);
-    alert(`Error writing message to file: ${err}`);
-  }
-};
-
+function writeMessageToFile(isBot, messageXml) {
+  // Set the filename and path for the XML file
+  const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
+  const filePath = `/path/to/directory/${filename}`;
+  
+  // Create a new XML document and add the message to it
+  const xmlDoc = document.implementation.createDocument(null, 'messages');
+  const messageNode = xmlDoc.createElement('message');
+  messageNode.setAttribute('isBot', isBot.toString());
+  messageNode.textContent = messageXml;
+  xmlDoc.documentElement.appendChild(messageNode);
+  
+  // Convert the XML document to a string and write it to the file
+  const serializer = new XMLSerializer();
+  const xmlString = serializer.serializeToString(xmlDoc);
+  const fs = require('fs');
+  fs.writeFileSync(filePath, xmlString);
+}
 
 
 
