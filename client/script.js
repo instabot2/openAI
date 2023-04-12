@@ -175,7 +175,7 @@ async function getFilePath(fileName) {
     const entries = await downloadsDir.getEntries();
     const matchingFile = entries.find(entry => entry.isFile && entry.name === fileName);
     if (matchingFile) {
-      return matchingFile.nativePath;
+      return matchingFile;
     } else {
       throw new Error(`File '${fileName}' not found in Downloads directory.`);
     }
@@ -192,17 +192,21 @@ function writeMessageToFile(isBot, messageXml) {
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
   a.href = url;
-  a.download = fileName;
-  document.body.appendChild(a);
+  a.setAttribute('download', fileName);
   
-  getFilePath(fileName).then(filePath => {
-    if (filePath) {
-      a.setAttribute('download', filePath);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 0);
+  getFilePath(fileName).then(fileHandle => {
+    if (fileHandle) {
+      fileHandle.createWritable().then(writer => {
+        writer.write(file).then(() => {
+          console.log(`File '${fileName}' saved in Downloads directory.`);
+        }).catch(error => {
+          console.error(error);
+          alert(`Error saving file '${fileName}'.`);
+        });
+      }).catch(error => {
+        console.error(error);
+        alert(`Error creating writable file '${fileName}'.`);
+      });
     }
   }).catch(error => {
     console.error(error);
