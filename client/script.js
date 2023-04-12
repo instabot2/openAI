@@ -169,19 +169,24 @@ const handleSubmit = async (e) => {
 
 function writeMessageToFile(isBot, messageXml) {
   const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const file = new Blob([messageXml], {type: 'text/plain'});
+  const file = new Blob([messageXml], {type: 'text/xml'});
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
   a.href = url;
   a.download = fileName;
-  
-  document.body.appendChild(a);
+
+  // Save the file to the "memory" array
+  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
+  memory.push({ fileName, url });
+  localStorage.setItem('memory', JSON.stringify(memory));
+
   a.click();
+  
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 0);
-  
+
   a.addEventListener('error', function() {
     console.error('Error downloading file');
     alert('Error downloading file');
