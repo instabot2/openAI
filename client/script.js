@@ -167,9 +167,20 @@ const handleSubmit = async (e) => {
   }
 };
 
-function writeMessageToFile(isBot, messageXml) {
-  const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const file = new Blob([messageXml], {type: 'text/xml'});
+const writeAllMessagesToFile = () => {
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  let messageXml = '<messages>';
+
+  messages.forEach((message) => {
+    const messageType = message.isBot ? 'bot' : 'user';
+    const messageContent = message.message;
+    messageXml += `<message type="${messageType}">${messageContent}</message>`;
+  });
+
+  messageXml += '</messages>';
+
+  const fileName = 'all_messages.xml';
+  const file = new Blob([messageXml], { type: 'text/xml' });
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
   a.href = url;
@@ -181,17 +192,19 @@ function writeMessageToFile(isBot, messageXml) {
   localStorage.setItem('memory', JSON.stringify(memory));
 
   a.click();
-  
+
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 0);
 
-  a.addEventListener('error', function() {
+  a.addEventListener('error', function () {
     console.error('Error downloading file');
     alert('Error downloading file');
   });
-}
+};
+
+
 
 
 
