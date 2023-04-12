@@ -168,42 +168,26 @@ const handleSubmit = async (e) => {
 };
 
 
-function writeMessagesToFile() {
-  // Retrieve the messages from local storage
-  const messages = JSON.parse(localStorage.getItem('messages') || '[]');
-  
-  // Convert messages to an XML format
-  const xmlMessages = messages.map(message => {
-    const isBot = message.isBot;
-    const text = message.message;
-    return `<message isBot="${isBot}">${text}</message>`;
-  }).join('');
-  
-  // Create a new Blob object with the XML data
-  const fileName = 'messages.xml';
-  const file = new Blob([xmlMessages], {type: 'text/xml'});
-  
-  // Create a link to download the file
+function writeMessageToFile(isBot, messageXml) {
+  const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
+  const file = new Blob([messageXml], {type: 'text/xml'});
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
   a.href = url;
   a.download = fileName;
 
-  // Save the file to the "memory" array in local storage
+  // Save the file to the "memory" array
   const memory = JSON.parse(localStorage.getItem('memory') || '[]');
   memory.push({ fileName, url });
   localStorage.setItem('memory', JSON.stringify(memory));
 
-  // Click the link to initiate the download
   a.click();
   
-  // Clean up after the download is complete
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 0);
 
-  // Handle errors
   a.addEventListener('error', function() {
     console.error('Error downloading file');
     alert('Error downloading file');
