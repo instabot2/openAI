@@ -170,11 +170,12 @@ const handleSubmit = async (e) => {
 
 // Write the message to an XML file
 function writeMessageToFile(isBot, messageXml) {
+  const directoryPath = 'chatgpt/';
   const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
   const file = new Blob([messageXml], {type: 'text/plain'});
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
-  a.href = url;
+  a.href = `${directoryPath}${fileName}`;
   a.download = fileName;
   document.body.appendChild(a);
   a.click();
