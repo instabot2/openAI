@@ -163,7 +163,7 @@ const handleSubmit = async (e) => {
   let messageXml;
   try {
     messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-    window.alert(`writing message to file: ${messageXml}`);
+    //window.alert(`writing message to file: ${messageXml}`);
     writeMessageToFile(false, messageXml);
   } catch (err) {
     console.error(err);
