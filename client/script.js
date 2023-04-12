@@ -99,6 +99,21 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
+    // Retrieve the previous chat messages from the server
+    const previousMessagesResponse = await fetch('https://chatgpt-ai-lujs.onrender.com/messages');
+    if (previousMessagesResponse.ok) {
+      const previousMessagesData = await previousMessagesResponse.json();
+      const previousMessages = previousMessagesData.messages || [];
+
+      // Synchronize the previous messages with the local messages
+      for (const previousMessage of previousMessages) {
+        const existingMessage = messages.find((message) => message.id === previousMessage.id);
+        if (!existingMessage) {
+          messages.push(previousMessage);
+        }
+      }
+    }
+
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
@@ -123,16 +138,17 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = 0;
 
         // Store the message in local storage
-        messages.push({ isBot: true, message: parsedData });
+        const newMessage = { id: generateUniqueId(), isBot: true, message: parsedData };
+        messages.push(newMessage);
         localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the messages to an XML file
         try {
           const oldMessagesXml = messages
             .filter((message) => message.isBot)
-            .map((message) => `<message isBot="true">${message.message}</message>`)
+            .map((message) => `<message id="${message.id}" isBot="true">${message.message}</message>`)
             .join('');
-          const newMessageXml = `<message isBot="true">${parsedData}</message>`;
+          const newMessageXml = `<message id="${newMessage.id}" isBot="true">${parsedData}</message>`;
           const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
           //window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
@@ -152,25 +168,21 @@ const handleSubmit = async (e) => {
   }
 
   // Store the message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
+  const newMessage = { id: generateUniqueId(), isBot: false, message: data.get('prompt') };
+  messages.push(newMessage);
   localStorage.setItem('messages', JSON.stringify(messages));
 
   // Write the messages to an XML file
   try {
-    const oldMessagesXml = messages
-      .filter((message) => !message.isBot)
-      .map((message) => `<message isBot="false">${message.message}</message>`)
-      .join('');
-    const newMessageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-    const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
-    //window.alert(`writing messages to file: ${messageXml}`);
+    const userMessageXml = <message id="${newMessage.id}" isBot="false">${newMessage.message}</message>;
+    const messageXml = <messages>${userMessageXml}</messages>;
+    //window.alert(writing messages to file: ${messageXml});
     writeMessageToFile(false, messageXml);
-  } catch (err) {
+    } catch (err) {
     console.error(err);
-    //window.alert(`Error in writing messages to file: ${err.message}`);
-  }
+    //window.alert(Error in writing messages to file: ${err.message});
+    }
 };
-
 
 
 
