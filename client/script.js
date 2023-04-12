@@ -123,15 +123,19 @@ const handleSubmit = async (e) => {
         messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
 
-        // Write the message to an XML file
-        let messageXml;
+        // Write the messages to an XML file
         try {
-          messageXml = `<message isBot="true">${parsedData}</message>`;
-          window.alert(`writing message to file: ${messageXml}`);
+          const oldMessagesXml = messages
+            .filter((message) => message.isBot)
+            .map((message) => `<message isBot="true">${message.message}</message>`)
+            .join('');
+          const newMessageXml = `<message isBot="true">${parsedData}</message>`;
+          const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
+          window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
-          window.alert(`Error in writing message to file 1: ${err.message}`);
+          window.alert(`Error in writing messages to file: ${err.message}`);
         }
       });
     } else {
@@ -144,16 +148,23 @@ const handleSubmit = async (e) => {
     window.alert(`console.error: ${err}`);
   }
 
- 
-  // Write the message to an XML file
-  let messageXml;
+  // Store the message in local storage
+  messages.push({ isBot: false, message: data.get('prompt') });
+  localStorage.setItem('messages', JSON.stringify(messages));
+
+  // Write the messages to an XML file
   try {
-    messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-    //window.alert(`writing message to file: ${messageXml}`);
+    const oldMessagesXml = messages
+      .filter((message) => !message.isBot)
+      .map((message) => `<message isBot="false">${message.message}</message>`)
+      .join('');
+    const newMessageXml = `<message isBot="false">${data.get('prompt')}</message>`;
+    const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
+    //window.alert(`writing messages to file: ${messageXml}`);
     writeMessageToFile(false, messageXml);
   } catch (err) {
     console.error(err);
-    window.alert(`Error in writing message to file 2: ${err.message}`);
+    window.alert(`Error in writing messages to file: ${err.message}`);
   }
 };
 
