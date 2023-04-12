@@ -71,8 +71,11 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
+
+  const form = document.getElementById('form'); // added this line to get the form element
 
   const data = new FormData(form);
 
@@ -80,6 +83,7 @@ const handleSubmit = async (e) => {
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // Clear existing chat messages
+  const messageWrapper = document.getElementById('message-wrapper'); // added this line to get the message wrapper element
   messageWrapper.innerHTML = '';
 
   // user's chatstripe
@@ -120,7 +124,8 @@ const handleSubmit = async (e) => {
     alert(`Error: ${err.message}`);
   }
 
-
+  // moved try-catch block here to include the fetch call for sending user message
+  try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
@@ -142,6 +147,7 @@ const handleSubmit = async (e) => {
         scrollIntoView(messageDiv);
 
         // scroll to the top of the chat container to show the new message
+        const chatContainer = document.getElementById('chat-container'); // added this line to get the chat container element
         chatContainer.scrollTop = 0;
 
         // Store the message in local storage
