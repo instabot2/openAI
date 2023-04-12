@@ -174,26 +174,35 @@ const handleSubmit = async (e) => {
 };
 
 
+const fs = require('fs');
+
 function writeMessageToFile(isBot, messageXml) {
   // Set the filename and path for the XML file
   const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const filePath = `/path/to/directory/${filename}`;
-  
+  const directoryPath = './chatgpt';
+  const filePath = `${directoryPath}/${filename}`;
+
   // Create a new XML document and add the message to it
   const xmlDoc = document.implementation.createDocument(null, 'messages');
   const messageNode = xmlDoc.createElement('message');
   messageNode.setAttribute('isBot', isBot.toString());
   messageNode.textContent = messageXml;
   xmlDoc.documentElement.appendChild(messageNode);
-  
+
   // Convert the XML document to a Blob object
   const serializer = new XMLSerializer();
   const xmlString = serializer.serializeToString(xmlDoc);
   const blob = new Blob([xmlString], { type: 'text/xml' });
-  
-  // Save the Blob object to a file using the File API
+
+  // Save the file to the directory
+  if (!fs.existsSync(directoryPath)) {
+    fs.mkdirSync(directoryPath);
+  }
+  fs.writeFileSync(filePath, blob);
+
+  // Create a download link and click it
   const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
+  link.href = filePath;
   link.download = filename;
   document.body.appendChild(link);
   link.click();
