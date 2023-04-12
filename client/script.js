@@ -99,22 +99,27 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
-    // Retrieve the previous chat messages from the server
     const previousMessagesResponse = await fetch('https://chatgpt-ai-lujs.onrender.com/messages');
-    if (previousMessagesResponse.ok) {
-      const previousMessagesData = await previousMessagesResponse.json();
-      const previousMessages = previousMessagesData.messages || [];
-      // Synchronize the previous messages with the local messages
-      for (const previousMessage of previousMessages) {
-        const existingMessage = messages.find((message) => message.id === previousMessage.id);
-        if (!existingMessage) {
-          messages.push(previousMessage);
-        }
-      }
-      if (previousMessages.length > 0) {
-        alert(`Captured ${previousMessages.length} previous message(s)`);
-      }   
+    if (!previousMessagesResponse.ok) {
+      throw new Error('Failed to fetch previous messages');
     }
+    const previousMessagesData = await previousMessagesResponse.json();
+    const previousMessages = previousMessagesData.messages || [];
+    // Synchronize the previous messages with the local messages
+    for (const previousMessage of previousMessages) {
+      const existingMessage = messages.find((message) => message.id === previousMessage.id);
+      if (!existingMessage) {
+        messages.push(previousMessage);
+      }
+    }
+    if (previousMessages.length > 0) {
+      alert(`Captured ${previousMessages.length} previous message(s)`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert(`Error: ${err.message}`);
+  }
+
 
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
