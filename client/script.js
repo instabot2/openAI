@@ -168,26 +168,30 @@ const handleSubmit = async (e) => {
 };
 
 
-// Write the message to an XML file
-function writeMessageToFile(isBot, messageXml) {
-  const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const file = new Blob([messageXml], {type: 'text/plain'});
-  const a = document.createElement('a');
-  const url = URL.createObjectURL(file);
-  a.href = url;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 0);
-  
-  a.addEventListener('error', function() {
-    console.error('Error downloading file');
-    alert('Error downloading file');
-  });
+const directoryPath = 'chatgpt';
+const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
+const file = new Blob([messageXml], { type: 'text/plain' });
+const a = document.createElement('a');
+const url = URL.createObjectURL(file);
+
+// Check if directory exists, and create it if it doesn't
+if (!fs.existsSync(directoryPath)) {
+  fs.mkdirSync(directoryPath);
 }
+
+a.href = `${directoryPath}/${fileName}`;
+a.download = fileName;
+document.body.appendChild(a);
+a.click();
+setTimeout(() => {
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}, 0);
+
+a.addEventListener('error', function() {
+  console.error('Error downloading file');
+  alert('Error downloading file');
+});
 
 
 
