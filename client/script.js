@@ -78,10 +78,7 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
-
-  // Clear existing chat messages
-  messageWrapper.innerHTML = '';
+  let messages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
@@ -147,8 +144,13 @@ const handleSubmit = async (e) => {
     window.alert(`console.error: ${err}`);
   }
 
-  // Store the user's message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
+  // Store all messages in local storage
+  const allMessages = document.querySelectorAll('.chat-message');
+  allMessages.forEach((msg) => {
+    const isBot = msg.classList.contains('bot-message');
+    const message = msg.querySelector('.message-text').textContent.trim();
+    messages.push({ isBot, message });
+  });
   localStorage.setItem('messages', JSON.stringify(messages));
 
   // Summarize previous messages and display
@@ -160,6 +162,7 @@ const handleSubmit = async (e) => {
   let messageXml;
   try {
     messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
+    window.alert(`writing message to file: ${messageXml}`);
     writeMessageToFile(false, messageXml);
   } catch (err) {
     console.error(err);
