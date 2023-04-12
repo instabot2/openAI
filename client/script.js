@@ -167,23 +167,27 @@ const handleSubmit = async (e) => {
   }
 };
 
+
+// Write the message to an XML file
 function writeMessageToFile(isBot, messageXml) {
-  const directoryPath = 'chatgpt/';
   const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
   const file = new Blob([messageXml], {type: 'text/plain'});
-  const reader = new FileReader();
-  reader.onload = function() {
-    const writer = new FileWriter(directoryPath + fileName);
-    writer.write(reader.result);
-    alert('successfully..');
-    writer.close();
-  };
-  reader.onerror = function(event) {
-    console.error('Error reading file:', event.target.error);
-    alert('Error writing message to file. Please try again later.');
-  };
-  reader.readAsText(file);
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(file);
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 0);
+  
+  a.addEventListener('error', function() {
+    console.error('Error downloading file');
+  });
 }
+
 
 
 
