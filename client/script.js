@@ -151,9 +151,18 @@ const handleSubmit = async (e) => {
     const message = msg.querySelector('.message-text').textContent.trim();
     messages.push({ isBot, message });
   });
-  window.alert(`All message to file: ${messages}`);
+  // Construct string of all messages
+  let allMessageString = "";
+  messages.forEach((message) => {
+    allMessageString += `${message.isBot ? "Bot: " : "User: "}${message.message}\n`;
+  });
+  // Alert all messages
+  window.alert(`All messages:\n${allMessageString}`);
+  // Store all messages in local storage
   localStorage.setItem('messages', JSON.stringify(messages));
 
+
+  
   // Summarize previous messages and display
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
