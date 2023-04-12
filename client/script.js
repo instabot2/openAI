@@ -71,7 +71,6 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -146,12 +145,13 @@ const handleSubmit = async (e) => {
   }
 
   // Store all messages in local storage
-  const allMessages = document.querySelectorAll('.chat-message');
+  const allMessages = messageWrapper.querySelectorAll('.chat-message');
   allMessages.forEach((msg) => {
     const isBot = msg.classList.contains('bot-message');
     const message = msg.querySelector('.message-text').textContent.trim();
     messages.push({ isBot, message });
   });
+  window.alert(`All message to file: ${messages}`);
   localStorage.setItem('messages', JSON.stringify(messages));
 
   // Summarize previous messages and display
@@ -170,6 +170,7 @@ const handleSubmit = async (e) => {
     window.alert(`Error in writing message to file 2: ${err.message}`);
   }
 };
+
 
 
 function writeMessageToFile(isBot, messageXml) {
