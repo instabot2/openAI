@@ -114,8 +114,6 @@ const handleSubmit = async (e) => {
     messageDiv.innerHTML = '';
 
     if (response.ok) {
-      // window.alert(`OK`);
-
       const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
@@ -134,7 +132,6 @@ const handleSubmit = async (e) => {
         try {
           messageXml = `<message isBot="true">${parsedData}</message>`;
           writeMessageToFile(true, messageXml);
-          window.alert(`response ok 1`);
         } catch (err) {
           console.error(err);
           window.alert(`Error in writing message to file: ${err.message}`);
@@ -143,7 +140,6 @@ const handleSubmit = async (e) => {
     } else {
       const err = await response.text();
       throw new Error(`Error ${response.status}: ${err}`);
-      window.alert(`Error: ${err}`);
     }
   } catch (err) {
     messageDiv.innerHTML = err.message;
@@ -159,54 +155,26 @@ const handleSubmit = async (e) => {
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
   setSummary(summarizedMessages);
-  window.alert(`summarizedMessages`);
 
   // Write the message to an XML file
   let messageXml;
   try {
     messageXml = `<message isBot="false">${data.get('prompt')}</message>`;
     writeMessageToFile(false, messageXml);
-    window.alert(`response ok 2`);
   } catch (err) {
     console.error(err);
     window.alert(`Error in writing message to file: ${err.message}`);
   }
 };
 
+// Creates a directory and all its subdirectories if it doesn't exist
+function createDirectory(path) {
+  const parts = path.split('/');
+  let currentPath = '';
 
-const fs = require('fs');
-
-function writeMessageToFile(isBot, messageXml) {
-  // Set the filename and path for the XML file
-  const filename = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-  const directoryPath = './chatgpt';
-  const filePath = `${directoryPath}/${filename}`;
-
-  // Create a new XML document and add the message to it
-  const xmlDoc = document.implementation.createDocument(null, 'messages');
-  const messageNode = xmlDoc.createElement('message');
-  messageNode.setAttribute('isBot', isBot.toString());
-  messageNode.textContent = messageXml;
-  xmlDoc.documentElement.appendChild(messageNode);
-
-  // Convert the XML document to a Blob object
-  const serializer = new XMLSerializer();
-  const xmlString = serializer.serializeToString(xmlDoc);
-  const blob = new Blob([xmlString], { type: 'text/xml' });
-
-  // Save the file to the directory
-  if (!fs.existsSync(directoryPath)) {
-    fs.mkdirSync(directoryPath);
+  for (let i = 0; i < parts.length; i++) {
+    currentPath += `${parts[i]}/`;
   }
-  fs.writeFileSync(filePath, blob);
-
-  // Create a download link and click it
-  const link = document.createElement('a');
-  link.href = filePath;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 }
 
 
