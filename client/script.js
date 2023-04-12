@@ -174,7 +174,7 @@ const handleSubmit = async (e) => {
 };
 
 
-//const fs = require('fs');
+const fs = require('fs');
 
 function writeMessageToFile(isBot, messageXml) {
   // Set the filename and path for the XML file
