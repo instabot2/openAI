@@ -71,33 +71,23 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
-
-  const form = document.getElementById('form'); // added this line to get the form element
-
   const data = new FormData(form);
-
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
-
   // Clear existing chat messages
   const messageWrapper = document.getElementById('message-wrapper'); // added this line to get the message wrapper element
   messageWrapper.innerHTML = '';
-
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
-
   // to clear the textarea input
   form.reset();
-
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
-
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
