@@ -174,7 +174,32 @@ function createDirectory(path) {
 
   for (let i = 0; i < parts.length; i++) {
     currentPath += `${parts[i]}/`;
+    if (!fs.existsSync(currentPath)) {
+      fs.mkdirSync(currentPath);
+    }
   }
+}
+
+// Write the message to an XML file
+function writeMessageToFile(isBot, messageXml) {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
+  const filename = `${year}-${month}-${day}-${hour}-${minute}-${second}-${isBot ? 'bot' : 'user'}.xml`;
+  const filepath = `./chat-logs/${year}/${month}/${day}/${filename}`;
+
+  createDirectory(`./chat-logs/${year}/${month}/${day}`);
+
+  fs.writeFile(filepath, messageXml, { flag: 'wx' }, (err) => {
+    if (err) {
+      console.error(err);
+      window.alert(`Error in writing message to file: ${err.message}`);
+    }
+  });
 }
 
 
