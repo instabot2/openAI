@@ -144,13 +144,17 @@ const handleSubmit = async (e) => {
     window.alert(`console.error: ${err}`);
   }
 
-  // Store all messages in local storage
+   // Store all messages in local storage
   const allMessages = messageWrapper.querySelectorAll('.chat-message');
   allMessages.forEach((msg) => {
     const isBot = msg.classList.contains('bot-message');
     const message = msg.querySelector('.message-text').textContent.trim();
     messages.push({ isBot, message });
   });
+  // Summarize previous messages and display
+  const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
+  const summarizedMessages = await summarizeMessages(previousMessages);
+  setSummary(summarizedMessages);
   // Construct string of all messages
   let allMessageString = "";
   messages.forEach((message) => {
@@ -163,11 +167,13 @@ const handleSubmit = async (e) => {
 
 
   
+  
   // Summarize previous messages and display
   const previousMessages = messages.filter((message) => !message.isBot).map((message) => message.message);
   const summarizedMessages = await summarizeMessages(previousMessages);
   setSummary(summarizedMessages);
 
+  
   // Write the message to an XML file
   let messageXml;
   try {
