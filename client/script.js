@@ -73,48 +73,31 @@ function chatStripe(isAi, value, uniqueId) {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+
   const data = new FormData(form);
+
   // Retrieve stored messages from local storage
   const messages = JSON.parse(localStorage.getItem('messages')) || [];
+
   // Clear existing chat messages
-  const messageWrapper = document.getElementById('message-wrapper'); // added this line to get the message wrapper element
   messageWrapper.innerHTML = '';
+
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
+
   // to clear the textarea input
   form.reset();
+
   // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
+
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
-  try {
-    const previousMessagesResponse = await fetch('https://chatgpt-ai-lujs.onrender.com/messages');
-    if (!previousMessagesResponse.ok) {
-      throw new Error('Failed to fetch previous messages');
-    }
-    const previousMessagesData = await previousMessagesResponse.json();
-    const previousMessages = previousMessagesData.messages || [];
-    // Synchronize the previous messages with the local messages
-    for (const previousMessage of previousMessages) {
-      const existingMessage = messages.find((message) => message.id === previousMessage.id);
-      if (!existingMessage) {
-        messages.push(previousMessage);
-      }
-    }
-    if (previousMessages.length > 0) {
-      alert(`Captured ${previousMessages.length} previous message(s)`);
-    }
-  } catch (err) {
-    console.error(err);
-    alert(`Error: ${err.message}`);
-  }
-
-  // moved try-catch block here to include the fetch call for sending user message
   try {
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
@@ -137,27 +120,25 @@ const handleSubmit = async (e) => {
         scrollIntoView(messageDiv);
 
         // scroll to the top of the chat container to show the new message
-        const chatContainer = document.getElementById('chat-container'); // added this line to get the chat container element
         chatContainer.scrollTop = 0;
 
         // Store the message in local storage
-        const newMessage = { id: generateUniqueId(), isBot: true, message: parsedData };
-        messages.push(newMessage);
+        messages.push({ isBot: true, message: parsedData });
         localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the messages to an XML file
         try {
           const oldMessagesXml = messages
             .filter((message) => message.isBot)
-            .map((message) => `<message id="${message.id}" isBot="true">${message.message}</message>`)
+            .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
-          const newMessageXml = `<message id="${newMessage.id}" isBot="true">${parsedData}</message>`;
+          const newMessageXml = `<message isBot="true">${parsedData}</message>`;
           const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
-          //window.alert(`writing messages to file: ${messageXml}`);
+          window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
-          //window.alert(`Error in writing messages to file: ${err.message}`);
+          window.alert(`Error in writing messages to file: ${err.message}`);
         }
       });
     } else {
@@ -171,22 +152,24 @@ const handleSubmit = async (e) => {
   }
 
   // Store the message in local storage
-  const newMessage = { id: generateUniqueId(), isBot: false, message: data.get('prompt') };
-  messages.push(newMessage);
+  messages.push({ isBot: false, message: data.get('prompt') });
   localStorage.setItem('messages', JSON.stringify(messages));
 
   // Write the messages to an XML file
   try {
-    const userMessageXml = `<message id="${newMessage.id}" isBot="false">${newMessage.message}</message>`;
-    const messageXml = `<messages>${userMessageXml}</messages>`;
+    const oldMessagesXml = messages
+      .filter((message) => !message.isBot)
+      .map((message) => `<message isBot="false">${message.message}</message>`)
+      .join('');
+    const newMessageXml = `<message isBot="false">${data.get('prompt')}</message>`;
+    const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
     //window.alert(`writing messages to file: ${messageXml}`);
     writeMessageToFile(false, messageXml);
   } catch (err) {
     console.error(err);
-    //window.alert(`Error in writing messages to file: ${err.message}`);
+    window.alert(`Error in writing messages to file: ${err.message}`);
   }
 };
-
 
 
 function writeMessageToFile(isBot, messageXml) {
