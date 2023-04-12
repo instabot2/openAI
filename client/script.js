@@ -168,28 +168,19 @@ const handleSubmit = async (e) => {
 };
 
 
-// Write the message to an XML file
 function writeMessageToFile(isBot, messageXml) {
-  const fs = require('fs');
   const directoryPath = 'chatgpt/';
   const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
   const file = new Blob([messageXml], {type: 'text/plain'});
-
-  if (!fs.existsSync(directoryPath)) {
-    fs.mkdirSync(directoryPath);
-  }
-
-  const a = document.createElement('a');
-  const url = URL.createObjectURL(file);
-  a.href = `${directoryPath}${fileName}`;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 0);
+  const reader = new FileReader();
+  reader.onload = function() {
+    const writer = new FileWriter(directoryPath + fileName);
+    writer.write(reader.result);
+    writer.close();
+  };
+  reader.readAsText(file);
 }
+
 
 
 
