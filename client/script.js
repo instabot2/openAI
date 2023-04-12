@@ -185,6 +185,7 @@ function writeMessageToFile(isBot, messageXml) {
   
   a.addEventListener('error', function() {
     console.error('Error downloading file');
+    alert('Error downloading file');
   });
 }
 
