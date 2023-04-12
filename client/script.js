@@ -168,7 +168,24 @@ const handleSubmit = async (e) => {
 };
 
 
-// Write the message to an XML file
+async function getFilePath(fileName) {
+  try {
+    const dirHandle = await window.showDirectoryPicker();
+    const downloadsDir = await dirHandle.getDirectoryHandle('Downloads', { create: false });
+    const entries = await downloadsDir.getEntries();
+    const matchingFile = entries.find(entry => entry.isFile && entry.name === fileName);
+    if (matchingFile) {
+      return matchingFile.nativePath;
+    } else {
+      throw new Error(`File '${fileName}' not found in Downloads directory.`);
+    }
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+    return null;
+  }
+}
+
 function writeMessageToFile(isBot, messageXml) {
   const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
   const file = new Blob([messageXml], {type: 'text/plain'});
@@ -177,19 +194,26 @@ function writeMessageToFile(isBot, messageXml) {
   a.href = url;
   a.download = fileName;
   document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 0);
+  
+  getFilePath(fileName).then(filePath => {
+    if (filePath) {
+      a.setAttribute('download', filePath);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+    }
+  }).catch(error => {
+    console.error(error);
+    alert(error.message);
+  });
+  
   a.addEventListener('error', function() {
     console.error('Error downloading file');
     alert('Error downloading file');
   });
 }
-
-
-
 
 
 
