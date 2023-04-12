@@ -174,14 +174,14 @@ const handleSubmit = async (e) => {
 
   // Write the messages to an XML file
   try {
-    const userMessageXml = <message id="${newMessage.id}" isBot="false">${newMessage.message}</message>;
-    const messageXml = <messages>${userMessageXml}</messages>;
-    //window.alert(writing messages to file: ${messageXml});
+    const userMessageXml = `<message id="${newMessage.id}" isBot="false">${newMessage.message}</message>`;
+    const messageXml = `<messages>${userMessageXml}</messages>`;
+    //window.alert(`writing messages to file: ${messageXml}`);
     writeMessageToFile(false, messageXml);
-    } catch (err) {
+  } catch (err) {
     console.error(err);
-    //window.alert(Error in writing messages to file: ${err.message});
-    }
+    //window.alert(`Error in writing messages to file: ${err.message}`);
+  }
 };
 
 
