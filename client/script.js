@@ -77,7 +77,10 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
-  let messages = JSON.parse(localStorage.getItem('messages')) || [];
+  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+
+  // Clear existing chat messages
+  messageWrapper.innerHTML = '';
 
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
