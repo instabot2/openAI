@@ -167,7 +167,6 @@ const handleSubmit = async (e) => {
   }
 };
 
-
 function writeMessageToFile(isBot, messageXml) {
   const directoryPath = 'chatgpt/';
   const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
@@ -178,8 +177,13 @@ function writeMessageToFile(isBot, messageXml) {
     writer.write(reader.result);
     writer.close();
   };
+  reader.onerror = function(event) {
+    console.error('Error reading file:', event.target.error);
+    alert('Error writing message to file. Please try again later.');
+  };
   reader.readAsText(file);
 }
+
 
 
 
