@@ -134,7 +134,7 @@ const handleSubmit = async (e) => {
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
-          window.alert(`Error in writing message to file: ${err.message}`);
+          window.alert(`Error in writing message to file 1: ${err.message}`);
         }
       });
     } else {
@@ -163,7 +163,7 @@ const handleSubmit = async (e) => {
     writeMessageToFile(false, messageXml);
   } catch (err) {
     console.error(err);
-    window.alert(`Error in writing message to file: ${err.message}`);
+    window.alert(`Error in writing message to file 2: ${err.message}`);
   }
 };
 
