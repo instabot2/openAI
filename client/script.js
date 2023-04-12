@@ -168,25 +168,13 @@ const handleSubmit = async (e) => {
 };
 
 
-const directoryPath = 'chatgpt';
-const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
-const file = new Blob([messageXml], { type: 'text/plain' });
-const a = document.createElement('a');
-const url = URL.createObjectURL(file);
-
-// Check if directory exists, and create it if it doesn't
-const dir = new Promise((resolve, reject) => {
-  const request = window.indexedDB.open('filesystem');
-  request.onerror = () => reject();
-  request.onsuccess = () => resolve();
-  request.onupgradeneeded = () => {
-    const db = request.result;
-    db.createObjectStore('fs');
-  };
-});
-
-dir.then(() => {
-  a.href = `${directoryPath}/${fileName}`;
+// Write the message to an XML file
+function writeMessageToFile(isBot, messageXml) {
+  const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
+  const file = new Blob([messageXml], {type: 'text/plain'});
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(file);
+  a.href = url;
   a.download = fileName;
   document.body.appendChild(a);
   a.click();
@@ -194,15 +182,11 @@ dir.then(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 0);
-  
   a.addEventListener('error', function() {
     console.error('Error downloading file');
     alert('Error downloading file');
   });
-}).catch(() => {
-  console.error('Error creating directory');
-  alert('Error creating directory');
-});
+}
 
 
 
