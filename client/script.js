@@ -159,7 +159,9 @@ const handleSubmit = async (e) => {
 
 
 function writeMessageToFile(isBot, messageXml) {
-  const fileName = isBot ? 'bot_messages.xml' : 'user_messages.xml';
+  if (!isBot) return; // Only save bot messages
+
+  const fileName = 'bot_messages.xml';
   const file = new Blob([messageXml], {type: 'text/xml'});
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
