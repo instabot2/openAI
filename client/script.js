@@ -175,22 +175,33 @@ const a = document.createElement('a');
 const url = URL.createObjectURL(file);
 
 // Check if directory exists, and create it if it doesn't
-if (!fs.existsSync(directoryPath)) {
-  fs.mkdirSync(directoryPath);
-}
+const dir = new Promise((resolve, reject) => {
+  const request = window.indexedDB.open('filesystem');
+  request.onerror = () => reject();
+  request.onsuccess = () => resolve();
+  request.onupgradeneeded = () => {
+    const db = request.result;
+    db.createObjectStore('fs');
+  };
+});
 
-a.href = `${directoryPath}/${fileName}`;
-a.download = fileName;
-document.body.appendChild(a);
-a.click();
-setTimeout(() => {
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}, 0);
-
-a.addEventListener('error', function() {
-  console.error('Error downloading file');
-  alert('Error downloading file');
+dir.then(() => {
+  a.href = `${directoryPath}/${fileName}`;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 0);
+  
+  a.addEventListener('error', function() {
+    console.error('Error downloading file');
+    alert('Error downloading file');
+  });
+}).catch(() => {
+  console.error('Error creating directory');
+  alert('Error creating directory');
 });
 
 
