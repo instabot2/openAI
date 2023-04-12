@@ -175,6 +175,7 @@ function writeMessageToFile(isBot, messageXml) {
   reader.onload = function() {
     const writer = new FileWriter(directoryPath + fileName);
     writer.write(reader.result);
+    alert('successfully..');
     writer.close();
   };
   reader.onerror = function(event) {
