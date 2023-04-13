@@ -73,12 +73,15 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 // Define the conversationHistory and messages variables before using them in handleSubmit
-let conversationHistory = [];
+let conversationHistory = '';
 let messages = [];
 
 // Retrieve stored messages from local storage
 if (localStorage.getItem('messages')) {
   messages = JSON.parse(localStorage.getItem('messages'));
+  // Retrieve conversation history from the latest message
+  const latestMessage = messages[messages.length - 1];
+  conversationHistory = latestMessage.conversationHistory;
 }
 
 // Function to update the conversationHistory
@@ -86,7 +89,7 @@ const updateConversationHistory = (newConversationHistory) => {
   console.log("New conversation history received:", newConversationHistory);
   conversationHistory = newConversationHistory;
   window.alert(`conversationHistory: ${conversationHistory}`);
-};
+}; 
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -138,8 +141,13 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = 0;
 
         // Store the new message in local storage
-        const newMessage = { isBot: true, message: parsedData };
-        messages.push(newMessage);
+        //const newMessage = { isBot: true, message: parsedData };
+        //messages.push(newMessage);
+        //localStorage.setItem('messages', JSON.stringify(messages));
+        
+        // Store the new message in local storage
+        const newMessage = { isBot: true, message: parsedData, conversationHistory };
+        const messages = [...oldMessages, newMessage];
         localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the messages to an XML file
