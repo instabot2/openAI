@@ -80,6 +80,7 @@ const updateConversationHistory = (newConversationHistory) => {
   console.log("New conversation history received:", newConversationHistory); // add this line
   conversationHistory = newConversationHistory;
   console.log("Updated conversation history:", conversationHistory); // add this line
+  window.alert(`conversationHistory: ${conversationHistory}`);
 };
 
 const handleSubmit = async (e) => {
