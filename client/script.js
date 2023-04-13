@@ -1,6 +1,5 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-import { useSelector } from 'react-redux';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -73,7 +72,7 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const handleSubmit = async (e) => {
   e.preventDefault();
