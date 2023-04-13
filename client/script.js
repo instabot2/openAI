@@ -160,6 +160,7 @@ const handleSubmit = async (e) => {
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
+          window.alert(`message & conversationHistory empty`);
         }
       });
       
