@@ -72,9 +72,10 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-//import { useSelector } from 'react-redux';
+import React, { useContext } from 'react';
+import ConversationHistoryContext from './ConversationHistoryContext';
 
-const handleSubmit = async (e) => {
+const handleSubmit = async (e, form, dispatch) => {
   e.preventDefault();
 
   const data = new FormData(form);
@@ -87,9 +88,9 @@ const handleSubmit = async (e) => {
   const userMessageObj = { isBot: false, message: userMessage };
   const messages = [...oldMessages, userMessageObj];
   localStorage.setItem('messages', JSON.stringify(messages));
-  
-  // Retrieve the conversation history from the Redux store
-  const conversationHistory = useSelector(state => state.conversationHistory);
+
+  // Retrieve the conversation history from the context
+  const conversationHistory = useContext(ConversationHistoryContext);
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -154,8 +155,8 @@ const handleSubmit = async (e) => {
         }
       });
 
-      // Update the conversation history in the Redux store
-      dispatch(updateConversationHistory([...conversationHistory, parsedData]));
+      // Update the conversation history in the context
+      dispatch({ type: 'ADD_MESSAGE', payload: parsedData });
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -163,7 +164,6 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
-
 
 
 
