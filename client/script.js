@@ -72,10 +72,8 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-// Define the conversationHistory and messages variables before using them in handleSubmit
 let conversationHistory = '';
 let messages = [];
-
 // Retrieve stored messages from local storage
 if (localStorage.getItem('messages')) {
   messages = JSON.parse(localStorage.getItem('messages'));
@@ -83,13 +81,12 @@ if (localStorage.getItem('messages')) {
   const latestMessage = messages[messages.length - 1];
   conversationHistory = latestMessage.conversationHistory;
 }
-
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   console.log("New conversation history received:", newConversationHistory);
   conversationHistory = newConversationHistory;
   window.alert(`conversationHistory: ${conversationHistory}`);
-}; 
+};
 
 const handleSubmit = async (e) => {
   e.preventDefault();
