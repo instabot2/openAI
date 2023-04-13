@@ -72,8 +72,14 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-// Define the conversationHistory variable before using it in handleSubmit
+// Define the conversationHistory and messages variables before using them in handleSubmit
 let conversationHistory = [];
+let messages = [];
+
+// Retrieve stored messages from local storage
+if (localStorage.getItem('messages')) {
+  messages = JSON.parse(localStorage.getItem('messages'));
+}
 
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
@@ -86,9 +92,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
-  // Retrieve stored messages from local storage
-  const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -136,7 +139,7 @@ const handleSubmit = async (e) => {
 
         // Store the new message in local storage
         const newMessage = { isBot: true, message: parsedData };
-        const messages = [...oldMessages, newMessage];
+        messages.push(newMessage);
         localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the messages to an XML file
@@ -161,6 +164,14 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
+// Add event listeners for form submission and pressing Enter key
+form.addEventListener('submit', handleSubmit);
+form.addEventListener('keyup', (e) => {
+  if (e.keyCode === 13) {
+    handleSubmit(e);
+  }
+});
 
 
 
@@ -224,9 +235,3 @@ window.addEventListener('resize', () => {
   }
 });
 
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
-  }
-});
