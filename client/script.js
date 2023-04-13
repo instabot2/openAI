@@ -72,24 +72,12 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-
 // Define the conversationHistory variable before using it in handleSubmit
 let conversationHistory = [];
-
-// Define the Redux store to hold the conversation history
-const conversationHistoryStore = Redux.createStore((state = [], action) => {
-  switch (action.type) {
-    case 'ADD_MESSAGE':
-      return [...state, { isBot: action.isBot, message: action.message }];
-    default:
-      return state;
-  }
-});
 
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
-  conversationHistoryStore.dispatch({ type: 'UPDATE_CONVERSATION_HISTORY', history: newConversationHistory });
 };
 
 const handleSubmit = async (e) => {
@@ -100,20 +88,27 @@ const handleSubmit = async (e) => {
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
+  // Store the user's input and add it to the conversation history
+  const userMessage = data.get('prompt').trim();
+  const userMessageObj = { isBot: false, message: userMessage };
+  const messages = [...oldMessages, userMessageObj];
+  localStorage.setItem('messages', JSON.stringify(messages));
+  updateConversationHistory([...conversationHistory, userMessage]);
+
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
   // user's chatstripe
-  const userMessage = chatStripe(false, data.get('prompt'));
-  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
+  const userMessageHtml = chatStripe(false, userMessage);
+  messageWrapper.insertAdjacentHTML('beforeend', userMessageHtml);
 
   // to clear the textarea input
   form.reset();
 
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatStripe(true, '', uniqueId);
-  messageWrapper.insertAdjacentHTML('beforeend', botMessage);
+  const botMessageHtml = chatStripe(true, '', uniqueId);
+  messageWrapper.insertAdjacentHTML('beforeend', botMessageHtml);
 
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
@@ -126,7 +121,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
+        prompt: userMessage,
         conversationHistory: conversationHistory,
       }),
     });
@@ -164,7 +159,7 @@ const handleSubmit = async (e) => {
       });
       
       // Update conversationHistory with new data
-      updateConversationHistory(responseData.conversationHistory);
+      updateConversationHistory([...conversationHistory, parsedData]);
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -172,6 +167,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
+
+
 
 
 function writeMessageToFile(isBot, messageXml) {
