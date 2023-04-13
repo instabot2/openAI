@@ -77,9 +77,8 @@ let conversationHistory = [];
 
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
-  console.log("New conversation history received:", newConversationHistory); // add this line
+  console.log("New conversation history received:", newConversationHistory);
   conversationHistory = newConversationHistory;
-  console.log("Updated conversation history:", conversationHistory); // add this line
   window.alert(`conversationHistory: ${conversationHistory}`);
 };
 
@@ -118,7 +117,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversationHistory: conversationHistory,
+        conversationHistory: conversationHistory, // pass conversationHistory to the backend
       }),
     });
 
@@ -147,7 +146,6 @@ const handleSubmit = async (e) => {
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
-          //window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
@@ -155,7 +153,7 @@ const handleSubmit = async (e) => {
       });
       
       // Update conversationHistory with new data
-      updateConversationHistory(responseData.conversationHistory);
+      updateConversationHistory(responseData.conversation_history); // update conversation_history to conversation_history
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -163,6 +161,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
+
+
 
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
