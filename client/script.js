@@ -1,5 +1,6 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
+import { useSelector } from 'react-redux';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -72,13 +73,7 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-// Define the conversationHistory variable before using it in handleSubmit
-let conversationHistory = [];
-
-// Function to update the conversationHistory
-const updateConversationHistory = (newConversationHistory) => {
-  conversationHistory = newConversationHistory;
-};
+//import { useSelector } from 'react-redux';
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -93,7 +88,9 @@ const handleSubmit = async (e) => {
   const userMessageObj = { isBot: false, message: userMessage };
   const messages = [...oldMessages, userMessageObj];
   localStorage.setItem('messages', JSON.stringify(messages));
-  updateConversationHistory([...conversationHistory, userMessage]);
+  
+  // Retrieve the conversation history from the Redux store
+  const conversationHistory = useSelector(state => state.conversationHistory);
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -157,9 +154,9 @@ const handleSubmit = async (e) => {
           console.error(err);
         }
       });
-      
-      // Update conversationHistory with new data
-      updateConversationHistory([...conversationHistory, parsedData]);
+
+      // Update the conversation history in the Redux store
+      dispatch(updateConversationHistory([...conversationHistory, parsedData]));
     } else {
       console.error(`Response status: ${response.status}`);
     }
