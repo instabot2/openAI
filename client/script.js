@@ -75,11 +75,16 @@ let conversationHistory = '';
 let messages = [];
 
 // Retrieve stored messages from local storage
-if (localStorage.getItem('messages')) {
-  messages = JSON.parse(localStorage.getItem('messages'));
-  // Retrieve conversation history from the latest message
-  const latestMessage = messages[messages.length - 1];
-  conversationHistory = latestMessage.conversationHistory;
+try {
+  if (localStorage.getItem('messages')) {
+    messages = JSON.parse(localStorage.getItem('messages'));
+    // Retrieve conversation history from the latest message
+    const latestMessage = messages[messages.length - 1];
+    conversationHistory = latestMessage.conversationHistory;
+  }
+} catch (error) {
+  console.error(error);
+  window.alert('There was an error retrieving messages from local storage.');
 }
 
 // Function to update the conversationHistory
