@@ -1,7 +1,5 @@
-import React, { useContext } from 'react';
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-import ConversationHistoryContext from './ConversationHistoryContext';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -74,8 +72,15 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
+// Define the conversationHistory variable before using it in handleSubmit
+let conversationHistory = [];
 
-const handleSubmit = async (e, form, dispatch) => {
+// Function to update the conversationHistory
+const updateConversationHistory = (newConversationHistory) => {
+  conversationHistory = newConversationHistory;
+};
+
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
@@ -83,29 +88,20 @@ const handleSubmit = async (e, form, dispatch) => {
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
-  // Store the user's input and add it to the conversation history
-  const userMessage = data.get('prompt').trim();
-  const userMessageObj = { isBot: false, message: userMessage };
-  const messages = [...oldMessages, userMessageObj];
-  localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Retrieve the conversation history from the context
-  const conversationHistory = useContext(ConversationHistoryContext);
-
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
   // user's chatstripe
-  const userMessageHtml = chatStripe(false, userMessage);
-  messageWrapper.insertAdjacentHTML('beforeend', userMessageHtml);
+  const userMessage = chatStripe(false, data.get('prompt'));
+  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
 
   // to clear the textarea input
   form.reset();
 
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessageHtml = chatStripe(true, '', uniqueId);
-  messageWrapper.insertAdjacentHTML('beforeend', botMessageHtml);
+  const botMessage = chatStripe(true, '', uniqueId);
+  messageWrapper.insertAdjacentHTML('beforeend', botMessage);
 
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
@@ -118,7 +114,7 @@ const handleSubmit = async (e, form, dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: userMessage,
+        prompt: data.get('prompt'),
         conversationHistory: conversationHistory,
       }),
     });
@@ -154,9 +150,9 @@ const handleSubmit = async (e, form, dispatch) => {
           console.error(err);
         }
       });
-
-      // Update the conversation history in the context
-      dispatch({ type: 'ADD_MESSAGE', payload: parsedData });
+      
+      // Update conversationHistory with new data
+      updateConversationHistory(responseData.conversationHistory);
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -165,47 +161,33 @@ const handleSubmit = async (e, form, dispatch) => {
   }
 };
 
-
-
-
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
 
   const fileName = 'bot_messages.xml';
-  const file = new Blob([messageXml], { type: 'text/xml' });
-
-  // Save the file to the "memory" array
-  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
-  const existingFileIndex = memory.findIndex((file) => file.fileName === fileName);
-  if (existingFileIndex !== -1) {
-    // Overwrite existing file
-    const existingFile = memory[existingFileIndex];
-    URL.revokeObjectURL(existingFile.url);
-    memory.splice(existingFileIndex, 1);
-  }
-  const url = URL.createObjectURL(file);
+  const file = new Blob([messageXml], {type: 'text/xml'});
   const a = document.createElement('a');
+  const url = URL.createObjectURL(file);
   a.href = url;
   a.download = fileName;
 
-  a.addEventListener('error', function () {
+  a.addEventListener('error', function() {
     console.error('Error downloading file');
     alert('Error downloading file');
   });
 
   a.click();
-
+  
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 0);
 
+  // Save the file to the "memory" array
+  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
   memory.push({ fileName, url });
   localStorage.setItem('memory', JSON.stringify(memory));
 }
-
-
-
 
 
 chatContainer.addEventListener('scroll', () => {
