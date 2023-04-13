@@ -162,37 +162,41 @@ const handleSubmit = async (e) => {
 };
 
 
-
-
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
 
   const fileName = 'bot_messages.xml';
-  const file = new Blob([messageXml], {type: 'text/xml'});
-  const a = document.createElement('a');
+  const file = new Blob([messageXml], { type: 'text/xml' });
+
+  // Save the file to the "memory" array
+  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
+  const existingFileIndex = memory.findIndex((file) => file.fileName === fileName);
+  if (existingFileIndex !== -1) {
+    // Overwrite existing file
+    const existingFile = memory[existingFileIndex];
+    URL.revokeObjectURL(existingFile.url);
+    memory.splice(existingFileIndex, 1);
+  }
   const url = URL.createObjectURL(file);
+  const a = document.createElement('a');
   a.href = url;
   a.download = fileName;
 
-  a.addEventListener('error', function() {
+  a.addEventListener('error', function () {
     console.error('Error downloading file');
     alert('Error downloading file');
   });
 
   a.click();
-  
+
   setTimeout(() => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 0);
 
-  // Save the file to the "memory" array
-  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
   memory.push({ fileName, url });
   localStorage.setItem('memory', JSON.stringify(memory));
 }
-
-
 
 
 
