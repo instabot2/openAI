@@ -72,12 +72,24 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
+
 // Define the conversationHistory variable before using it in handleSubmit
 let conversationHistory = [];
+
+// Define the Redux store to hold the conversation history
+const conversationHistoryStore = Redux.createStore((state = [], action) => {
+  switch (action.type) {
+    case 'ADD_MESSAGE':
+      return [...state, { isBot: action.isBot, message: action.message }];
+    default:
+      return state;
+  }
+});
 
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
+  conversationHistoryStore.dispatch({ type: 'UPDATE_CONVERSATION_HISTORY', history: newConversationHistory });
 };
 
 const handleSubmit = async (e) => {
