@@ -1,5 +1,7 @@
+import React, { useContext } from 'react';
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
+import ConversationHistoryContext from './ConversationHistoryContext';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -72,8 +74,6 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-import React, { useContext } from 'react';
-import ConversationHistoryContext from './ConversationHistoryContext';
 
 const handleSubmit = async (e, form, dispatch) => {
   e.preventDefault();
