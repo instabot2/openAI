@@ -224,10 +224,19 @@ window.addEventListener('resize', () => {
   }
 });
 
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
-  }
+//form.addEventListener('submit', handleSubmit);
+//form.addEventListener('keyup', (e) => {
+//  if (e.keyCode === 13) {
+//    handleSubmit(e);
+//  }
+//});
+
+form.addEventListener('submit', (e) => {
+  handleSubmit(e, conversationHistory);
 });
 
+form.addEventListener('keyup', (e) => {
+  if (e.keyCode === 13) {
+    handleSubmit(e, conversationHistory);
+  }
+});
