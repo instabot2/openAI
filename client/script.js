@@ -71,9 +71,9 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
 let conversationHistory = '';
 let messages = [];
+
 // Retrieve stored messages from local storage
 if (localStorage.getItem('messages')) {
   messages = JSON.parse(localStorage.getItem('messages'));
@@ -81,6 +81,7 @@ if (localStorage.getItem('messages')) {
   const latestMessage = messages[messages.length - 1];
   conversationHistory = latestMessage.conversationHistory;
 }
+
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   console.log("New conversation history received:", newConversationHistory);
@@ -120,7 +121,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversationHistory: conversationHistory, // pass conversationHistory to the backend
+        conversation_history: conversationHistory, // pass conversationHistory to the backend (variable name changed)
       }),
     });
 
@@ -138,18 +139,13 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = 0;
 
         // Store the new message in local storage
-        //const newMessage = { isBot: true, message: parsedData };
-        //messages.push(newMessage);
-        //localStorage.setItem('messages', JSON.stringify(messages));
-        
-        // Store the new message in local storage
         const newMessage = { isBot: true, message: parsedData, conversationHistory };
-        const messages = [...oldMessages, newMessage];
-        localStorage.setItem('messages', JSON.stringify(messages));
+        const updatedMessages = [...messages, newMessage]; // variable name changed
+        localStorage.setItem('messages', JSON.stringify(updatedMessages));
 
         // Write the messages to an XML file
         try {
-          const messagesXml = messages
+          const messagesXml = updatedMessages
             .filter((message) => message.isBot)
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
@@ -162,7 +158,7 @@ const handleSubmit = async (e) => {
       });
       
       // Update conversationHistory with new data
-      updateConversationHistory(responseData.conversation_history); // update conversation_history to conversation_history
+      updateConversationHistory(responseData.conversation_history);
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -170,6 +166,7 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
 
 // Add event listeners for form submission and pressing Enter key
 form.addEventListener('submit', handleSubmit);
