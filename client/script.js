@@ -78,6 +78,7 @@ let conversationHistory = [];
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
+  alert(`New conversation history received: ${JSON.stringify(newConversationHistory)}`);
 };
 
 const handleSubmit = async (e) => {
