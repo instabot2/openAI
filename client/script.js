@@ -138,38 +138,17 @@ const handleSubmit = async (e) => {
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
-          window.alert(`Error in writing messages to file: ${err.message}`);
         }
       });
     } else {
-      const err = await response.text();
-      throw new Error(`Error ${response.status}: ${err}`);
+      console.error(`Response status: ${response.status}`);
     }
   } catch (err) {
-    messageDiv.innerHTML = err.message;
     console.error(err);
-    window.alert(`console.error: ${err}`);
-  }
-
-  // Store the message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
-  localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Write the messages to an XML file
-  try {
-    const oldMessagesXml = messages
-      .filter((message) => !message.isBot)
-      .map((message) => `<message isBot="false">${message.message}</message>`)
-      .join('');
-    const newMessageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-    const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
-    //window.alert(`writing messages to file: ${messageXml}`);
-    writeMessageToFile(false, messageXml);
-  } catch (err) {
-    console.error(err);
-    window.alert(`Error in writing messages to file: ${err.message}`);
   }
 };
+
+
 
 
 function writeMessageToFile(isBot, messageXml) {
