@@ -77,7 +77,7 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
-  const messages = JSON.parse(localStorage.getItem('messages')) || [];
+  const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -122,52 +122,29 @@ const handleSubmit = async (e) => {
         // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
-        // Store the message in local storage
-        messages.push({ isBot: true, message: parsedData });
+        // Store the new message in local storage
+        const newMessage = { isBot: true, message: parsedData };
+        const messages = [...oldMessages, newMessage];
         localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the messages to an XML file
         try {
-          const oldMessagesXml = messages
+          const messagesXml = messages
             .filter((message) => message.isBot)
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
-          const newMessageXml = `<message isBot="true">${parsedData}</message>`;
-          const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
+          const messageXml = `<messages>${messagesXml}</messages>`;
           //window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
-          window.alert(`Error in writing messages to file: ${err.message}`);
         }
       });
     } else {
-      const err = await response.text();
-      throw new Error(`Error ${response.status}: ${err}`);
+      console.error(`Response status: ${response.status}`);
     }
   } catch (err) {
-    messageDiv.innerHTML = err.message;
     console.error(err);
-    window.alert(`console.error: ${err}`);
-  }
-
-  // Store the message in local storage
-  messages.push({ isBot: false, message: data.get('prompt') });
-  localStorage.setItem('messages', JSON.stringify(messages));
-
-  // Write the messages to an XML file
-  try {
-    const oldMessagesXml = messages
-      .filter((message) => !message.isBot)
-      .map((message) => `<message isBot="false">${message.message}</message>`)
-      .join('');
-    const newMessageXml = `<message isBot="false">${data.get('prompt')}</message>`;
-    const messageXml = `<messages>${oldMessagesXml}${newMessageXml}</messages>`;
-    //window.alert(`writing messages to file: ${messageXml}`);
-    writeMessageToFile(false, messageXml);
-  } catch (err) {
-    console.error(err);
-    window.alert(`Error in writing messages to file: ${err.message}`);
   }
 };
 
