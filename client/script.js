@@ -71,8 +71,7 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-let conversationHistory = '';
-
+//let conversationHistory = '';
 // Retrieve stored messages from local storage
 try {
   if (localStorage.getItem('messages')) {
@@ -86,9 +85,6 @@ try {
   console.error(error);
   window.alert('There was an error retrieving messages from local storage.');
 }
-
-
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
