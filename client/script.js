@@ -98,11 +98,7 @@ const saveConversationHistory = () => {
   window.localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 };
 
-
-
-
-
-// Handle form submission
+// handleSubmit function
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -110,7 +106,6 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  //window.alert(`oldMessages: ${oldMessages}`);
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -174,9 +169,11 @@ const handleSubmit = async (e) => {
           console.error(err);
         }
       });
-      
+
       // Update conversationHistory with new data
       updateConversationHistory(responseData.conversationHistory);
+      alert(`conversationHistory updated: ${JSON.stringify(conversationHistory)}`);
+
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -184,6 +181,7 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
 
 
 
