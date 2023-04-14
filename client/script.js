@@ -110,7 +110,7 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  window.alert(`oldMessages: ${oldMessages}`);
+  //window.alert(`oldMessages: ${oldMessages}`);
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
