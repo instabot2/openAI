@@ -78,7 +78,9 @@ let conversationHistory = [];
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
+  window.alert(`conversationHistory updated: ${conversationHistory}`);
 };
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
