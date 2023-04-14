@@ -79,6 +79,7 @@ let conversationHistory = [];
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
   window.alert(`conversationHistory: ${conversationHistory}`);
+  saveConversationHistory(); // Save conversation history to local storage after every update
 };
 
 // Load conversation history from local storage
@@ -90,13 +91,13 @@ const loadConversationHistory = () => {
   }
 };
 
-// Call loadConversationHistory before handleSubmit
 loadConversationHistory();
 
 // Function to save conversation history to local storage
 const saveConversationHistory = () => {
   window.localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 };
+
 
 
 // handleSubmit function
