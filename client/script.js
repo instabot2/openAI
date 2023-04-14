@@ -81,7 +81,7 @@ const updateConversationHistory = (newConversationHistory) => {
   window.alert(`conversationHistory updated: ${conversationHistory}`);
 };
 
-
+// Handle form submission
 const handleSubmit = async (e) => {
   e.preventDefault();
 
