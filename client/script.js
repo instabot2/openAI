@@ -80,7 +80,7 @@ try {
     // Retrieve conversation history from the latest message
     const latestMessage = messages[messages.length - 1];
     conversationHistory = latestMessage.conversationHistory || '';
-    window.alert(`Retrieving messages from local storage. Conversation history: ${conversationHistory}`);
+    window.alert(`Conversation history: ${conversationHistory}`);
   }
 } catch (error) {
   console.error(error);
