@@ -172,13 +172,11 @@ const handleSubmit = async (e) => {
         }
       });
 
+
       // Update conversationHistory with new data
-      if (responseData.conversationHistory) {
-        updateConversationHistory(responseData.conversationHistory);
-        alert(`conversationHistory updated: ${JSON.stringify(conversationHistory)}`);
-      } else {
-        alert(`conversationHistory not updated. responseData: ${JSON.stringify(responseData)}`);
-      }
+      updateConversationHistory(responseData.conversationHistory);
+      alert(`conversationHistory updated: ${JSON.stringify(conversationHistory)}`);
+
       
     } else {
       console.error(`Response status: ${response.status}`);
