@@ -90,8 +90,21 @@ try {
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   console.log("New conversation history received:", newConversationHistory);
-  conversationHistory = newConversationHistory;
+  conversationHistory += "\n" + newConversationHistory; // Concatenate with previous history
   window.alert(`conversationHistory: ${conversationHistory}`);
+  
+  // Save updated conversation history to local storage
+  try {
+    if (localStorage.getItem('messages')) {
+      messages = JSON.parse(localStorage.getItem('messages'));
+    }
+    const latestMessage = messages[messages.length - 1];
+    latestMessage.conversationHistory = conversationHistory;
+    localStorage.setItem('messages', JSON.stringify(messages));
+  } catch (error) {
+    console.error(error);
+    window.alert('There was an error saving messages to local storage.');
+  }
 };
 
 const handleSubmit = async (e) => {
