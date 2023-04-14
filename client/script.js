@@ -72,7 +72,6 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-
 // Define the conversationHistory variable before using it in handleSubmit
 let conversationHistory = [];
 
@@ -80,7 +79,6 @@ let conversationHistory = [];
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
   window.alert(`conversationHistory: ${conversationHistory}`);
-  saveConversationHistory(); // Save conversation history to local storage after every update
 };
 
 // Load conversation history from local storage
@@ -92,6 +90,7 @@ const loadConversationHistory = () => {
   }
 };
 
+// Call loadConversationHistory before handleSubmit
 loadConversationHistory();
 
 // Function to save conversation history to local storage
@@ -173,9 +172,13 @@ const handleSubmit = async (e) => {
       });
 
       // Update conversationHistory with new data
-      updateConversationHistory(responseData.conversationHistory);
-      alert(`conversationHistory updated: ${JSON.stringify(conversationHistory)}`);
-
+      if (responseData.conversationHistory) {
+        updateConversationHistory(responseData.conversationHistory);
+        alert(`conversationHistory updated: ${JSON.stringify(conversationHistory)}`);
+      } else {
+        alert(`conversationHistory not updated. responseData: ${JSON.stringify(responseData)}`);
+      }
+      
     } else {
       console.error(`Response status: ${response.status}`);
     }
