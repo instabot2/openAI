@@ -79,7 +79,7 @@ let conversationHistory = [];
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
-  window.alert(`conversationHistory updated: ${conversationHistory}`);
+  window.alert(`conversationHistory: ${conversationHistory}`);
 };
 
 // Load conversation history from local storage
@@ -87,6 +87,7 @@ const loadConversationHistory = () => {
   const savedHistory = window.localStorage.getItem('conversationHistory');
   if (savedHistory) {
     conversationHistory = JSON.parse(savedHistory);
+    window.alert(`savedHistory: ${savedHistory}`);
   }
 };
 
@@ -109,6 +110,7 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
+  window.alert(`oldMessages: ${oldMessages}`);
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
