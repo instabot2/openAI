@@ -72,40 +72,23 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 let conversationHistory = '';
-let messages = [];
 
 // Retrieve stored messages from local storage
 try {
   if (localStorage.getItem('messages')) {
-    messages = JSON.parse(localStorage.getItem('messages'));
+    const messages = JSON.parse(localStorage.getItem('messages'));
     // Retrieve conversation history from the latest message
     const latestMessage = messages[messages.length - 1];
-    conversationHistory = latestMessage.conversationHistory;
+    conversationHistory = latestMessage.conversationHistory || '';
+    window.alert(`Retrieving messages from local storage. Conversation history: ${conversationHistory}`);
   }
 } catch (error) {
   console.error(error);
   window.alert('There was an error retrieving messages from local storage.');
 }
 
-// Function to update the conversationHistory
-const updateConversationHistory = (newConversationHistory) => {
-  console.log("New conversation history received:", newConversationHistory);
-  conversationHistory += "\n" + newConversationHistory; // Concatenate with previous history
-  window.alert(`conversationHistory: ${conversationHistory}`);
-  
-  // Save updated conversation history to local storage
-  try {
-    if (localStorage.getItem('messages')) {
-      messages = JSON.parse(localStorage.getItem('messages'));
-    }
-    const latestMessage = messages[messages.length - 1];
-    latestMessage.conversationHistory = conversationHistory;
-    localStorage.setItem('messages', JSON.stringify(messages));
-  } catch (error) {
-    console.error(error);
-    window.alert('There was an error saving messages to local storage.');
-  }
-};
+
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
