@@ -72,32 +72,21 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-// Define a function to update the conversation history
+// Define the conversationHistory variable before using it in handleSubmit
+let conversationHistory = [];
+
+// Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
-  // Set the conversation history in session storage
-  sessionStorage.setItem('conversationHistory', JSON.stringify(newConversationHistory));
-  window.alert(`Conversation history updated: ${JSON.stringify(newConversationHistory)}`);
-
-  // Save updated conversation history to local storage
-  try {
-    if (localStorage.getItem('messages')) {
-      const messages = JSON.parse(localStorage.getItem('messages'));
-      const latestMessage = messages[messages.length - 1];
-      latestMessage.conversationHistory = newConversationHistory;
-      localStorage.setItem('messages', JSON.stringify(messages));
-      window.alert('Messages saved to local storage.');
-    }
-  } catch (error) {
-    console.error(error);
-    window.alert('There was an error saving messages to local storage.');
-  }
+  conversationHistory = newConversationHistory;
 };
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
+
+  // Retrieve stored messages from local storage
+  const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -126,7 +115,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversation_history: conversationHistory, // pass conversationHistory to the backend (variable name changed)
+        conversationHistory: conversationHistory,
       }),
     });
 
@@ -144,26 +133,26 @@ const handleSubmit = async (e) => {
         chatContainer.scrollTop = 0;
 
         // Store the new message in local storage
-        const newMessage = { isBot: true, message: parsedData, conversationHistory };
-        const updatedMessages = [...messages, newMessage]; // variable name changed
-        localStorage.setItem('messages', JSON.stringify(updatedMessages));
+        const newMessage = { isBot: true, message: parsedData };
+        const messages = [...oldMessages, newMessage];
+        localStorage.setItem('messages', JSON.stringify(messages));
 
         // Write the messages to an XML file
         try {
-          const messagesXml = updatedMessages
+          const messagesXml = messages
             .filter((message) => message.isBot)
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
+          //window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
-          window.alert(`message & conversationHistory empty`);
         }
       });
       
       // Update conversationHistory with new data
-      updateConversationHistory(responseData.conversation_history);
+      updateConversationHistory(responseData.conversationHistory);
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -173,6 +162,7 @@ const handleSubmit = async (e) => {
 };
 
 
+
 // Add event listeners for form submission and pressing Enter key
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
@@ -180,8 +170,6 @@ form.addEventListener('keyup', (e) => {
     handleSubmit(e);
   }
 });
-
-
 
 
 function writeMessageToFile(isBot, messageXml) {
