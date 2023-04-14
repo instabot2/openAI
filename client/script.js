@@ -71,23 +71,7 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-let conversationHistory = '';
 
-// Retrieve stored messages from local storage
-try {
-  if (localStorage.getItem('messages')) {
-    const messages = JSON.parse(localStorage.getItem('messages'));
-    // Retrieve conversation history from the latest message
-    const latestMessage = messages[messages.length - 1];
-    conversationHistory = latestMessage.conversationHistory || '';
-    window.alert(`Conversation history: ${conversationHistory}`);
-  }
-} catch (error) {
-  console.error(error);
-  window.alert('There was an error retrieving messages from local storage.');
-}
-
-// Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
   window.alert(`conversationHistory: ${conversationHistory}`);
@@ -99,12 +83,16 @@ const updateConversationHistory = (newConversationHistory) => {
       const latestMessage = messages[messages.length - 1];
       latestMessage.conversationHistory = conversationHistory;
       localStorage.setItem('messages', JSON.stringify(messages));
+      window.alert('Messages saved to local storage.');
     }
   } catch (error) {
     console.error(error);
     window.alert('There was an error saving messages to local storage.');
   }
 };
+
+
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
