@@ -72,16 +72,18 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
+// Define a function to update the conversation history
 const updateConversationHistory = (newConversationHistory) => {
-  conversationHistory = newConversationHistory;
-  window.alert(`conversationHistory: ${conversationHistory}`);
+  // Set the conversation history in session storage
+  sessionStorage.setItem('conversationHistory', JSON.stringify(newConversationHistory));
+  window.alert(`Conversation history updated: ${JSON.stringify(newConversationHistory)}`);
 
   // Save updated conversation history to local storage
   try {
     if (localStorage.getItem('messages')) {
       const messages = JSON.parse(localStorage.getItem('messages'));
       const latestMessage = messages[messages.length - 1];
-      latestMessage.conversationHistory = conversationHistory;
+      latestMessage.conversationHistory = newConversationHistory;
       localStorage.setItem('messages', JSON.stringify(messages));
       window.alert('Messages saved to local storage.');
     }
@@ -90,8 +92,6 @@ const updateConversationHistory = (newConversationHistory) => {
     window.alert('There was an error saving messages to local storage.');
   }
 };
-
-
 
 
 const handleSubmit = async (e) => {
