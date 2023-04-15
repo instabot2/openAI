@@ -80,6 +80,8 @@ const updateConversationHistory = (newConversationHistory) => {
   localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 };
 
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -87,13 +89,16 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
+  
   // Retrieve stored conversation history from local storage
-  //const storedConversationHistory = JSON.parse(localStorage.getItem('messages')) || [];
-  //conversationHistory = oldMessages;
+  const storedConversationHistory = JSON.parse(localStorage.getItem('conversationHistory')) || [];
+  
+  // Update conversationHistory with stored data
+  conversationHistory = storedConversationHistory;
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
-
+  
   // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
