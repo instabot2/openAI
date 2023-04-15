@@ -90,10 +90,16 @@ const handleSubmit = async (e) => {
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
 
   // Add user message to conversation history
-  const userMessage = { isBot: false, message: data.get('prompt') };
-  conversationHistory.push(userMessage);
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  //const userMessage = { isBot: false, message: data.get('prompt') };
+  //conversationHistory.push(userMessage);
+  //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
+
+  // Join old conversation history with new message
+  const newConversationHistory = oldMessages.concat([{ isBot: false, message: data.get('prompt') }]);
+
+  
+  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
   
@@ -121,7 +127,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversationHistory: conversationHistory,
+        conversationHistory: newConversationHistory,
       }),
     });
 
