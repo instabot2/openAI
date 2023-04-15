@@ -79,6 +79,7 @@ let conversationHistory = [];
 //  conversationHistory = newConversationHistory;
 //  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 //};
+//        prompt: data.get('prompt'),
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -145,7 +146,6 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: data.get('prompt'),
         prompt: conversation,
         conversationHistory: conversationHistory,
       }),
