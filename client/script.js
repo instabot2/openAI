@@ -86,14 +86,31 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
+  //const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
+  //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
+
+  // Add user message to conversation history
+  //const userMessage = { isBot: false, message: data.get('prompt') };
+  //conversationHistory.push(userMessage);
+  //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+
+  // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
 
-  // Add user message to conversation history
-  const userMessage = { isBot: false, message: data.get('prompt') };
-  conversationHistory.push(userMessage);
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  // Summarize the old conversation history
+  const oldConversationHistory = oldMessages.reduce((acc, curr) => {
+    if (curr.isBot) {
+      return `${acc}\nUser: ${curr.message}\nChatGPT: ${curr.message}`;
+    } else {
+      return acc;
+    }
+  }, '');
 
+  // Concatenate the new message with the existing conversation history
+  const conversation = `${oldConversationHistory}\nUser: ${data.get('prompt')}`;
+  
+  
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -122,6 +139,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
+        prompt: conversation,
         conversationHistory: conversationHistory,
       }),
     });
