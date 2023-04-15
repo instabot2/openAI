@@ -72,32 +72,14 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-
 // Define the conversationHistory variable before using it in handleSubmit
 let conversationHistory = [];
+
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
-  window.alert(`conversationHistory: ${conversationHistory}`);
-};
-// Load conversation history from local storage
-const loadConversationHistory = () => {
-  const savedHistory = window.localStorage.getItem('conversationHistory');
-  if (savedHistory) {
-    conversationHistory = JSON.parse(savedHistory);
-    window.alert(`Loaded conversation history: ${savedHistory}`);
-  }
-};
-loadConversationHistory();
-// Function to save conversation history to local storage
-const saveConversationHistory = () => {
-  window.localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 };
 
-
-
-
-// handleSubmit function
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -168,7 +150,7 @@ const handleSubmit = async (e) => {
           console.error(err);
         }
       });
-
+      
       // Update conversationHistory with new data
       updateConversationHistory(responseData.conversationHistory);
     } else {
@@ -178,16 +160,6 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
-
-
-
-// Add event listeners for form submission and pressing Enter key
-form.addEventListener('submit', handleSubmit);
-form.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
-    handleSubmit(e);
-  }
-});
 
 
 function writeMessageToFile(isBot, messageXml) {
@@ -246,6 +218,13 @@ window.addEventListener('resize', () => {
   // if user has scrolled up, keep their scroll position after resizing
   else {
     chatContainer.scrollTop = chatContainer.scrollHeight - chatContainer.clientHeight - (1 - (newScrollTop / chatContainer.clientHeight)) * (chatContainer.scrollHeight - chatContainer.clientHeight);
+  }
+});
+
+form.addEventListener('submit', handleSubmit);
+form.addEventListener('keyup', (e) => {
+  if (e.keyCode === 13) {
+    handleSubmit(e);
   }
 });
 
