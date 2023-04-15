@@ -93,9 +93,9 @@ const handleSubmit = async (e) => {
   conversationHistory = oldMessages;
   
   // Add user message to conversation history
-  const userMessage = { isBot: false, message: data.get('prompt') };
-  conversationHistory.push(userMessage);
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  //const userMessage = { isBot: false, message: data.get('prompt') };
+  //conversationHistory.push(userMessage);
+  //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
 
   
