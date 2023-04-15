@@ -156,7 +156,7 @@ const handleSubmit = async (e) => {
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
           console.log(`Writing messages to file: ${messageXml}`);
-          window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
+          //window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
           //write Message To File
           //writeMessageToFile(true, messageXml);
           
@@ -169,8 +169,10 @@ const handleSubmit = async (e) => {
       if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
         updateConversationHistory(responseData.conversationHistory);
         console.log('Conversation history has been captured!', conversationHistory);
+        window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
       } else {
         console.log('No conversation history captured.');
+        window.alert(`No conversation history captured.`);
       }
 
     } else {
