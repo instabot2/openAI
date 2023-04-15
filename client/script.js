@@ -138,9 +138,9 @@ const handleSubmit = async (e) => {
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
 
       // Add bot message to conversation history
-      //const botMessage = { isBot: true, message: parsedData };
-      //conversationHistory.push(botMessage);
-      //window.alert(`Writing botMessage: ${JSON.stringify(conversationHistory)}`);
+      const botMessage = { isBot: true, message: parsedData };
+      conversationHistory.push(botMessage);
+      window.alert(`Writing botMessage: ${JSON.stringify(conversationHistory)}`);
       
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
