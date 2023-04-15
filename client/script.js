@@ -72,21 +72,23 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
+// Retrieve stored messages from local storage
+const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
+
 // Define the conversationHistory variable before using it in handleSubmit
-let conversationHistory = [];
+let conversationHistory = oldMessages.map((message) => ({ text: message.message }));
 
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
+  window.alert(`Conversation history: ${JSON.stringify(conversationHistory)}`);
 };
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
-
-  // Retrieve stored messages from local storage
-  const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -144,15 +146,17 @@ const handleSubmit = async (e) => {
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
-          //window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
         }
       });
-      
+
       // Update conversationHistory with new data
       updateConversationHistory(responseData.conversationHistory);
+
+      // Alert message to indicate that conversation history has been captured
+      window.alert('Conversation history has been captured!');
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -160,6 +164,9 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
+
+
 
 
 function writeMessageToFile(isBot, messageXml) {
