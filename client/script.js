@@ -86,7 +86,7 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
+  //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -94,7 +94,7 @@ const handleSubmit = async (e) => {
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
   // user's chatstripe
   const userChatStripe = chatStripe(false, data.get('prompt'));
@@ -155,9 +155,8 @@ const handleSubmit = async (e) => {
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
           console.log(`Writing messages to file: ${messageXml}`);
-          const alertMessage = `Writing messages to file: ${messageXml}`;
-          window.alert(alertMessage);
-          //writeMessageToFile
+          window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
+          //write Message To File
           //writeMessageToFile(true, messageXml);
           
         } catch (err) {
