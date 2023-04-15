@@ -91,10 +91,9 @@ const handleSubmit = async (e) => {
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   
   // Retrieve stored conversation history from local storage
-  const storedConversationHistory = JSON.parse(localStorage.getItem('conversationHistory')) || [];
-  
+  //const storedConversationHistory = JSON.parse(localStorage.getItem('conversationHistory')) || [];
   // Update conversationHistory with stored data
-  conversationHistory = storedConversationHistory;
+  //conversationHistory = storedConversationHistory;
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
