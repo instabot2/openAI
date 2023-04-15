@@ -81,11 +81,7 @@ const updateConversationHistory = (newConversationHistory) => {
   localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 };
 
-// Retrieve the conversation history from local storage, if any
-const storedConversationHistory = localStorage.getItem('conversationHistory');
-if (storedConversationHistory) {
-  conversationHistory = JSON.parse(storedConversationHistory);
-}
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -157,16 +153,10 @@ const handleSubmit = async (e) => {
           console.error(err);
         }
       });
-
+ 
       // Update conversationHistory with new data
-      const newConversationHistory = responseData.conversationHistory || [];
-      if (newConversationHistory.length > conversationHistory.length) {
-        updateConversationHistory(newConversationHistory);
-        window.alert(`Conversation history has been captured! ${conversationHistory}`);
-      } else {
-        window.alert('No conversation history captured.');
-      }
-          
+      updateConversationHistory(responseData.conversationHistory);
+      
     } else {
       console.error(`Response status: ${response.status}`);
     }
