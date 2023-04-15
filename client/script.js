@@ -77,9 +77,7 @@ let conversationHistory = [];
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
-  localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
 };
-
 
 
 const handleSubmit = async (e) => {
@@ -91,7 +89,7 @@ const handleSubmit = async (e) => {
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   
   // Retrieve stored conversation history from local storage
-  //const storedConversationHistory = JSON.parse(localStorage.getItem('conversationHistory')) || [];
+  const storedConversationHistory = JSON.parse(localStorage.getItem('conversationHistory')) || [];
   // Update conversationHistory with stored data
   //conversationHistory = storedConversationHistory;
 
