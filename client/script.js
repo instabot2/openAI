@@ -87,6 +87,8 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
+  let conversationHistory = [];
+
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
