@@ -79,7 +79,6 @@ const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
 };
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -87,26 +86,25 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  
-  // Retrieve stored conversation history from local storage
-  //const storedConversationHistory = JSON.parse(localStorage.getItem('conversationHistory')) || [];
-  // Update conversationHistory with stored data
-  //conversationHistory = storedConversationHistory;
 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
-  
+
+  // Add user message to conversation history
+  const userMessage = { isBot: false, message: data.get('prompt') };
+  conversationHistory.push(userMessage);
+
   // user's chatstripe
-  const userMessage = chatStripe(false, data.get('prompt'));
-  messageWrapper.insertAdjacentHTML('beforeend', userMessage);
+  const userChatStripe = chatStripe(false, data.get('prompt'));
+  messageWrapper.insertAdjacentHTML('beforeend', userChatStripe);
 
   // to clear the textarea input
   form.reset();
 
   // bot's chatstripe
   const uniqueId = generateUniqueId();
-  const botMessage = chatStripe(true, '', uniqueId);
-  messageWrapper.insertAdjacentHTML('beforeend', botMessage);
+  const botChatStripe = chatStripe(true, '', uniqueId);
+  messageWrapper.insertAdjacentHTML('beforeend', botChatStripe);
 
   // specific message div
   const messageDiv = document.getElementById(uniqueId);
@@ -130,6 +128,11 @@ const handleSubmit = async (e) => {
     if (response.ok) {
       const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
+
+      // Add bot message to conversation history
+      const botMessage = { isBot: true, message: parsedData };
+      conversationHistory.push(botMessage);
+
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
         scrollIntoView(messageDiv);
@@ -149,21 +152,21 @@ const handleSubmit = async (e) => {
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
-          window.alert(`writing messages to file: ${messageXml}`);
+          console.log(`Writing messages to file: ${messageXml}`);
           //writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
         }
       });
- 
+
       // Update conversationHistory with new data
       if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
         updateConversationHistory(responseData.conversationHistory);
-        window.alert(`Conversation history has been captured! ${conversationHistory}`);
+        console.log('Conversation history has been captured!', conversationHistory);
       } else {
-        window.alert('No conversation history captured.');
+        console.log('No conversation history captured.');
       }
-      
+
     } else {
       console.error(`Response status: ${response.status}`);
     }
