@@ -154,8 +154,8 @@ const handleSubmit = async (e) => {
       // Update conversationHistory with new data
       updateConversationHistory(responseData.conversationHistory);
       // Alert the user that conversation history has been captured
-      window.alert(`Conversation history has been captured! ${conversationHistory}`);
-    
+      window.alert(`Conversation history has been captured! Conversation history: ${JSON.stringify(conversationHistory)}`);
+
     } else {
       console.error(`Response status: ${response.status}`);
     }
