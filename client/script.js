@@ -89,14 +89,14 @@ const handleSubmit = async (e) => {
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
 
-  // Clear existing chat messages
-  messageWrapper.innerHTML = '';
-
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
   window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
+  // Clear existing chat messages
+  messageWrapper.innerHTML = '';
+  
   // user's chatstripe
   const userChatStripe = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userChatStripe);
