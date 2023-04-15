@@ -81,9 +81,7 @@ let conversationHistory = oldMessages.map((message) => ({ text: message.message 
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
-  window.alert(`Conversation history: ${JSON.stringify(conversationHistory)}`);
 };
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -96,19 +94,19 @@ const handleSubmit = async (e) => {
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
-  // user's chatstripe
+  // Create and insert user's chat stripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
 
-  // to clear the textarea input
+  // Clear the textarea input
   form.reset();
 
-  // bot's chatstripe
+  // Create and insert bot's chat stripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
 
-  // specific message div
+  // Find the specific message div and insert a loader
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -120,7 +118,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversationHistory: conversationHistory,
+        conversationHistory,
       }),
     });
 
@@ -129,12 +127,14 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const responseData = await response.json();
-      const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
+      const parsedData = responseData.bot.trim(); // Trim any trailing spaces/'\n'
+      
+      // Type out the bot's response and perform necessary actions
       typeText(messageDiv, parsedData, () => {
-        // scroll to the new message
+        // Scroll to the new message
         scrollIntoView(messageDiv);
 
-        // scroll to the top of the chat container to show the new message
+        // Scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
         // Store the new message in local storage
@@ -158,7 +158,7 @@ const handleSubmit = async (e) => {
       
       // Update conversationHistory with new data
       updateConversationHistory(responseData.conversationHistory);
-      // Alert message to indicate that conversation history has been captured
+      // Alert the user that conversation history has been captured
       window.alert('Conversation history has been captured!');
       
     } else {
