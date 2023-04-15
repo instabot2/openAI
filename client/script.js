@@ -80,6 +80,8 @@ const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
 };
 
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -152,10 +154,13 @@ const handleSubmit = async (e) => {
       });
        
       // Update conversationHistory with new data
-      updateConversationHistory(responseData.conversationHistory);
-      // Alert the user that conversation history has been captured
-      window.alert(`Conversation history has been captured! Conversation history: ${JSON.stringify(conversationHistory)}`);
-
+      if (responseData.conversationHistory) {
+        updateConversationHistory(responseData.conversationHistory);
+        window.alert(`Conversation history has been captured! ${conversationHistory}`);
+      } else {
+        window.alert('No conversation history captured.');
+      }
+      
     } else {
       console.error(`Response status: ${response.status}`);
     }
