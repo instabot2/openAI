@@ -144,8 +144,8 @@ const handleSubmit = async (e) => {
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
-          //window.alert(`writing messages to file: ${messageXml}`);
-          writeMessageToFile(true, messageXml);
+          window.alert(`writing messages to file: ${messageXml}`);
+          //writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
         }
