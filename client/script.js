@@ -97,9 +97,15 @@ const handleSubmit = async (e) => {
   //conversationHistory.push(userMessage);
   //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
+
+  // Add user message to conversation history
+  const userMessage = { isBot: false, message: data.get('prompt') };
+  conversationHistory.push(userMessage);
+
   // Concatenate the new message with the existing conversation history
   let conversation = conversationHistory.concat(userMessage);
 
+  
   
   
   // Clear existing chat messages
