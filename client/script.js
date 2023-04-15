@@ -79,7 +79,7 @@ let conversationHistory = [];
 //  conversationHistory = newConversationHistory;
 //  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 //};
-//        prompt: data.get('prompt'),
+//       
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -87,41 +87,17 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
-  //const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
-
-  // Add user message to conversation history
-  //const userMessage = { isBot: false, message: data.get('prompt') };
-  //conversationHistory.push(userMessage);
-  //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
-
-  // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
-  // Summarize the old conversation history
-  const oldConversationHistory = oldMessages.reduce((acc, curr) => {
-    if (curr.isBot) {
-      return `${acc}\nUser: ${curr.message}\nChatGPT: ${curr.message}`;
-    } else {
-      return acc;
-    }
-  }, '');
-  // Concatenate the new message with the existing conversation history
-  const conversation = `${oldConversationHistory}\nUser: ${data.get('prompt')}`;
-  
-  
 
-  // Clear existing chat messages
-  messageWrapper.innerHTML = '';
-  
-  
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
   window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
-  
-  
+
+  // Clear existing chat messages
+  messageWrapper.innerHTML = '';
   
   // user's chatstripe
   const userChatStripe = chatStripe(false, data.get('prompt'));
@@ -146,8 +122,8 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: conversation,
         conversationHistory: conversationHistory,
+        prompt: data.get('prompt'),
       }),
     });
 
