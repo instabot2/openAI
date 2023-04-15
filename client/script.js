@@ -75,10 +75,10 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 // Function to update the conversationHistory
-const updateConversationHistory = (newConversationHistory) => {
-  conversationHistory = newConversationHistory;
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
-};
+//const updateConversationHistory = (newConversationHistory) => {
+//  conversationHistory = newConversationHistory;
+//  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+//};
 
 const handleSubmit = async (e) => {
   e.preventDefault();
