@@ -153,7 +153,11 @@ const handleSubmit = async (e) => {
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
           console.log(`Writing messages to file: ${messageXml}`);
+          const alertMessage = `Writing messages to file: ${messageXml}`;
+          window.alert(alertMessage);
+          //writeMessageToFile
           //writeMessageToFile(true, messageXml);
+          
         } catch (err) {
           console.error(err);
         }
