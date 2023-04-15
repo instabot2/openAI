@@ -90,7 +90,7 @@ const handleSubmit = async (e) => {
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
 
   // Update conversation history with stored messages
-  conversationHistory = oldMessages;
+  //conversationHistory = oldMessages;
   
   // Add user message to conversation history
   //const userMessage = { isBot: false, message: data.get('prompt') };
@@ -138,8 +138,8 @@ const handleSubmit = async (e) => {
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
 
       // Add bot message to conversation history
-      const botMessage = { isBot: true, message: parsedData };
-      conversationHistory.push(botMessage);
+      //const botMessage = { isBot: true, message: parsedData };
+      //conversationHistory.push(botMessage);
       //window.alert(`Writing botMessage: ${JSON.stringify(conversationHistory)}`);
       
       typeText(messageDiv, parsedData, () => {
