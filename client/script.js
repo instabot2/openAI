@@ -150,13 +150,22 @@ const handleSubmit = async (e) => {
         }
       });
        
+      // Check if conversationHistory is present in the JSON body
+      const requestBody = JSON.stringify({
+        prompt: data.get('prompt'),
+        conversationHistory: conversationHistory,
+      });
+      console.log(requestBody);
+
       // Update conversationHistory with new data
       if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
-        updateConversationHistory([...conversationHistory, ...responseData.conversationHistory]);
+        updateConversationHistory(responseData.conversationHistory);
         window.alert(`Conversation history has been captured! ${conversationHistory}`);
       } else {
         window.alert('No conversation history captured.');
       }
+      
+      
       
     } else {
       console.error(`Response status: ${response.status}`);
