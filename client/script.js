@@ -73,14 +73,8 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 // Define the conversationHistory variable before using it in handleSubmit
-//let conversationHistory = [];
-// Function to update the conversationHistory
-//const updateConversationHistory = (newConversationHistory) => {
-//  conversationHistory = newConversationHistory;
-//};
-
-// Define the conversationHistory variable before using it in handleSubmit
 let conversationHistory = [];
+
 // Function to update the conversationHistory
 const updateConversationHistory = (newConversationHistory) => {
   conversationHistory = newConversationHistory;
@@ -92,7 +86,6 @@ const storedConversationHistory = localStorage.getItem('conversationHistory');
 if (storedConversationHistory) {
   conversationHistory = JSON.parse(storedConversationHistory);
 }
-
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -164,10 +157,11 @@ const handleSubmit = async (e) => {
           console.error(err);
         }
       });
-       
+
       // Update conversationHistory with new data
-      if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
-        updateConversationHistory(responseData.conversationHistory);
+      const newConversationHistory = responseData.conversationHistory || [];
+      if (newConversationHistory.length > conversationHistory.length) {
+        updateConversationHistory(newConversationHistory);
         window.alert(`Conversation history has been captured! ${conversationHistory}`);
       } else {
         window.alert('No conversation history captured.');
@@ -180,6 +174,7 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
+
 
 
 
