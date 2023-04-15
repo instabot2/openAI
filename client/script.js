@@ -94,19 +94,19 @@ const handleSubmit = async (e) => {
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
-  // Create and insert user's chat stripe
+  // user's chatstripe
   const userMessage = chatStripe(false, data.get('prompt'));
   messageWrapper.insertAdjacentHTML('beforeend', userMessage);
 
-  // Clear the textarea input
+  // to clear the textarea input
   form.reset();
 
-  // Create and insert bot's chat stripe
+  // bot's chatstripe
   const uniqueId = generateUniqueId();
   const botMessage = chatStripe(true, '', uniqueId);
   messageWrapper.insertAdjacentHTML('beforeend', botMessage);
 
-  // Find the specific message div and insert a loader
+  // specific message div
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
@@ -118,7 +118,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversationHistory,
+        conversationHistory: conversationHistory,
       }),
     });
 
@@ -127,14 +127,12 @@ const handleSubmit = async (e) => {
 
     if (response.ok) {
       const responseData = await response.json();
-      const parsedData = responseData.bot.trim(); // Trim any trailing spaces/'\n'
-      
-      // Type out the bot's response and perform necessary actions
+      const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
       typeText(messageDiv, parsedData, () => {
-        // Scroll to the new message
+        // scroll to the new message
         scrollIntoView(messageDiv);
 
-        // Scroll to the top of the chat container to show the new message
+        // scroll to the top of the chat container to show the new message
         chatContainer.scrollTop = 0;
 
         // Store the new message in local storage
