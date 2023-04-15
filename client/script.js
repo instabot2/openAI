@@ -93,11 +93,14 @@ const handleSubmit = async (e) => {
   //conversationHistory = oldMessages;
   
   // Add user message to conversation history
-  const userMessage = { isBot: false, message: data.get('prompt') };
-  conversationHistory.push(userMessage);
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  //const userMessage = { isBot: false, message: data.get('prompt') };
+  //conversationHistory.push(userMessage);
+  //window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
+  // Concatenate the new message with the existing conversation history
+  let conversation = conversationHistory.concat(userMessage);
 
+  
   
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -126,7 +129,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         prompt: data.get('prompt'),
-        conversationHistory: conversationHistory,
+        conversationHistory: conversation,
       }),
     });
 
