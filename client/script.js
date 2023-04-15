@@ -73,7 +73,7 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 // Retrieve stored messages from local storage
-let oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
+//let oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
 
 // Define the conversationHistory variable before using it in handleSubmit
 let conversationHistory = oldMessages.map((message) => ({ text: message.message }));
