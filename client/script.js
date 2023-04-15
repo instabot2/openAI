@@ -86,15 +86,15 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  window.alert(oldMessages);
-  
+  window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
+
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
-  window.alert(conversationHistory);
+  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
   // user's chatstripe
   const userChatStripe = chatStripe(false, data.get('prompt'));
