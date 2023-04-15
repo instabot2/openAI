@@ -90,6 +90,9 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
+  // Retrieve stored messages from local storage
+  const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
+
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
 
@@ -146,17 +149,18 @@ const handleSubmit = async (e) => {
             .map((message) => `<message isBot="true">${message.message}</message>`)
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
+          //window.alert(`writing messages to file: ${messageXml}`);
           writeMessageToFile(true, messageXml);
         } catch (err) {
           console.error(err);
         }
       });
-
+      
       // Update conversationHistory with new data
       updateConversationHistory(responseData.conversationHistory);
-
       // Alert message to indicate that conversation history has been captured
       window.alert('Conversation history has been captured!');
+      
     } else {
       console.error(`Response status: ${response.status}`);
     }
