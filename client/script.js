@@ -74,18 +74,13 @@ function chatStripe(isAi, value, uniqueId) {
 
 let conversationHistory = [];
 
-// Function to update the conversationHistory
-//const updateConversationHistory = (newConversationHistory) => {
-//  conversationHistory = newConversationHistory;
-//  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
-//};
-//       
 
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
+  
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
@@ -96,6 +91,7 @@ const handleSubmit = async (e) => {
   window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
 
+  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
   
