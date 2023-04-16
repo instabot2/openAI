@@ -189,15 +189,12 @@ function writeMessageToFile(isBot, messageXml) {
   const memory = JSON.parse(localStorage.getItem('memory') || '[]');
 
   // Check if file with same name already exists in memory array
-  let i = 1;
-  while (memory.find(file => file.fileName === fileName)) {
-    if (i > 100) {
-      console.error('Error: Too many files with the same name in memory array');
-      alert('Error: Too many files with the same name in memory array');
-      return;
-    }
-    fileName = `bot_messages(${i}).xml`;
-    i++;
+  let existingFile = memory.find(file => file.fileName === fileName);
+  while (existingFile) {
+    const existingUrl = existingFile.url;
+    URL.revokeObjectURL(existingUrl); // Revoke the old URL
+    memory.splice(memory.indexOf(existingFile), 1); // Remove the old file object from memory
+    existingFile = memory.find(file => file.fileName === fileName); // Check for more files with the same name
   }
 
   const file = new Blob([messageXml], {type: 'text/xml'});
