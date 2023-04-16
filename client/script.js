@@ -114,7 +114,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         conversationHistory: conversationHistory,
-        prompt: data.get('prompt'),
+        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
     });
 
