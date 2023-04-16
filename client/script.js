@@ -185,7 +185,16 @@ const handleSubmit = async (e) => {
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
 
-  const fileName = 'bot_messages.xml';
+  let fileName = 'bot_messages.xml';
+  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
+
+  // Check if file with same name already exists in memory array
+  let i = 1;
+  while (memory.find(file => file.fileName === fileName)) {
+    fileName = `bot_messages(${i}).xml`;
+    i++;
+  }
+
   const file = new Blob([messageXml], {type: 'text/xml'});
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
@@ -220,13 +229,7 @@ function writeMessageToFile(isBot, messageXml) {
     }, 0);
   }
 
-  // Save the file to the "memory" array, deleting existing file if necessary
-  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
-  const existingFileIndex = memory.findIndex(file => file.fileName === fileName);
-  if (existingFileIndex !== -1) {
-    URL.revokeObjectURL(memory[existingFileIndex].url);
-    memory.splice(existingFileIndex, 1);
-  }
+  // Save the file to the "memory" array
   memory.push({ fileName, url });
   localStorage.setItem('memory', JSON.stringify(memory));
 }
