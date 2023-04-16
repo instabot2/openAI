@@ -79,18 +79,14 @@ const handleSubmit = async (e) => {
 
   const data = new FormData(form);
 
- 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
-
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
   window.alert(`current conversationHistory: ${JSON.stringify(conversationHistory)}`);
-
-
-  
+ 
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
   
@@ -166,27 +162,16 @@ const handleSubmit = async (e) => {
 
       console.log('responseData:', responseData);
 
-      const latestTimestamp = conversationHistory.length > 0 ? conversationHistory[conversationHistory.length - 1].timestamp : 0;
-      const newMessages = responseData?.conversationHistory?.reduce((accumulator, message) => {
-        if (message.timestamp > latestTimestamp) {
-          accumulator.push(message);
-        }
-        return accumulator;
-      }, []) || [];
+      // Combine conversation history with new messages received from the server
+      const newMessages = responseData?.conversationHistory || [];
+      conversationHistory.push(...newMessages);
+      // Update conversation history in local storage
+      localStorage.setItem('conversationHistory', JSON.stringify(conversationHistory));
+      // Update the UI with the new messages
+      updateConversationHistory(conversationHistory);
+      console.log('Conversation history has been updated!', conversationHistory);
+      window.alert(`Conversation history has been updated with new data: ${JSON.stringify(newMessages)}`);
 
-      if (newMessages.length > 0) {
-        conversationHistory.push(...newMessages);
-        updateConversationHistory(conversationHistory);
-        console.log('Conversation history has been updated!', conversationHistory);
-        window.alert(`Conversation history has been updated with new data: ${JSON.stringify(newMessages)}`);
-      } else {
-        console.log('No new messages found in responseData.');
-        window.alert(`No new messages found in responseData.`);
-      }
-
-
-
-     
     } else {
       console.error(`Response status: ${response.status}`);
     }
