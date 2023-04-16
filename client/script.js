@@ -81,7 +81,8 @@ const handleSubmit = async (e) => {
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
-  window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
+  //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
+  
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
@@ -179,8 +180,6 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
-
-
 
 
 function writeMessageToFile(isBot, messageXml) {
