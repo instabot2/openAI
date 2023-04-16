@@ -165,9 +165,9 @@ const handleSubmit = async (e) => {
 
 
       console.log('responseData:', responseData);
-      window.alert(`capturing responseData: ${JSON.stringify(responseData)}`);
+      //window.alert(`capturing responseData: ${JSON.stringify(responseData)}`);
       
-      const newMessages = responseData.conversationHistory.filter(message => !conversationHistory.includes(message));
+      const newMessages = responseData?.conversationHistory?.filter(message => !conversationHistory.includes(message)) || [];
 
       if (newMessages.length > 0) {
         conversationHistory.push(...newMessages);
@@ -178,7 +178,6 @@ const handleSubmit = async (e) => {
         console.log('No new messages found in responseData.');
         window.alert(`No new messages found in responseData.`);
       }
-
 
 
      
