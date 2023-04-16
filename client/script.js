@@ -168,9 +168,8 @@ const handleSubmit = async (e) => {
 
       const lastTimestamp = conversationHistory.length > 0 ? conversationHistory[conversationHistory.length - 1].timestamp : 0;
       const newMessages = responseData?.conversationHistory?.filter(message => message.timestamp > lastTimestamp) || [];
-      console.log('newMessages:', newMessages);
 
-      if (newMessages && newMessages.length > 0) {
+      if (newMessages.length > 0) {
         conversationHistory.push(...newMessages);
         updateConversationHistory(conversationHistory);
         console.log('Conversation history has been updated!', conversationHistory);
