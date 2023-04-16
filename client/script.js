@@ -220,8 +220,13 @@ function writeMessageToFile(isBot, messageXml) {
     }, 0);
   }
 
-  // Save the file to the "memory" array
+  // Save the file to the "memory" array, deleting existing file if necessary
   const memory = JSON.parse(localStorage.getItem('memory') || '[]');
+  const existingFileIndex = memory.findIndex(file => file.fileName === fileName);
+  if (existingFileIndex !== -1) {
+    URL.revokeObjectURL(memory[existingFileIndex].url);
+    memory.splice(existingFileIndex, 1);
+  }
   memory.push({ fileName, url });
   localStorage.setItem('memory', JSON.stringify(memory));
 }
