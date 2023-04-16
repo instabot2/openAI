@@ -169,7 +169,8 @@ const handleSubmit = async (e) => {
       
       const lastTimestamp = conversationHistory.length > 0 ? conversationHistory[conversationHistory.length - 1].timestamp : 0;
       const newMessages = newResponseData?.conversationHistory?.filter(message => message.timestamp > lastTimestamp) || [];
-
+      window.alert(`capturing new messages: ${JSON.stringify(newMessages)}`);
+      
       if (newMessages && newMessages.length > 0) {
         conversationHistory.push(...newMessages);
         updateConversationHistory(conversationHistory);
