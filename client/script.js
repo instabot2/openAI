@@ -74,13 +74,12 @@ function chatStripe(isAi, value, uniqueId) {
 
 let conversationHistory = [];
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
 
-  
+ 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
@@ -168,7 +167,7 @@ const handleSubmit = async (e) => {
       if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
         updateConversationHistory(responseData.conversationHistory);
         console.log('Conversation history has been captured!', conversationHistory);
-        window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+        window.alert(`Update conversationHistory with new data: ${JSON.stringify(conversationHistory)}`);
       } else {
         console.log('No conversation history captured.');
         window.alert(`No conversation history captured.`);
