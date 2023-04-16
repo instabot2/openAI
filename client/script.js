@@ -164,9 +164,10 @@ const handleSubmit = async (e) => {
       });
 
 
-
       console.log('responseData:', responseData);
-      if (responseData.hasOwnProperty('conversationHistory')) {
+      window.alert(`responseData: ${JSON.stringify(responseData)}`);
+      
+      if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
         updateConversationHistory(responseData.conversationHistory);
         console.log('Conversation history has been updated!', conversationHistory);
         window.alert(`Conversation history has been updated with new data: ${JSON.stringify(responseData.conversationHistory)}`);
@@ -175,11 +176,7 @@ const handleSubmit = async (e) => {
         window.alert(`No conversation history found in responseData.`);
       }
 
-
-
-
-
-      
+     
     } else {
       console.error(`Response status: ${response.status}`);
     }
@@ -187,10 +184,6 @@ const handleSubmit = async (e) => {
     console.error(err);
   }
 };
-
-
-
-
 
 
 
