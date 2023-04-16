@@ -167,18 +167,18 @@ const handleSubmit = async (e) => {
       console.log('responseData:', responseData);
       window.alert(`capturing responseData: ${JSON.stringify(responseData)}`);
       
-      window.alert(`The conversation history is: ${JSON.stringify(responseData.conversationHistory)}`);
-      
-      // Update conversation history with new messages from bot response
-      if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
-        const newMessages = responseData.conversationHistory.filter(message => !conversationHistory.includes(message));
+      const newMessages = responseData.conversationHistory.filter(message => !conversationHistory.includes(message));
+
+      if (newMessages.length > 0) {
         conversationHistory.push(...newMessages);
+        updateConversationHistory(conversationHistory);
         console.log('Conversation history has been updated!', conversationHistory);
         window.alert(`Conversation history has been updated with new data: ${JSON.stringify(newMessages)}`);
       } else {
-        console.log('No conversation history found in responseData.');
-        window.alert(`No conversation history found in responseData.`);
+        console.log('No new messages found in responseData.');
+        window.alert(`No new messages found in responseData.`);
       }
+
 
 
      
