@@ -165,7 +165,7 @@ const handleSubmit = async (e) => {
 
 
 
-      if (responseData.conversationHistory !== undefined) {
+      if (responseData.hasOwnProperty('conversationHistory')) {
         if (responseData.conversationHistory.length > 0) {
           updateConversationHistory(responseData.conversationHistory);
           console.log('Conversation history has been updated!', conversationHistory);
