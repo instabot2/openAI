@@ -167,6 +167,8 @@ const handleSubmit = async (e) => {
       console.log('responseData:', responseData);
       window.alert(`capturing responseData: ${JSON.stringify(responseData)}`);
       
+      window.alert(`The conversation history is: ${JSON.stringify(responseData.conversationHistory)}`);
+      
       if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
         updateConversationHistory(responseData.conversationHistory);
         console.log('Conversation history has been updated!', conversationHistory);
