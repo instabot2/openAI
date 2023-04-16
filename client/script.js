@@ -165,19 +165,18 @@ const handleSubmit = async (e) => {
 
 
 
+      console.log('responseData:', responseData);
       if (responseData.hasOwnProperty('conversationHistory')) {
-        if (responseData.conversationHistory.length > 0) {
-          updateConversationHistory(responseData.conversationHistory);
-          console.log('Conversation history has been updated!', conversationHistory);
-          window.alert(`Conversation history has been updated with new data: ${JSON.stringify(responseData.conversationHistory)}`);
-        } else {
-          console.log('Conversation history is empty.');
-          window.alert(`Conversation history is empty.`);
-        }
+        updateConversationHistory(responseData.conversationHistory);
+        console.log('Conversation history has been updated!', conversationHistory);
+        window.alert(`Conversation history has been updated with new data: ${JSON.stringify(responseData.conversationHistory)}`);
       } else {
         console.log('No conversation history found in responseData.');
         window.alert(`No conversation history found in responseData.`);
       }
+
+
+
 
 
       
