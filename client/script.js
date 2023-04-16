@@ -165,21 +165,21 @@ const handleSubmit = async (e) => {
 
 
       console.log('responseData:', responseData);
-      //window.alert(`capturing responseData: ${JSON.stringify(responseData)}`);
-      
+
       const lastTimestamp = conversationHistory.length > 0 ? conversationHistory[conversationHistory.length - 1].timestamp : 0;
-      const newMessages = newResponseData?.conversationHistory?.filter(message => message.timestamp > lastTimestamp) || [];
-      window.alert(`capturing new messages: ${JSON.stringify(newMessages)}`);
-      
+      const newMessages = responseData?.conversationHistory?.filter(message => message.timestamp > lastTimestamp) || [];
+      console.log('newMessages:', newMessages);
+
       if (newMessages && newMessages.length > 0) {
         conversationHistory.push(...newMessages);
         updateConversationHistory(conversationHistory);
         console.log('Conversation history has been updated!', conversationHistory);
         window.alert(`Conversation history has been updated with new data: ${JSON.stringify(newMessages)}`);
       } else {
-        console.log('No new messages found in newResponseData.');
-        window.alert(`No new messages found in newResponseData.`);
+        console.log('No new messages found in responseData.');
+        window.alert(`No new messages found in responseData.`);
       }
+
 
 
      
