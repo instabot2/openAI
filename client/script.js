@@ -85,7 +85,7 @@ const handleSubmit = async (e) => {
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
-  window.alert(`current conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  //window.alert(`current conversationHistory: ${JSON.stringify(conversationHistory)}`);
  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
@@ -128,7 +128,7 @@ const handleSubmit = async (e) => {
       // Add bot message to conversation history
       const botMessage = { isBot: true, message: parsedData };
       conversationHistory.push(botMessage);
-      window.alert(`Writing botMessage conversationHistory: ${JSON.stringify(conversationHistory)}`);
+      //window.alert(`Writing botMessage conversationHistory: ${JSON.stringify(conversationHistory)}`);
       
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
@@ -170,7 +170,7 @@ const handleSubmit = async (e) => {
       // Update the UI with the new messages
       updateConversationHistory(conversationHistory);
       console.log('Conversation history has been updated!', conversationHistory);
-      window.alert(`Conversation history has been updated with new data: ${JSON.stringify(newMessages)}`);
+      //window.alert(`Conversation history has been updated with new data: ${JSON.stringify(newMessages)}`);
 
     } else {
       console.error(`Response status: ${response.status}`);
