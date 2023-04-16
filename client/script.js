@@ -197,18 +197,36 @@ function writeMessageToFile(isBot, messageXml) {
     alert('Error downloading file');
   });
 
-  a.click();
-  
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 0);
+  if (navigator.userAgent.indexOf('Android') !== -1) {
+    // Use Android-specific method to download file
+    const fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      const base64Data = fileReader.result;
+      const intent = window.Android.createIntent({
+        action: 'android.intent.action.VIEW',
+        type: 'text/xml',
+        data: `data:text/xml;base64,${base64Data}`,
+        flags: ['FLAG_GRANT_READ_URI_PERMISSION', 'FLAG_GRANT_WRITE_URI_PERMISSION'],
+      });
+      window.Android.startActivity(intent);
+    };
+    fileReader.readAsDataURL(file);
+  } else {
+    // Use default download method for other devices
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 0);
+  }
 
   // Save the file to the "memory" array
   const memory = JSON.parse(localStorage.getItem('memory') || '[]');
   memory.push({ fileName, url });
   localStorage.setItem('memory', JSON.stringify(memory));
 }
+
+
 
 
 chatContainer.addEventListener('scroll', () => {
