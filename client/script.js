@@ -166,8 +166,13 @@ const handleSubmit = async (e) => {
 
       console.log('responseData:', responseData);
 
-      const lastTimestamp = conversationHistory.length > 0 ? conversationHistory[conversationHistory.length - 1].timestamp : 0;
-      const newMessages = responseData?.conversationHistory?.filter(message => message.timestamp > lastTimestamp) || [];
+      const latestTimestamp = conversationHistory.length > 0 ? conversationHistory[conversationHistory.length - 1].timestamp : 0;
+      const newMessages = responseData?.conversationHistory?.reduce((accumulator, message) => {
+        if (message.timestamp > latestTimestamp) {
+          accumulator.push(message);
+        }
+        return accumulator;
+      }, []) || [];
 
       if (newMessages.length > 0) {
         conversationHistory.push(...newMessages);
