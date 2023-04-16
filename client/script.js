@@ -151,7 +151,7 @@ const handleSubmit = async (e) => {
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
           console.log(`Writing messages to file: ${messageXml}`);
-          window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
+          //window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
           //write Message To File
           writeMessageToFile(true, messageXml);
           
@@ -185,16 +185,7 @@ const handleSubmit = async (e) => {
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
 
-  let fileName = 'bot_messages.xml';
-  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
-
-  // Check if file with same name already exists in memory array
-  let i = 1;
-  while (memory.find(file => file.fileName === fileName)) {
-    fileName = `bot_messages(${i}).xml`;
-    i++;
-  }
-
+  const fileName = 'bot_messages.xml';
   const file = new Blob([messageXml], {type: 'text/xml'});
   const a = document.createElement('a');
   const url = URL.createObjectURL(file);
@@ -230,11 +221,17 @@ function writeMessageToFile(isBot, messageXml) {
   }
 
   // Save the file to the "memory" array
-  memory.push({ fileName, url });
+  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
+  const existingFileIndex = memory.findIndex(file => file.fileName === fileName);
+  if (existingFileIndex > -1) {
+    // If the file already exists in memory, update its URL
+    memory[existingFileIndex].url = url;
+  } else {
+    // Otherwise, add the new file to the memory array
+    memory.push({ fileName, url });
+  }
   localStorage.setItem('memory', JSON.stringify(memory));
 }
-
-
 
 
 
