@@ -87,7 +87,7 @@ const handleSubmit = async (e) => {
   // Add user message to conversation history
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
-  window.alert(`conversationHistory: ${JSON.stringify(conversationHistory)}`);
+  window.alert(`current conversationHistory: ${JSON.stringify(conversationHistory)}`);
 
 
   
@@ -154,7 +154,7 @@ const handleSubmit = async (e) => {
             .join('');
           const messageXml = `<messages>${messagesXml}</messages>`;
           console.log(`Writing messages to file: ${messageXml}`);
-          //window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
+          window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
           //write Message To File
           //writeMessageToFile(true, messageXml);
           
@@ -163,16 +163,24 @@ const handleSubmit = async (e) => {
         }
       });
 
-      // Update conversationHistory with new data
-      if (responseData.conversationHistory && responseData.conversationHistory.length > 0) {
-        updateConversationHistory(responseData.conversationHistory);
-        console.log('Conversation history has been captured!', conversationHistory);
-        window.alert(`Update conversationHistory with new data: ${JSON.stringify(conversationHistory)}`);
+
+
+      if (responseData.conversationHistory !== undefined) {
+        if (responseData.conversationHistory.length > 0) {
+          updateConversationHistory(responseData.conversationHistory);
+          console.log('Conversation history has been updated!', conversationHistory);
+          window.alert(`Conversation history has been updated with new data: ${JSON.stringify(responseData.conversationHistory)}`);
+        } else {
+          console.log('Conversation history is empty.');
+          window.alert(`Conversation history is empty.`);
+        }
       } else {
-        console.log('No conversation history captured.');
-        window.alert(`No conversation history captured.`);
+        console.log('No conversation history found in responseData.');
+        window.alert(`No conversation history found in responseData.`);
       }
 
+
+      
     } else {
       console.error(`Response status: ${response.status}`);
     }
