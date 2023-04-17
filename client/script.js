@@ -242,6 +242,7 @@ const textarea = document.querySelector("textarea");
 // Trigger the focus event of the textarea when the page loads
 window.onload = function() {
   textarea.dispatchEvent(new Event('focus'));
+  document.body.style.filter = "none";
 };
 
 // When the textarea is in focus or has text typed, show the hidden_text div and blur the background
