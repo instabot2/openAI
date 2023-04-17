@@ -247,6 +247,7 @@ textarea.addEventListener("focus", () => {
   }
 });
 
+// When the textarea input changes, update the hidden_text div and check if it's empty or not
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
@@ -265,6 +266,7 @@ document.addEventListener("click", (event) => {
     window.alert("Blur removed"); // show an alert message
   }
 });
+
 
 
 
