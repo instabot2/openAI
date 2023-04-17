@@ -241,20 +241,24 @@ function writeMessageToFile(isBot, messageXml) {
 // Get the hidden_text div and the textarea element
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
+
 // When the textarea is in focus, show the hidden_text div
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
 });
+
 // When the textarea value changes, update the text in the hidden_text div
 textarea.addEventListener("input", () => {
   hiddenText.textContent = textarea.value;
 });
+
 // When the cursor is not in the textarea, hide the hidden_text div
 document.addEventListener("click", (event) => {
   if (event.target !== textarea) {
     hiddenText.style.display = "none";
   }
 });
+
 
 
 chatContainer.addEventListener('scroll', () => {
