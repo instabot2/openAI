@@ -197,11 +197,11 @@ function writeMessageToFile(isBot, messageXml) {
     alert('Error downloading file');
   });
 
-  if (navigator.userAgent.indexOf('Android') !== -1) {
+  if (navigator.userAgentData.platform === 'android') {
     // Use Android-specific method to download file
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
-      const base64Data = fileReader.result;
+      const base64Data = fileReader.result.split(',')[1];
       const intent = window.Android.createIntent({
         action: 'android.intent.action.VIEW',
         type: 'text/xml',
