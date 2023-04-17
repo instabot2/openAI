@@ -236,34 +236,38 @@ function writeMessageToFile(isBot, messageXml) {
 }
 
 
-  const hiddenText = document.getElementById("hidden_text");
-  const textarea = document.querySelector("textarea");
+const hiddenText = document.getElementById("hidden_text");
+const textarea = document.querySelector("textarea");
 
-  // When the textarea is in focus or has text typed, show the hidden_text div and blur the background
-  textarea.addEventListener("focus", () => {
-    hiddenText.style.display = "block";
-    if (textarea.value.trim() === "" || hiddenText.style.display === "block") {
-      document.body.classList.add("blur"); // add the .blur class to the body element
-    }
-  });
+// When the textarea is in focus or has text typed, show the hidden_text div and blur the background
+textarea.addEventListener("focus", () => {
+  hiddenText.style.display = "block";
+  if (textarea.value.trim() === "") {
+    document.body.classList.add("blur"); // add the .blur class to the body element
+  }
+});
 
-  textarea.addEventListener("input", () => {
-    hiddenText.style.display = "block";
-    hiddenText.textContent = textarea.value;
-    if (textarea.value.trim() === "" || hiddenText.style.display === "block") {
-      document.body.classList.add("blur"); // add the .blur class to the body element
-    } else {
+textarea.addEventListener("input", () => {
+  hiddenText.style.display = "block";
+  hiddenText.textContent = textarea.value;
+  if (textarea.value.trim() === "") {
+    document.body.classList.add("blur"); // add the .blur class to the body element
+  } else {
+    document.body.classList.remove("blur"); // remove the .blur class from the body element
+  }
+});
+
+// When the cursor is not in the textarea, hide the hidden_text div and remove the background blur
+document.addEventListener("click", (event) => {
+  if (event.target !== textarea) {
+    hiddenText.style.display = "none";
+    if (hiddenText.style.display === "none") {
       document.body.classList.remove("blur"); // remove the .blur class from the body element
     }
-  });
+  }
+});
 
-  // When the cursor is not in the textarea, hide the hidden_text div and remove the background blur
-  document.addEventListener("click", (event) => {
-    if (event.target !== textarea) {
-      hiddenText.style.display = "none";
-      document.body.classList.remove("blur"); // remove the .blur class from the body element
-    }
-  });
+
 
 
 chatContainer.addEventListener('scroll', () => {
