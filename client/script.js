@@ -259,7 +259,7 @@ textarea.addEventListener("input", () => {
   if (!textarea.value.trim()) {
     hiddenText.style.display = "block"; // make the hidden_text div visible
     //document.body.classList.add("blur");
-    document.body.style.filter = "blur(5px)";// add the .blur class to the body element
+    //document.body.style.filter = "blur(5px)";// add the .blur class to the body element
   } else {
     document.body.classList.remove("blur"); // remove the .blur class from the body element
   }
