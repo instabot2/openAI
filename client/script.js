@@ -242,6 +242,10 @@ textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
 });
 
+textarea.addEventListener("input", () => {
+  hiddenText.textContent = textarea.value;
+});
+
 
 
 chatContainer.addEventListener('scroll', () => {
