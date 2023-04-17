@@ -213,11 +213,10 @@ function writeMessageToFile(isBot, messageXml) {
     fileReader.readAsDataURL(file);
   } else {
     // Use default download method for other devices
+    document.body.appendChild(a); // Add the link to the DOM
     a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 0);
+    document.body.removeChild(a); // Remove the link from the DOM
+    URL.revokeObjectURL(url);
   }
 
   // Save the file to the "memory" array
