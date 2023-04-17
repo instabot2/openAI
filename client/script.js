@@ -77,6 +77,9 @@ let conversationHistory = [];
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  //hidden text
+  hiddenText.style.display = "none";
+  
   const data = new FormData(form);
 
   // Retrieve stored messages from local storage
@@ -235,17 +238,17 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
+// Get the hidden_text div and the textarea element
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
-
+// When the textarea is in focus, show the hidden_text div
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
 });
-
+// When the textarea value changes, update the text in the hidden_text div
 textarea.addEventListener("input", () => {
   hiddenText.textContent = textarea.value;
 });
-
 
 
 chatContainer.addEventListener('scroll', () => {
