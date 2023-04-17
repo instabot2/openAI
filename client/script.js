@@ -241,21 +241,21 @@ function writeMessageToFile(isBot, messageXml) {
 // Get the hidden_text div and the textarea element
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
-// When the textarea is in focus or has text typed, show the hidden_text div
+// When the textarea is in focus or has text typed, show the hidden_text div and blur the background
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
-  document.body.style.filter = "blur(5px)"; // add blur filter to body
+  document.body.classList.add("blur");
 });
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  document.body.style.filter = "blur(5px)"; // add blur filter to body
+  document.body.classList.add("blur");
 });
-// When the cursor is not in the textarea, hide the hidden_text div and remove the blur filter from body
+// When the cursor is not in the textarea, hide the hidden_text div and remove the background blur
 document.addEventListener("click", (event) => {
   if (event.target !== textarea) {
     hiddenText.style.display = "none";
-    document.body.style.filter = ""; // remove blur filter from body
+    document.body.classList.remove("blur");
   }
 });
 
