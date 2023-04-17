@@ -242,6 +242,8 @@ const textarea = document.querySelector("textarea");
 // When the textarea is in focus or has text typed, show the hidden_text div and blur the background
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
+  document.body.classList.add("blur");
+  
   if (textarea.value.trim() === "") {
     document.body.classList.add("blur"); // add the .blur class to the body element
   }
@@ -250,6 +252,7 @@ textarea.addEventListener("focus", () => {
 // When the textarea input changes, update the hidden_text div and check if it's empty or not
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
+  document.body.classList.add("blur");
   hiddenText.textContent = textarea.value;
   if (textarea.value.trim() === "") {
     document.body.classList.add("blur"); // add the .blur class to the body element
