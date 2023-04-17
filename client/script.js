@@ -242,7 +242,7 @@ const textarea = document.querySelector("textarea");
 // When the textarea is in focus or has text typed, show the hidden_text div and blur the background
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
-  if (textarea.value.trim() === "") {
+  if (hiddenText.style.display === "block") {
     document.body.classList.add("blur"); // add the .blur class to the body element
   }
 });
@@ -250,7 +250,7 @@ textarea.addEventListener("focus", () => {
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  if (textarea.value.trim() === "") {
+  if (hiddenText.style.display === "block") {
     document.body.classList.add("blur"); // add the .blur class to the body element
   } else {
     document.body.classList.remove("blur"); // remove the .blur class from the body element
@@ -264,7 +264,6 @@ document.addEventListener("click", (event) => {
     document.body.classList.remove("blur"); // remove the .blur class from the body element
   }
 });
-
 
 
 
