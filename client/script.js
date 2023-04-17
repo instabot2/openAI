@@ -236,7 +236,6 @@ function writeMessageToFile(isBot, messageXml) {
 }
 
 
-
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 
