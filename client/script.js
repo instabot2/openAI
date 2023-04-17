@@ -261,6 +261,7 @@ textarea.addEventListener("input", () => {
   
   if (!textarea.value.trim()) {
     document.body.style.filter = "blur(5px)";
+    hiddenText.style.display = "block";
     //window.alert(`value`);
   } else {
     document.body.style.filter = "none";
