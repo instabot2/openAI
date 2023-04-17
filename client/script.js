@@ -199,18 +199,12 @@ function writeMessageToFile(isBot, messageXml) {
 
   if (navigator.userAgentData?.platform === 'android') {
     // Use Android-specific method to download file
-    const fileReader = new FileReader();
-    fileReader.onloadend = () => {
-      const base64Data = fileReader.result.split(',')[1];
-      const intent = window.Android.createIntent({
-        action: 'android.intent.action.VIEW',
-        type: 'text/xml',
-        data: `data:text/xml;base64,${base64Data}`,
-        flags: ['FLAG_GRANT_READ_URI_PERMISSION', 'FLAG_GRANT_WRITE_URI_PERMISSION'],
-      });
-      window.Android.startActivity(intent);
-    };
-    fileReader.readAsDataURL(file);
+    const intent = window.Android.createIntent({
+      action: 'android.intent.action.SEND',
+      type: 'text/xml',
+      data: url,
+    });
+    window.Android.startActivity(intent);
   } else {
     // Use default download method for other devices
     a.click();
