@@ -236,45 +236,36 @@ function writeMessageToFile(isBot, messageXml) {
 }
 
 
+
+
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
+const body = document.querySelector("body");
 
-// Trigger the focus event of the textarea when the page loads
-window.onload = function() {
-  textarea.dispatchEvent(new Event('focus'));
-  document.body.style.filter = "none";
-};
-
-// When the textarea is in focus or has text typed, show the hidden_text div and blur the background
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
   if (textarea.value.trim() === "") {
-    //hiddenText.style.display = "block";
-    document.body.style.filter = "blur(5px)";
+    body.classList.add("blur");
   }
 });
 
-// When the textarea input changes, update the hidden_text div and check if it's empty or not
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  
   if (!textarea.value.trim()) {
-    document.body.style.filter = "blur(5px)";
-    hiddenText.style.display = "block";
-    //window.alert(`value`);
+    body.classList.add("blur");
   } else {
-    document.body.style.filter = "none";
+    body.classList.remove("blur");
   }
 });
 
-// When the cursor is not in the textarea, hide the hidden_text div and remove the background blur
 document.addEventListener("click", (event) => {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
-    document.body.style.filter = "none";
+    body.classList.remove("blur");
   }
 });
+
 
 
 
