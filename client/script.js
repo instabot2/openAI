@@ -249,6 +249,12 @@ textarea.addEventListener("focus", () => {
 textarea.addEventListener("input", () => {
   hiddenText.textContent = textarea.value;
 });
+// When the cursor is not in the textarea, hide the hidden_text div
+document.addEventListener("click", (event) => {
+  if (event.target !== textarea) {
+    hiddenText.style.display = "none";
+  }
+});
 
 
 chatContainer.addEventListener('scroll', () => {
