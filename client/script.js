@@ -199,30 +199,18 @@ function writeMessageToFile(isBot, messageXml) {
 
   if (navigator.userAgentData?.platform === 'android') {
     // Use Android-specific method to download file
-    const intent = window.Android.createIntent({
-      action: 'android.intent.action.CREATE_DOCUMENT',
-      type: 'text/xml',
-      data: fileName,
-      flags: ['FLAG_GRANT_READ_URI_PERMISSION', 'FLAG_GRANT_WRITE_URI_PERMISSION'],
-    });
-    intent.putExtra('android.intent.extra.TITLE', fileName);
-    intent.putExtra('android.intent.extra.MIME_TYPES', ['text/xml']);
-    intent.putExtra('android.intent.extra.SHOW_ADVANCED', true);
-    window.Android.startActivityForResult(intent, (resultCode, data) => {
-      if (resultCode === -1) {
-        const uri = data.getData();
-        const outputStream = window.Android.getContentResolver().openOutputStream(uri);
-        const inputStream = new Response(file).body.getReader();
-        const pump = () => inputStream.read().then(({ done, value }) => {
-          if (done) return outputStream.close();
-          return outputStream.write(value).then(pump);
-        });
-        pump();
-      } else {
-        console.error(`Failed to create file. Result code: ${resultCode}`);
-        alert('Failed to create file.');
-      }
-    });
+    const fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      const base64Data = fileReader.result.split(',')[1];
+      const intent = window.Android.createIntent({
+        action: 'android.intent.action.VIEW',
+        type: 'text/xml',
+        data: `data:text/xml;base64,${base64Data}`,
+        flags: ['FLAG_GRANT_READ_URI_PERMISSION', 'FLAG_GRANT_WRITE_URI_PERMISSION'],
+      });
+      window.Android.startActivity(intent);
+    };
+    fileReader.readAsDataURL(file);
   } else {
     // Use default download method for other devices
     a.click();
