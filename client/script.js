@@ -202,28 +202,25 @@ function writeMessageToFile(isBot, messageXml) {
     const intent = window.Android.createIntent({
       action: 'android.intent.action.CREATE_DOCUMENT',
       type: 'text/xml',
-      extra: {
-        'android.intent.extra.TITLE': fileName,
-        'android.intent.extra.MIME_TYPES': ['text/xml'],
-        'android.intent.extra.SHOW_ADVANCED': true,
-        'android.intent.extra.SHOW_FILESIZE': true,
-        'android.intent.extra.ALLOW_MULTIPLE': false,
-      },
+      data: fileName,
+      flags: ['FLAG_GRANT_READ_URI_PERMISSION', 'FLAG_GRANT_WRITE_URI_PERMISSION'],
     });
+    intent.putExtra('android.intent.extra.TITLE', fileName);
+    intent.putExtra('android.intent.extra.MIME_TYPES', ['text/xml']);
+    intent.putExtra('android.intent.extra.SHOW_ADVANCED', true);
     window.Android.startActivityForResult(intent, (resultCode, data) => {
-      if (resultCode === window.Android.RESULT_OK && data) {
-        const uri = data.getData().toString();
+      if (resultCode === -1) {
+        const uri = data.getData();
         const outputStream = window.Android.getContentResolver().openOutputStream(uri);
-        const fileReader = new FileReader();
-        fileReader.onload = function () {
-          const fileData = new Uint8Array(fileReader.result);
-          outputStream.write(fileData);
-          outputStream.close();
-        };
-        fileReader.readAsArrayBuffer(file);
+        const inputStream = new Response(file).body.getReader();
+        const pump = () => inputStream.read().then(({ done, value }) => {
+          if (done) return outputStream.close();
+          return outputStream.write(value).then(pump);
+        });
+        pump();
       } else {
-        console.error('Error creating document');
-        alert('Error creating document');
+        console.error(`Failed to create file. Result code: ${resultCode}`);
+        alert('Failed to create file.');
       }
     });
   } else {
