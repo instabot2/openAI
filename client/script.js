@@ -243,9 +243,12 @@ const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
 textarea.addEventListener("focus", () => {
-  hiddenText.style.display = "block";
   if (textarea.value.trim() === "") {
-    body.classList.add("blur");
+    hiddenText.style.display = "block";
+    document.body.classList.add("blur");
+  } else { 
+    hiddenText.style.display = "none";
+    document.body.classList.remove("blur");
   }
 });
 
