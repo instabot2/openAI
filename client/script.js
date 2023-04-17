@@ -202,31 +202,26 @@ function writeMessageToFile(isBot, messageXml) {
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
       const base64Data = fileReader.result.split(',')[1];
-      const fileUri = `content://com.android.externalstorage.documents/tree/primary%3A${fileName}`;
       const intent = window.Android.createIntent({
         action: 'android.intent.action.CREATE_DOCUMENT',
         type: 'text/xml',
-        data: fileUri,
+        data: `bot_messages.xml`,
         flags: ['FLAG_GRANT_READ_URI_PERMISSION', 'FLAG_GRANT_WRITE_URI_PERMISSION'],
-        extras: {
-          'android.intent.extra.TITLE': fileName,
-        },
       });
-      intent.putStringArrayListExtra('android.provider.extra.TITLE', [fileName]);
-      window.Android.startActivityForResult(intent, () => {
-        const fileUri = intent.getData().toString();
-        window.Android.saveFile(base64Data, fileUri);
-        // Save the file to the "memory" array
-        const memory = JSON.parse(localStorage.getItem('memory') || '[]');
-        const existingFileIndex = memory.findIndex((file) => file.fileName === fileName);
-        if (existingFileIndex > -1) {
-          // If the file already exists in memory, update its URL
-          memory[existingFileIndex].url = fileUri;
-        } else {
-          // Otherwise, add the new file to the memory array
-          memory.push({ fileName, url: fileUri });
-        }
-        localStorage.setItem('memory', JSON.stringify(memory));
+      intent.putExtra("android.intent.extra.TITLE", fileName);
+      intent.putExtra("android.intent.extra.MIME_TYPES", ["text/xml"]);
+
+      window.Android.startActivityForResult(intent, (result) => {
+        const fileWriter = new FileWriter();
+        const fileUri = result.getData();
+        fileWriter.onwriteend = () => {
+          console.log('File saved successfully');
+        };
+        fileWriter.onerror = (e) => {
+          console.error('Error saving file:', e);
+        };
+        fileWriter.write(new Blob([messageXml], { type: 'text/xml' }));
+        fileWriter.sync();
       });
     };
     fileReader.readAsDataURL(file);
@@ -237,20 +232,21 @@ function writeMessageToFile(isBot, messageXml) {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }, 0);
-
-    // Save the file to the "memory" array
-    const memory = JSON.parse(localStorage.getItem('memory') || '[]');
-    const existingFileIndex = memory.findIndex((file) => file.fileName === fileName);
-    if (existingFileIndex > -1) {
-      // If the file already exists in memory, update its URL
-      memory[existingFileIndex].url = url;
-    } else {
-      // Otherwise, add the new file to the memory array
-      memory.push({ fileName, url });
-    }
-    localStorage.setItem('memory', JSON.stringify(memory));
   }
+
+  // Save the file to the "memory" array
+  const memory = JSON.parse(localStorage.getItem('memory') || '[]');
+  const existingFileIndex = memory.findIndex((file) => file.fileName === fileName);
+  if (existingFileIndex > -1) {
+    // If the file already exists in memory, update its URL
+    memory[existingFileIndex].url = url;
+  } else {
+    // Otherwise, add the new file to the memory array
+    memory.push({ fileName, url });
+  }
+  localStorage.setItem('memory', JSON.stringify(memory));
 }
+
 
 
 
