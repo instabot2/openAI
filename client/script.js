@@ -245,7 +245,7 @@ const body = document.querySelector("body");
 textarea.addEventListener("focus", () => {
   if (textarea.value.trim() === "") {
     hiddenText.style.display = "block";
-    document.body.classList.add("blur");
+    //document.body.classList.add("blur");
   } else { 
     hiddenText.style.display = "none";
     document.body.classList.remove("blur");
