@@ -259,7 +259,9 @@ textarea.addEventListener("input", () => {
 
 // When the cursor is not in the textarea, hide the hidden_text div and remove the background blur
 document.addEventListener("click", (event) => {
+  
   document.body.classList.add("blur");
+  window.alert(`blur');
   
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
