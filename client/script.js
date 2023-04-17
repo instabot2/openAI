@@ -239,6 +239,11 @@ function writeMessageToFile(isBot, messageXml) {
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 
+// Trigger the focus event of the textarea when the page loads
+window.onload = function() {
+  textarea.dispatchEvent(new Event('focus'));
+};
+
 // When the textarea is in focus or has text typed, show the hidden_text div and blur the background
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
@@ -255,7 +260,7 @@ textarea.addEventListener("input", () => {
   
   if (!textarea.value.trim()) {
     document.body.style.filter = "blur(5px)";
-    window.alert(`value`);
+    //window.alert(`value`);
   } else {
     document.body.style.filter = "none";
   }
