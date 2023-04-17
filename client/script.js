@@ -242,13 +242,22 @@ const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
+// Add the blur class to the body element
+function addBlur() {
+  document.body.classList.add("blur");
+}
+// Remove the blur class from the body element
+function removeBlur() {
+  document.body.classList.remove("blur");
+}
+
 textarea.addEventListener("focus", () => {
   if (textarea.value.trim() === "") {
     hiddenText.style.display = "block";
-    //document.body.classList.add("blur");
+    addBlur();
   } else { 
     hiddenText.style.display = "none";
-    document.body.classList.remove("blur");
+    removeBlur();
   }
 });
 
@@ -256,15 +265,16 @@ textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
   if (!textarea.value.trim()) {
-    body.classList.add("blur");
+    addBlur();
   } else {
-    body.classList.remove("blur");
+    removeBlur();
   }
 });
 
 document.addEventListener("click", (event) => {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
+    //hiddenText.style.display = "block";
     body.classList.remove("blur");
   }
 });
