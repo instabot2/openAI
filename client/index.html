@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChatGPT AI</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      #hidden_text {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
@@ -22,7 +31,10 @@
         ></textarea>
         <button type="submit"><img src="assets/send.svg" alt="send" /></button>
       </form>
+      <!-- New div with invisible style -->
+      <div id="hidden_text"></div>
     </div>
     <script type="module" src="script.js"></script>
   </body>
 </html>
+
