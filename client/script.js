@@ -252,8 +252,10 @@ textarea.addEventListener("focus", () => {
 // When the textarea input changes, update the hidden_text div and check if it's empty or not
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
-  document.body.classList.add("blur");
+  window.alert("${JSON.stringify(textarea.value)}");
   hiddenText.textContent = textarea.value;
+  document.body.classList.add("blur");
+  
   if (textarea.value.trim() === "") {
     document.body.classList.add("blur"); // add the .blur class to the body element
   } else {
@@ -266,7 +268,7 @@ document.addEventListener("click", (event) => {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
     document.body.classList.remove("blur"); // remove the .blur class from the body element
-    window.alert("Blur removed"); // show an alert message
+    //window.alert("Blur removed"); // show an alert message
   }
 });
 
