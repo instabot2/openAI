@@ -243,7 +243,8 @@ const textarea = document.querySelector("textarea");
 textarea.addEventListener("focus", () => {
   hiddenText.style.display = "block";
   if (textarea.value.trim() === "") {
-    document.body.classList.add("blur"); // add the .blur class to the body element
+    //document.body.classList.add("blur"); // add the .blur class to the body element
+    document.body.style.filter = "blur(5px)";
   }
 });
 
@@ -251,7 +252,7 @@ textarea.addEventListener("focus", () => {
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   //document.body.classList.add("blur");
-  document.body.style.filter = "blur(5px)";
+  //document.body.style.filter = "blur(5px)";
   
   hiddenText.textContent = textarea.value;
   
