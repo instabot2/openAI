@@ -241,10 +241,11 @@ const textarea = document.querySelector("textarea");
 
 // When the textarea is in focus or has text typed, show the hidden_text div and blur the background
 textarea.addEventListener("focus", () => {
-  hiddenText.style.display = "block";
+  //hiddenText.style.display = "block";
   if (textarea.value.trim() === "") {
+    hiddenText.style.display = "block";
     document.body.style.filter = "blur(5px)";
-    window.alert(`focus`);
+    //window.alert(`focus`);
   }
 });
 
