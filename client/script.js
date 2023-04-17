@@ -234,8 +234,15 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
+const inputText = document.querySelector('#input_text');
+const hiddenText = document.querySelector('#hidden_text');
 
-
+inputText.addEventListener('focus', () => {
+  setInterval(() => {
+    inputText.classList.toggle('cursor-blink');
+  }, 500);
+  hiddenText.style.display = 'block';
+});
 
 
 chatContainer.addEventListener('scroll', () => {
