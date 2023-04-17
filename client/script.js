@@ -237,7 +237,6 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
-
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 
@@ -252,7 +251,7 @@ textarea.addEventListener("focus", () => {
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  if (!textarea.value) {
+  if (!textarea.value || hiddenText.style.display === "none") {
     document.body.classList.add("blur"); // add the .blur class to the body element
   } else {
     document.body.classList.remove("blur"); // remove the .blur class from the body element
