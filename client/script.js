@@ -237,14 +237,15 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
-
 // Get the hidden_text div and the textarea element
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 
-// When the textarea is in focus, show the hidden_text div
+// When the textarea is in focus, show the hidden_text div if there is text
 textarea.addEventListener("focus", () => {
-  hiddenText.style.display = "block";
+  if (textarea.value.trim().length > 0) {
+    hiddenText.style.display = "block";
+  }
 });
 
 // When the textarea value changes, update the text in the hidden_text div
