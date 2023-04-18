@@ -241,45 +241,24 @@ const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
-function handleTextareaClick() {
-  // Set the value of the hiddenText element to match the value of the textarea element
-  hiddenText.value = textarea.value;
-  // Show the hiddenText element
-  hiddenText.style.display = "block";
-  // Check if the textarea is already active
-  if (document.activeElement === textarea) {
-    // Remove blur class from the body element
-    body.classList.remove("blur");
-    // Hide the hiddenText element
-    hiddenText.style.display = "none";
-  } else {
-    // Add blur class to the body element
-    body.classList.add("blur");
-    // Show the hiddenText element
-    hiddenText.style.display = "block";
-    // Set focus to the textarea element
-    textarea.focus();
-  }
-}
-
-
-function handleHiddenTextInput() {
-  // Set the value of the textarea element to match the value of the hiddenText element
-  textarea.value = hiddenText.value;
-}
-
 function handleBodyClick(event) {
   if (event.target !== textarea) {
     hiddenText.style.display = "none";
     body.classList.remove("blur");
-  } else {
-    //
   }
 }
-
-function handleTextareaInput() {
-  // Set the value of the hiddenText element to match the value of the textarea element
+function handleTextareaClick() {
+  hiddenText.style.display = "block";
   hiddenText.value = textarea.value;
+  body.classList.add("blur");
+}
+function handleTextareaInput() {
+  hiddenText.style.display = "block";
+  hiddenText.value = textarea.value;
+  body.classList.remove("blur");
+}
+function handleHiddenTextInput() {
+  textarea.value = hiddenText.value;
 }
 
 // Add event listeners
@@ -287,6 +266,7 @@ textarea.addEventListener("focus", handleTextareaClick);
 textarea.addEventListener("input", handleTextareaInput);
 hiddenText.addEventListener("input", handleHiddenTextInput);
 body.addEventListener("click", handleBodyClick);
+
 
 
 
