@@ -261,12 +261,23 @@ function handleTextarea() {
   }
 }
 
+// Apply blur effect to body when hidden_text is active
+function handleHiddenText() {
+  if (hiddenText === document.activeElement) {
+    addBlur();
+  } else {
+    removeBlur();
+  }
+}
+
 // Call handleTextarea() when the textarea is clicked, keydown or keyup
 textarea.addEventListener("click", handleTextarea);
 textarea.addEventListener("keydown", handleTextarea);
 textarea.addEventListener("keyup", handleTextarea);
 
-
+// Call handleHiddenText() when the hidden_text is clicked or blur
+hiddenText.addEventListener("click", handleHiddenText);
+hiddenText.addEventListener("blur", handleHiddenText);
 
 
 
