@@ -241,31 +241,27 @@ const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
-function handleBodyClick(event) {
-  if (event.target !== textarea) {
-    hiddenText.style.display = "none";
-    body.classList.remove("blur");
-  } else {
-    hiddenText.style.display = "block";
-    body.classList.add("blur");
-  }
-}
-function handleTextareaInput() {
+function handleTextareaFocus() {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
+  body.classList.add("blur");
+}
+function handleTextareaInput() {
+  hiddenText.textContent = textarea.value;
+}
+function handleTextareaBlur() {
+  hiddenText.style.display = "none";
   body.classList.remove("blur");
 }
 function handleHiddenTextInput() {
   textarea.value = hiddenText.textContent;
 }
+
 // Add event listeners
-textarea.addEventListener("focus", handleBodyClick);
+textarea.addEventListener("focus", handleTextareaFocus);
 textarea.addEventListener("input", handleTextareaInput);
+textarea.addEventListener("blur", handleTextareaBlur);
 hiddenText.addEventListener("input", handleHiddenTextInput);
-body.addEventListener("click", handleBodyClick);
-
-
-
 
 
 
