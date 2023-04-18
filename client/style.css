@@ -164,11 +164,21 @@ form img {
 }
 
 .typing-cursor {
-  font-size: 2em;
+  display: inline-block;
+  width: 10px;
+  height: 26px;
+  border-left: 3px solid #ccc;
   margin-left: 5px;
-  color: #ccc;
+  opacity: 1;
+  animation: blink 0.7s infinite;
 }
-.typing-cursor.typing-cursor-blink {
-  visibility: hidden;
+.typing-cursor-blink {
+  opacity: 0;
 }
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 
