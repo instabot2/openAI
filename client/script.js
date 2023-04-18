@@ -240,6 +240,7 @@ function writeMessageToFile(isBot, messageXml) {
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
+
 // Add event listener to the textarea element
 textarea.addEventListener("focus", () => {
   // Set the value of the hiddenText element to match the value of the textarea element
@@ -249,7 +250,6 @@ textarea.addEventListener("focus", () => {
   // Add blur class to the body element if textarea is active
   if (document.activeElement === textarea) {
     body.classList.add("blur");
-    textarea.classList.remove("blur");
   }
 });
 
@@ -257,6 +257,14 @@ textarea.addEventListener("focus", () => {
 hiddenText.addEventListener("input", () => {
   // Set the value of the textarea element to match the value of the hiddenText element
   textarea.value = hiddenText.value;
+});
+
+// Add event listener to the body element to remove blur class when textarea loses focus
+body.addEventListener("click", (event) => {
+  if (event.target !== textarea) {
+    hiddenText.style.display = "none";
+    body.classList.remove("blur");
+  }
 });
 
 
