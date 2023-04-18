@@ -42,7 +42,6 @@ function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', `<span class="typing-cursor"></span>`);
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
@@ -54,20 +53,22 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
+      // Add a bold and blinking cursor element after text typing is complete
+      const cursor = '<span style="font-weight: bold; display: inline-block; width: 0.5em; margin-left: 0.1em; border-right: 2px solid;">&nbsp;</span>';
+      element.insertAdjacentHTML('beforeend', cursor);
+      // Add a CSS class to style the blinking cursor
+      const cursorClass = 'typing-cursor';
+      const cursorBlinkClass = 'typing-cursor-blink';
+      setInterval(() => {
+        const cursor = element.querySelector(`.${cursorClass}`);
+        if (cursor) {
+          cursor.classList.toggle(cursorBlinkClass);
+        }
+      }, 500);
     }
   }, 20);
   // Add this line to clear the text before typing
   element.innerHTML = '';
-
-  // Add a CSS class to style the blinking cursor
-  const cursorClass = 'typing-cursor';
-  const cursorBlinkClass = 'typing-cursor-blink';
-  setInterval(() => {
-    const cursor = element.querySelector(`.${cursorClass}`);
-    if (cursor) {
-      cursor.classList.toggle(cursorBlinkClass);
-    }
-  }, 100);
 }
 
 
