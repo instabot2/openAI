@@ -286,7 +286,8 @@ textarea.addEventListener("input", () => {
 body.addEventListener("click", () => {
   hiddenText.style.display = "none";
 });
-
+// Add blur effect to body when typing in the textarea
+textarea.addEventListener("input", addBlur);
 
 
 
