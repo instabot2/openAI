@@ -162,23 +162,3 @@ form img {
   font-size: 20px;
   line-height: 1.4;
 }
-
-.typing-cursor {
-  display: inline-block;
-  width: 10px;
-  height: 26px;
-  border-left: 3px solid #ccc;
-  margin-left: 5px;
-  opacity: 1;
-  animation: blink 0.7s infinite;
-}
-.typing-cursor-blink {
-  opacity: 0;
-}
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-
