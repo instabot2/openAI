@@ -252,16 +252,7 @@ textarea.addEventListener("focus", () => {
     textarea.classList.remove("blur");
   }
 });
-// Add event listener to the textarea element
-textarea.addEventListener("blur", () => {
-  // Hide the hiddenText element
-  hiddenText.style.display = "none";
-  // Remove blur class from the body element if textarea is not active
-  if (document.activeElement !== textarea) {
-    body.classList.remove("blur");
-    textarea.classList.add("blur");
-  }
-});
+
 // Add event listener to the hiddenText element
 hiddenText.addEventListener("input", () => {
   // Set the value of the textarea element to match the value of the hiddenText element
