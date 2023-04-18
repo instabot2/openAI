@@ -54,23 +54,25 @@ function typeText(element, text, callback) {
         callback();
       }
       // Add a typing cursor element after text typing is complete
-      const cursor = '<span style="font-weight: bold; font-size: 1.2em; margin-left: 0.1em;">&#9612;</span>';
+      //const cursor = '<span style="font-weight: bold; font-size: 1.2em; margin-left: 0.1em;" class="typing-cursor">&#9612;</span>';
+      const cursor = '<span style="font-weight: bold; font-size: 2em; margin-left: 0.5em;" class="typing-cursor">&#9612;</span>';
       element.insertAdjacentHTML('beforeend', cursor);
       // Add a CSS class to style the blinking cursor
       const cursorClass = 'typing-cursor';
       const cursorBlinkClass = 'typing-cursor-blink';
-      setInterval(() => {
+      const blinkIntervalId = setInterval(() => {
         const cursor = element.querySelector(`.${cursorClass}`);
         if (cursor) {
           cursor.classList.toggle(cursorBlinkClass);
+        } else {
+          clearInterval(blinkIntervalId);
         }
-      }, 100);
+      }, 500);
     }
   }, 50); // increase interval time for slower typing
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
-
 
 
 
