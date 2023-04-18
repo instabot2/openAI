@@ -282,8 +282,10 @@ textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
 });
-
-
+// Hide hidden_text when body is clicked
+body.addEventListener("click", () => {
+  hiddenText.style.display = "none";
+});
 
 
 
