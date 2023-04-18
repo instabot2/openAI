@@ -257,7 +257,7 @@ function removeBlur() {
 // Show/hide hidden_text and apply blur effect when textarea is active
 function handleTextarea() {
   hiddenText.style.display = textarea === document.activeElement ? "block" : "none";
-  if (hiddenText === document.activeElement) {
+  if (textarea === document.activeElement) {
     addBlur();
   } else {
     removeBlur();
@@ -299,7 +299,6 @@ textarea.addEventListener("input", addBlur);
 
 // Remove blur effect from body once user has finished typing
 textarea.addEventListener("blur", removeBlur);
-
 
 
 
