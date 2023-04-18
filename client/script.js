@@ -41,7 +41,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 function typeText(element, text, callback) {
   let index = 0;
   let showCursor = true;
-  const cursorHeight = '1.2em'; // Set the cursor height to 1.2em
+  const cursorHeight = '1.5em'; // Set the cursor height to 1.2em
   const intervalId = setInterval(() => {
     if (index <= text.length) {
       const visibleText = text.substring(0, index);
