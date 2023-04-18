@@ -60,9 +60,11 @@ function typeText(element, text, callback) {
       }
       setTimeout(() => {
         // Add this line to clear the text and start blinking after typing
-        element.innerHTML = '';
+        element.innerHTML = text;
         const blinkId = setInterval(() => {
-          element.innerHTML = element.innerHTML === '' ? '&#x2588;' : '';
+          showCursor = !showCursor;
+          const cursor = showCursor ? '&#x2588;' : '&nbsp;';
+          element.innerHTML = text + cursor;
         }, 500);
         setTimeout(() => {
           clearInterval(blinkId);
