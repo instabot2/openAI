@@ -239,64 +239,19 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 const hiddenText = document.getElementById("hidden_text");
-const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
-// Add the blur class to the body element
-function addBlur() {
-  body.classList.add("blur");
-}
-
-// Remove the blur class from the body element
-function removeBlur() {
-  body.classList.remove("blur");
-}
-
-// Show/hide hidden_text and apply blur effect when textarea is active
-function handleTextarea() {
-  hiddenText.style.display = textarea === document.activeElement ? "block" : "none";
-  if (textarea.value.length > 0 || hiddenText.style.display === "block") {
-    addBlur();
+// Add event listener to the hiddenText element
+hiddenText.addEventListener("transitionend", () => {
+  // Check if hiddenText is visible
+  if (window.getComputedStyle(hiddenText).getPropertyValue("opacity") === "1") {
+    // Add blur class to the body element
+    body.classList.add("blur");
   } else {
-    removeBlur();
+    // Remove blur class from the body element
+    body.classList.remove("blur");
   }
-}
-
-// Call handleTextarea() when the textarea is clicked, keydown or keyup
-textarea.addEventListener("click", handleTextarea);
-textarea.addEventListener("keydown", handleTextarea);
-textarea.addEventListener("keyup", handleTextarea);
-
-// Call addBlur() when the hidden_text is clicked
-hiddenText.addEventListener("click", addBlur);
-
-// Call removeBlur() when the hidden_text loses focus
-hiddenText.addEventListener("blur", removeBlur);
-
-// Call addBlur() when the hidden_text is active
-hiddenText.addEventListener("focus", addBlur);
-
-// Call removeBlur() when the textarea is active
-textarea.addEventListener("focus", removeBlur);
-
-// Update hidden_text content when textarea is changed
-textarea.addEventListener("input", () => {
-  hiddenText.style.display = "block";
-  hiddenText.textContent = textarea.value;
-  handleTextarea();
 });
-
-// Hide hidden_text when body is clicked
-body.addEventListener("click", () => {
-  hiddenText.style.display = "none";
-  handleTextarea();
-});
-
-// Add blur effect to body when typing in the textarea
-textarea.addEventListener("input", handleTextarea);
-
-// Remove blur effect from body once user has finished typing
-textarea.addEventListener("blur", removeBlur);
 
 
 
