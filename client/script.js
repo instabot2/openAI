@@ -244,10 +244,10 @@ const body = document.querySelector("body");
 function handleBodyClick(event) {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
-    //body.classList.remove("blur");
+    body.classList.remove("blur");
   } else {
     hiddenText.style.display = "block";
-    //body.classList.add("blur");
+    body.classList.add("blur");
   }
 }
 function handleTextareaInput() {
