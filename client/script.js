@@ -252,15 +252,10 @@ function removeBlur() {
 }
 
 // Show/hide hidden_text and apply blur effect when textarea is focused or clicked
-function handleTextareaFocus() {
-  if (textarea.value.trim() === "") {
-    hiddenText.style.display = "block";
-    addBlur();
-  }
+function handleTextareaActive() {
+  hiddenText.style.display = "block";
+  addBlur();
 }
-
-textarea.addEventListener("focus", handleTextareaFocus);
-textarea.addEventListener("click", handleTextareaFocus);
 
 // Hide hidden_text and remove blur effect when textarea is blurred and not empty
 textarea.addEventListener("blur", () => {
@@ -280,10 +275,10 @@ textarea.addEventListener("input", () => {
   }
 });
 
-// Focus on textarea when the page loads
-window.onload = function() {
-  textarea.focus();
-};
+// Call handleTextareaActive() when the textarea is focused or clicked
+textarea.addEventListener("focus", handleTextareaActive);
+textarea.addEventListener("click", handleTextareaActive);
+
 
 
 
