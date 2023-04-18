@@ -263,24 +263,28 @@ function handleTextareaClick() {
 function handleHiddenTextInput() {
   // Set the value of the textarea element to match the value of the hiddenText element
   textarea.value = hiddenText.value;
-  body.classList.add("blur");
-  hiddenText.style.display = "block";
 }
+
 function handleBodyClick(event) {
   if (event.target !== textarea) {
-    // Show the hiddenText element
-    hiddenText.style.display = "block";
-    // Set focus to the textarea element
-    textarea.focus();
-    // Remove blur class from the body element
+    hiddenText.style.display = "none";
     body.classList.remove("blur");
+  } else {
+    //
   }
+}
+
+function handleTextareaInput() {
+  // Set the value of the hiddenText element to match the value of the textarea element
+  hiddenText.value = textarea.value;
 }
 
 // Add event listeners
 textarea.addEventListener("focus", handleTextareaClick);
+textarea.addEventListener("input", handleTextareaInput);
 hiddenText.addEventListener("input", handleHiddenTextInput);
 body.addEventListener("click", handleBodyClick);
+
 
 
 
