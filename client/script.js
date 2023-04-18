@@ -42,7 +42,7 @@ function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', `<span class="typing-cursor">|</span>`);
+      element.insertAdjacentHTML('beforeend', `<span class="typing-cursor"></span>`);
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
@@ -67,8 +67,11 @@ function typeText(element, text, callback) {
     if (cursor) {
       cursor.classList.toggle(cursorBlinkClass);
     }
-  }, 500);
+  }, 100);
 }
+
+
+
 
 
 function chatStripe(isAi, value, uniqueId) {
