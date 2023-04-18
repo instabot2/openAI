@@ -247,11 +247,13 @@ function handleTextareaFocus() {
   body.classList.add("blur");
 }
 function handleTextareaInput() {
+  hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
+  body.classList.add("blur");
 }
 function handleTextareaBlur() {
-  hiddenText.style.display = "none";
-  body.classList.remove("blur");
+  //hiddenText.style.display = "none";
+  //body.classList.remove("blur");
 }
 function handleHiddenTextInput() {
   textarea.value = hiddenText.textContent;
@@ -260,7 +262,7 @@ function handleHiddenTextInput() {
 // Add event listeners
 textarea.addEventListener("focus", handleTextareaFocus);
 textarea.addEventListener("input", handleTextareaInput);
-textarea.addEventListener("blur", handleTextareaBlur);
+//textarea.addEventListener("blur", handleTextareaBlur);
 hiddenText.addEventListener("input", handleHiddenTextInput);
 
 
