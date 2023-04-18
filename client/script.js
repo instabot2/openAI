@@ -238,15 +238,13 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
-const hiddenText = document.getElementById("hidden_text");
+const hiddenDiv = document.getElementById("hidden_div");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
 // Add the blur class to the body element
 function addBlur() {
-  if (textarea === document.activeElement) {
-    body.classList.add("blur");
-  }
+  body.classList.add("blur");
 }
 
 // Remove the blur class from the body element
@@ -254,10 +252,10 @@ function removeBlur() {
   body.classList.remove("blur");
 }
 
-// Show/hide hidden_text and apply blur effect when textarea is active
+// Show/hide hidden_div and apply blur effect when textarea is active
 function handleTextarea() {
-  hiddenText.style.display = textarea === document.activeElement ? "block" : "none";
-  if (hiddenText === document.activeElement) {
+  hiddenDiv.style.display = textarea === document.activeElement ? "block" : "none";
+  if (hiddenDiv.style.display === "block") {
     addBlur();
   } else {
     removeBlur();
@@ -269,29 +267,24 @@ textarea.addEventListener("click", handleTextarea);
 textarea.addEventListener("keydown", handleTextarea);
 textarea.addEventListener("keyup", handleTextarea);
 
-// Call addBlur() when the hidden_text is clicked
-hiddenText.addEventListener("click", addBlur);
+// Call addBlur() when the hidden_div is displayed
+new MutationObserver(() => {
+  if (hiddenDiv.style.display === "block") {
+    addBlur();
+  } else {
+    removeBlur();
+  }
+}).observe(hiddenDiv, { attributes: true, attributeFilter: ["style"] });
 
-// Call removeBlur() when the hidden_text loses focus
-hiddenText.addEventListener("blur", removeBlur);
-
-// Call addBlur() when the hidden_text is active
-hiddenText.addEventListener("focus", addBlur);
-
-// Call removeBlur() when the textarea is active
-textarea.addEventListener("focus", removeBlur);
-
-// Update hidden_text content when textarea is changed
+// Update hidden_div content when textarea is changed
 textarea.addEventListener("input", () => {
-  hiddenText.style.display = "block";
-  hiddenText.textContent = textarea.value;
-  addBlur();
+  hiddenDiv.style.display = "block";
+  hiddenDiv.textContent = textarea.value;
 });
 
-// Hide hidden_text when body is clicked
+// Hide hidden_div when body is clicked
 body.addEventListener("click", () => {
-  hiddenText.style.display = "none";
-  removeBlur();
+  hiddenDiv.style.display = "none";
 });
 
 // Add blur effect to body when typing in the textarea
@@ -299,8 +292,6 @@ textarea.addEventListener("input", addBlur);
 
 // Remove blur effect from body once user has finished typing
 textarea.addEventListener("blur", removeBlur);
-
-
 
 
 
