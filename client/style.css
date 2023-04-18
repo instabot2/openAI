@@ -15,7 +15,6 @@ body {
   width: 100vw;
   height: 100vh;
   background: #343541;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,7 +58,6 @@ body {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -70,9 +68,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 5px;
-
   background: #5436DA;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,7 +96,6 @@ body {
   overflow-x: hidden;
   height: 100%;
   //padding-bottom: 50px; /* add padding to make space for the input field */
-  
   white-space: pre-wrap; 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -116,7 +111,6 @@ form {
   margin: 0 auto;
   padding: 10px;
   background: #40414F;
-
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -133,7 +127,6 @@ textarea {
   outline: none;
   transform: translateZ(0);
 }
-
 
 button {
   outline: 0;
@@ -168,5 +161,14 @@ form img {
   overflow-y: auto;
   font-size: 20px;
   line-height: 1.4;
+}
+
+.typing-cursor {
+  font-size: 2em;
+  margin-left: 5px;
+  color: #ccc;
+}
+.typing-cursor.typing-cursor-blink {
+  visibility: hidden;
 }
 
