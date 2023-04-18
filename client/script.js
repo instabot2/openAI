@@ -237,6 +237,7 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
+
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
@@ -292,10 +293,21 @@ body.addEventListener("click", () => {
 });
 
 // Add blur effect to body when typing in the textarea
-textarea.addEventListener("input", addBlur);
+textarea.addEventListener("input", () => {
+  if (textarea === document.activeElement) {
+    addBlur();
+  }
+});
 
 // Remove blur effect from body once user has finished typing
 textarea.addEventListener("blur", removeBlur);
+
+
+
+
+
+
+
 
 
 
