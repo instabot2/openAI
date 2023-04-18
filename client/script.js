@@ -242,9 +242,9 @@ const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
 function handleTextareaFocus() {
-  hiddenText.style.display = "block";
-  hiddenText.textContent = textarea.value;
-  body.classList.add("blur");
+  //hiddenText.style.display = "block";
+  //hiddenText.textContent = textarea.value;
+  //body.classList.add("blur");
 }
 function handleTextareaInput() {
   hiddenText.style.display = "block";
@@ -256,7 +256,7 @@ function handleTextareaBlur() {
   //body.classList.remove("blur");
 }
 function handleHiddenTextInput() {
-  textarea.value = hiddenText.textContent;
+  //textarea.value = hiddenText.textContent;
 }
 
 // Add event listeners
