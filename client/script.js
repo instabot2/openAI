@@ -244,9 +244,7 @@ const body = document.querySelector("body");
 
 // Add the blur class to the body element
 function addBlur() {
-  if ((textarea === document.activeElement && textarea.value.length > 0) || hiddenText.style.display === "block") {
-    body.classList.add("blur");
-  }
+  body.classList.add("blur");
 }
 
 // Remove the blur class from the body element
@@ -257,7 +255,7 @@ function removeBlur() {
 // Show/hide hidden_text and apply blur effect when textarea is active
 function handleTextarea() {
   hiddenText.style.display = textarea === document.activeElement ? "block" : "none";
-  if (hiddenText === document.activeElement || hiddenText.style.display === "block") {
+  if (textarea.value.length > 0 || hiddenText.style.display === "block") {
     addBlur();
   } else {
     removeBlur();
@@ -285,22 +283,20 @@ textarea.addEventListener("focus", removeBlur);
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  addBlur();
+  handleTextarea();
 });
 
 // Hide hidden_text when body is clicked
 body.addEventListener("click", () => {
   hiddenText.style.display = "none";
-  removeBlur();
+  handleTextarea();
 });
 
 // Add blur effect to body when typing in the textarea
-textarea.addEventListener("input", addBlur);
+textarea.addEventListener("input", handleTextarea);
 
 // Remove blur effect from body once user has finished typing
 textarea.addEventListener("blur", removeBlur);
-
-
 
 
 
