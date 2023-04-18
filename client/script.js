@@ -249,24 +249,30 @@ function addBlur() {
 }
 // Remove the blur class from the body element
 function removeBlur() {
-  if (hiddenText.style.display === "block") {
-    body.classList.remove("blur");
+  if (hiddenText.style.display === "block" || textarea === document.activeElement) {
+    return; // don't remove the blur class if the hiddenText is visible or textarea is focused
   }
+  body.classList.remove("blur");
 }
 // Show/hide hidden_text and apply blur effect when textarea is active
 function handleTextarea() {
   hiddenText.style.display = textarea === document.activeElement ? "block" : "none";
-  if (textarea === document.activeElement) {
+  addBlur();
+  removeBlur();
+}
+// Apply blur effect to body when hidden_text is active
+function handleHiddenText() {
+  if (hiddenText === document.activeElement) {
     addBlur();
   } else {
     removeBlur();
   }
 }
-// Call handleTextarea() when the textarea is clicked, keydown or keyup
-textarea.addEventListener("click", handleTextarea);
-textarea.addEventListener("keydown", handleTextarea);
-textarea.addEventListener("keyup", handleTextarea);
-
+// Call handleTextarea() and handleHiddenText() when necessary events occur
+textarea.addEventListener("input", handleTextarea);
+textarea.addEventListener("blur", removeBlur);
+hiddenText.addEventListener("focus", handleHiddenText);
+hiddenText.addEventListener("blur", removeBlur);
 
 
 
