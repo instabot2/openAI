@@ -62,6 +62,7 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
+      showCursor = !showCursor; // toggle showCursor to make the cursor blink at the end
     }
   }, 20); // decrease the interval time to 20ms
   // Add this line to clear the text before typing
