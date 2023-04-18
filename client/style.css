@@ -166,23 +166,28 @@ form img {
 .typing-cursor {
   display: inline-block;
   margin-left: 0.5em;
+  color: white; /* change cursor color to white */
+  font-size: inherit; /* inherit font size from parent element */
 }
+
 .cursor-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #00b8ff;
+  background-color: white; /* change dot color to white */
   display: inline-block;
   animation: blink 1s infinite;
 }
+
 .cursor-line {
   width: 2px;
-  height: 30px;
-  background-color: #00b8ff;
+  height: 1em; /* change line height to match font size */
+  background-color: white; /* change line color to white */
   display: inline-block;
   margin-left: 3px;
   animation: blink 1s infinite;
 }
+
 @keyframes blink {
   0% {
     opacity: 0;
