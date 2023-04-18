@@ -59,17 +59,18 @@ function typeText(element, text, callback) {
         callback();
       }
       setTimeout(() => {
-        // Add this line to clear the text before blinking
+        // Add this line to clear the text and start blinking after typing
         element.innerHTML = text;
         const blinkId = setInterval(() => {
           showCursor = !showCursor;
           const cursor = showCursor ? '&#x2588;' : '&nbsp;';
           element.innerHTML = text + cursor;
-        }, 300); // decrease the interval time to 300ms for medium typing speed
+        }, 500);
         setTimeout(() => {
           clearInterval(blinkId);
-          element.innerHTML = text;
-        }, 2000);
+          // Fix the issue of the cursor disappearing by setting it to show
+          element.innerHTML = text + '&#x2588;';
+        }, 200);
       }, 500);
     }
   }, 100); // increase the interval time to 100ms for a slower typing rate
