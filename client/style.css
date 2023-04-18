@@ -162,3 +162,35 @@ form img {
   font-size: 20px;
   line-height: 1.4;
 }
+
+.typing-cursor {
+  display: inline-block;
+  margin-left: 0.5em;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #00b8ff;
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+.cursor-line {
+  width: 2px;
+  height: 30px;
+  background-color: #00b8ff;
+  display: inline-block;
+  margin-left: 3px;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
