@@ -69,7 +69,7 @@ function typeText(element, text, callback) {
         setTimeout(() => {
           clearInterval(blinkId);
           element.innerHTML = text;
-        }, 2000);
+        }, 200);
       }, 500);
     }
   }, 100); // increase the interval time to 100ms for a slower typing rate
