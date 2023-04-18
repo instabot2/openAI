@@ -45,7 +45,7 @@ function typeText(element, text, callback) {
     if (index <= text.length) {
       const lastSpaceIndex = text.lastIndexOf(' ');
       const visibleText = text.substring(0, lastSpaceIndex > index ? lastSpaceIndex : index);
-      const cursor = (index < text.length) ? (showCursor ? '&#x2588;' : '&nbsp;') : (showCursor ? '&#x2588;' : '');
+      const cursor = (index < text.length) ? (showCursor ? '&#x2588;' : '&nbsp;') : '';
       element.innerHTML = visibleText + cursor;
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
@@ -57,17 +57,18 @@ function typeText(element, text, callback) {
       if (showCursor) {
         const visibleText = text.substring(0, index);
         element.innerHTML = visibleText + '&#x2588;';
+        showCursor = false;
       }
       clearInterval(intervalId);
       if (callback) {
         callback();
       }
-      showCursor = !showCursor; // toggle showCursor to make the cursor blink at the end
     }
-  }, 20); // decrease the interval time to 20ms
+  }, 500); // increase the interval time to 500ms for a slower blink rate
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
+
 
 
 function chatStripe(isAi, value, uniqueId) {
