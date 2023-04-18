@@ -251,12 +251,22 @@ textarea.addEventListener("focus", () => {
   body.classList.add("blur");
 });
 
+// Add event listener to the hiddenText element
+hiddenText.addEventListener("transitionend", () => {
+  // Check if hiddenText is visible
+  if (window.getComputedStyle(hiddenText).getPropertyValue("opacity") === "1") {
+    // Add blur class to the body element
+    body.classList.add("blur");
+  } else {
+    // Remove blur class from the body element
+    body.classList.remove("blur");
+  }
+});
+
 // Add event listener to the textarea element
 textarea.addEventListener("blur", () => {
   // Hide the hiddenText element
   hiddenText.style.opacity = "0";
-  // Remove blur class from the body element
-  body.classList.remove("blur");
 });
 
 
