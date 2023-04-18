@@ -41,11 +41,11 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 function typeText(element, text, callback) {
   let index = 0;
   let showCursor = true;
-  const cursorHeight = '1.5em'; // Set the cursor height to 1.2em
   const intervalId = setInterval(() => {
     if (index <= text.length) {
-      const visibleText = text.substring(0, index);
-      const cursor = (index < text.length) ? (showCursor ? `<span style="height:${cursorHeight};display:inline-block">&#x25A0;</span>` : '&nbsp;') : '';
+      const lastSpaceIndex = text.lastIndexOf(' ');
+      const visibleText = text.substring(0, lastSpaceIndex > index ? lastSpaceIndex : index);
+      const cursor = (index < text.length) ? (showCursor ? '&#x2588;' : '&nbsp;') : (showCursor ? '&#x2588;' : '');
       element.innerHTML = visibleText + cursor;
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
@@ -56,7 +56,7 @@ function typeText(element, text, callback) {
     } else {
       if (showCursor) {
         const visibleText = text.substring(0, index);
-        element.innerHTML = visibleText + `<span style="height:${cursorHeight};display:inline-block">&#x25A0;</span>`;
+        element.innerHTML = visibleText + '&#x2588;';
       }
       clearInterval(intervalId);
       if (callback) {
@@ -67,9 +67,6 @@ function typeText(element, text, callback) {
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
-
-
-
 
 
 function chatStripe(isAi, value, uniqueId) {
