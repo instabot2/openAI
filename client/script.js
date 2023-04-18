@@ -237,7 +237,6 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 
-
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
@@ -253,19 +252,15 @@ function removeBlur() {
 }
 
 // Show/hide hidden_text and apply blur effect when textarea is focused or clicked
-textarea.addEventListener("focus", () => {
+function handleTextareaFocus() {
   if (textarea.value.trim() === "") {
     hiddenText.style.display = "block";
     addBlur();
   }
-});
+}
 
-textarea.addEventListener("click", () => {
-  if (textarea.value.trim() === "") {
-    hiddenText.style.display = "block";
-    addBlur();
-  }
-});
+textarea.addEventListener("focus", handleTextareaFocus);
+textarea.addEventListener("click", handleTextareaFocus);
 
 // Hide hidden_text and remove blur effect when textarea is blurred and not empty
 textarea.addEventListener("blur", () => {
@@ -284,6 +279,12 @@ textarea.addEventListener("input", () => {
     removeBlur();
   }
 });
+
+// Focus on textarea when the page loads
+window.onload = function() {
+  textarea.focus();
+};
+
 
 
 
