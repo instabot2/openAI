@@ -53,27 +53,19 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
-      // Add a typing cursor element after text typing is complete
-      const cursor = '<span style="font-weight: bold; font-size: 2em; margin-left: 0.5em;" class="typing-cursor">&#9612;</span>';
+      // Add the ChatGPT-style cursor
+      const cursor = `
+        <div class="typing-cursor">
+          <div class="cursor-dot"></div>
+          <div class="cursor-line"></div>
+        </div>
+      `;
       element.insertAdjacentHTML('beforeend', cursor);
-      // Add a CSS class to style the blinking cursor
-      const cursorClass = 'typing-cursor';
-      const cursorBlinkClass = 'typing-cursor-blink';
-      const blinkIntervalId = setInterval(() => {
-        const cursor = element.querySelector(`.${cursorClass}`);
-        if (cursor) {
-          cursor.classList.toggle(cursorBlinkClass);
-        } else {
-          clearInterval(blinkIntervalId);
-        }
-      }, 500);
     }
-  }, 50); // increase interval time for slower typing
+  }, 50);
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
-
-
 
 
 function chatStripe(isAi, value, uniqueId) {
