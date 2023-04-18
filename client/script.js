@@ -244,16 +244,16 @@ const body = document.querySelector("body");
 function handleBodyClick(event) {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
-    body.classList.remove("blur");
+    //body.classList.remove("blur");
   } else {
     hiddenText.style.display = "block";
-    body.classList.add("blur");
+    //body.classList.add("blur");
   }
 }
 function handleTextareaInput() {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  body.classList.add("blur");
+  //body.classList.add("blur");
   hiddenText.classList.remove("blur");
   textarea.focus();
 }
