@@ -53,8 +53,8 @@ function typeText(element, text, callback) {
       if (callback) {
         callback();
       }
-      // Add a bold and blinking cursor element after text typing is complete
-      const cursor = '<span style="font-weight: bold; display: inline-block; width: 0.5em; margin-left: 0.1em; border-right: 2px solid;">&nbsp;</span>';
+      // Add a typing cursor element after text typing is complete
+      const cursor = '<span style="font-weight: bold; font-size: 1.2em; margin-left: 0.1em;">&#9612;</span>';
       element.insertAdjacentHTML('beforeend', cursor);
       // Add a CSS class to style the blinking cursor
       const cursorClass = 'typing-cursor';
@@ -64,12 +64,13 @@ function typeText(element, text, callback) {
         if (cursor) {
           cursor.classList.toggle(cursorBlinkClass);
         }
-      }, 500);
+      }, 100);
     }
-  }, 20);
+  }, 50); // increase interval time for slower typing
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
+
 
 
 
