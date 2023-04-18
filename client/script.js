@@ -248,21 +248,27 @@ function handleTextareaClick() {
   hiddenText.style.display = "block";
   // Add blur class to the body element if textarea is active
   if (document.activeElement === textarea) {
-    body.classList.add("blur");
+    //body.classList.add("blur");
   }
 }
 function handleHiddenTextInput() {
   // Set the value of the textarea element to match the value of the hiddenText element
   textarea.value = hiddenText.value;
+  body.classList.add("blur");
   hiddenText.style.display = "block";
 }
 function handleBodyClick(event) {
   if (event.target !== textarea) {
-    //hiddenText.style.display = "none";
+    // Show the hiddenText element
     hiddenText.style.display = "block";
+    // Set focus to the textarea element
+    textarea.focus();
+    // Remove blur class from the body element
     body.classList.remove("blur");
   }
 }
+
+
 
 // Add event listeners
 textarea.addEventListener("focus", handleTextareaClick);
