@@ -248,7 +248,7 @@ textarea.addEventListener("focus", () => {
   // Show the hiddenText element
   hiddenText.style.display = "block";
   // Add blur class to the body element
-  body.classList.add("blur");
+  //body.classList.add("blur");
   // Remove blur class from the textarea element
   textarea.classList.remove("blur");
 });
