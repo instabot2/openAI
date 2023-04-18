@@ -256,11 +256,11 @@ textarea.addEventListener("focus", () => {
 // Add event listener to the textarea element
 textarea.addEventListener("blur", () => {
   // Hide the hiddenText element
-  hiddenText.style.display = "none";
+  //hiddenText.style.display = "none";
   // Remove blur class from the body element
-  body.classList.remove("blur");
+  //body.classList.remove("blur");
   // Add blur class to the textarea element
-  textarea.classList.add("blur");
+  //textarea.classList.add("blur");
 });
 
 
