@@ -58,7 +58,7 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }, 50); // decrease the interval time to 50ms
+  }, 20); // decrease the interval time to 50ms
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
