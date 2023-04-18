@@ -54,20 +54,25 @@ function typeText(element, text, callback) {
       }
       showCursor = !showCursor;
     } else {
-      if (showCursor) {
-        const visibleText = text.substring(0, index);
-        element.innerHTML = visibleText + '&#x2588;';
-        showCursor = false;
-      }
       clearInterval(intervalId);
       if (callback) {
         callback();
       }
+      setTimeout(() => {
+        // Add this line to clear the text and start blinking after typing
+        element.innerHTML = '';
+        const blinkId = setInterval(() => {
+          element.innerHTML = element.innerHTML === '' ? '&#x2588;' : '';
+        }, 500);
+        setTimeout(() => {
+          clearInterval(blinkId);
+          element.innerHTML = text;
+        }, 2000);
+      }, 500);
     }
-  }, 500); // increase the interval time to 500ms for a slower typing rate
-  // Add this line to clear the text before typing
-  element.innerHTML = '';
+  }, 100); // increase the interval time to 100ms for a slower typing rate
 }
+
 
 
 
