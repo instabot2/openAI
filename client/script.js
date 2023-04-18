@@ -64,7 +64,7 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }, 500); // increase the interval time to 500ms for a slower blink rate
+  }, 20); // increase the interval time to 500ms for a slower blink rate
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
