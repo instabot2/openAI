@@ -247,14 +247,14 @@ function handleBodyClick(event) {
     //body.classList.remove("blur");
   } else {
     hiddenText.style.display = "block";
-    body.classList.add("blur");
+    //body.classList.add("blur");
   }
 }
 
 function handleTextareaInput() {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  body.classList.add("blur");
+  //body.classList.add("blur");
   textarea.focus(); // Give focus to the textarea
 }
 
