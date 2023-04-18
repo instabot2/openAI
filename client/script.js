@@ -244,7 +244,7 @@ const body = document.querySelector("body");
 function handleBodyClick(event) {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
-    body.classList.remove("blur");
+    //body.classList.remove("blur");
   } else {
     hiddenText.style.display = "block";
     body.classList.add("blur");
@@ -255,12 +255,15 @@ function handleTextareaInput() {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
   body.classList.add("blur");
+  textarea.focus(); // Give focus to the textarea
 }
 
 function handleHiddenTextInput() {
   textarea.value = hiddenText.textContent;
+  textarea.focus();
 }
 
+// Add event listeners
 textarea.addEventListener("focus", handleBodyClick);
 textarea.addEventListener("input", handleTextareaInput);
 hiddenText.addEventListener("input", handleHiddenTextInput);
