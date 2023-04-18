@@ -248,17 +248,20 @@ function handleTextareaClick() {
   hiddenText.style.display = "block";
   // Check if the textarea is already active
   if (document.activeElement === textarea) {
-    // Add blur class to the body element
-    body.classList.add("blur");
-    hiddenText.style.display = "block";
-  } else {
     // Remove blur class from the body element
     body.classList.remove("blur");
+    // Hide the hiddenText element
+    hiddenText.style.display = "none";
+  } else {
+    // Add blur class to the body element
+    body.classList.add("blur");
+    // Show the hiddenText element
     hiddenText.style.display = "block";
     // Set focus to the textarea element
     textarea.focus();
   }
 }
+
 
 function handleHiddenTextInput() {
   // Set the value of the textarea element to match the value of the hiddenText element
