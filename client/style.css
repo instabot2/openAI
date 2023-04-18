@@ -124,16 +124,16 @@ form {
 
 textarea {
   width: 100%;
-
   color: #fff;
   font-size: 18px;
-
   padding: 10px;
   background: transparent;
   border-radius: 5px;
   border: none;
   outline: none;
+  transform: translateZ(0);
 }
+
 
 button {
   outline: 0;
