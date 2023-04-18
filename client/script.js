@@ -40,29 +40,25 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   let index = 0;
+  let showCursor = true;
   const intervalId = setInterval(() => {
-    if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', text.charAt(index));
+    if (index <= text.length) {
+      const visibleText = text.substring(0, index);
+      const cursor = (index < text.length) ? (showCursor ? '|' : '&nbsp;') : '';
+      element.innerHTML = visibleText + cursor;
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
+      showCursor = !showCursor;
     } else {
       clearInterval(intervalId);
       if (callback) {
         callback();
       }
-      // Add the ChatGPT-style cursor
-      const cursor = `
-        <div class="typing-cursor">
-          <div class="cursor-dot"></div>
-          <div class="cursor-line"></div>
-        </div>
-      `;
-      element.insertAdjacentHTML('beforeend', cursor);
     }
-  }, 50);
+  }, 500);
   // Add this line to clear the text before typing
   element.innerHTML = '';
 }
