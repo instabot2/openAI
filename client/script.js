@@ -239,7 +239,17 @@ function writeMessageToFile(isBot, messageXml) {
 
 
 const hiddenText = document.getElementById("hidden_text");
+const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
+
+// Add event listener to the textarea element
+textarea.addEventListener("focus", () => {
+  // Set the value of the hiddenText element to match the value of the textarea element
+  hiddenText.value = textarea.value;
+
+  // Show the hiddenText element
+  hiddenText.style.opacity = "1";
+});
 
 // Add event listener to the hiddenText element
 hiddenText.addEventListener("transitionend", () => {
@@ -252,6 +262,7 @@ hiddenText.addEventListener("transitionend", () => {
     body.classList.remove("blur");
   }
 });
+
 
 
 
