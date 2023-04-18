@@ -250,14 +250,13 @@ function handleBodyClick(event) {
     //body.classList.add("blur");
   }
 }
-
 function handleTextareaInput() {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  //body.classList.add("blur");
-  textarea.focus(); // Give focus to the textarea
+  body.classList.add("blur");
+  hiddenText.classList.remove("blur");
+  textarea.focus();
 }
-
 function handleHiddenTextInput() {
   textarea.value = hiddenText.textContent;
   textarea.focus();
