@@ -241,33 +241,31 @@ const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
-function handleTextareaFocus() {
-  //hiddenText.style.display = "block";
-  //hiddenText.textContent = textarea.value;
-  //body.classList.add("blur");
-}
-
 function handleBodyClick(event) {
-  if (event.target !== textarea && event.target !== hiddenText) {    
+  if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
     body.classList.remove("blur");
+  } else {
+    hiddenText.style.display = "block";
+    body.classList.add("blur");
   }
 }
 
-
-function handleTextareaBlur() {
-  //hiddenText.style.display = "none";
-  //body.classList.remove("blur");
+function handleTextareaInput() {
+  hiddenText.style.display = "block";
+  hiddenText.textContent = textarea.value;
+  body.classList.add("blur");
 }
+
 function handleHiddenTextInput() {
-  //textarea.value = hiddenText.textContent;
+  textarea.value = hiddenText.textContent;
 }
 
-// Add event listeners
-textarea.addEventListener("focus", handleTextareaFocus);
+textarea.addEventListener("focus", handleBodyClick);
 textarea.addEventListener("input", handleTextareaInput);
-//textarea.addEventListener("blur", handleTextareaBlur);
 hiddenText.addEventListener("input", handleHiddenTextInput);
+body.addEventListener("click", handleBodyClick);
+
 
 
 
