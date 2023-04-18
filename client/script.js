@@ -244,38 +244,44 @@ const body = document.querySelector("body");
 
 // Add the blur class to the body element
 function addBlur() {
-  document.body.classList.add("blur");
-}
-// Remove the blur class from the body element
-function removeBlur() {
-  document.body.classList.remove("blur");
+  body.classList.add("blur");
 }
 
+// Remove the blur class from the body element
+function removeBlur() {
+  body.classList.remove("blur");
+}
+
+// Show/hide hidden_text and apply blur effect when textarea is focused or clicked
 textarea.addEventListener("focus", () => {
   if (textarea.value.trim() === "") {
     hiddenText.style.display = "block";
     addBlur();
-  } else { 
+  }
+});
+
+textarea.addEventListener("click", () => {
+  if (textarea.value.trim() === "") {
+    hiddenText.style.display = "block";
+    addBlur();
+  }
+});
+
+// Hide hidden_text and remove blur effect when textarea is blurred and not empty
+textarea.addEventListener("blur", () => {
+  if (textarea.value.trim() !== "") {
     hiddenText.style.display = "none";
     removeBlur();
   }
 });
 
+// Update hidden_text content and apply blur effect if textarea is not empty
 textarea.addEventListener("input", () => {
-  hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
-  if (!textarea.value.trim()) {
+  if (textarea.value.trim() !== "") {
     addBlur();
   } else {
     removeBlur();
-  }
-});
-
-document.addEventListener("click", (event) => {
-  if (event.target !== textarea && event.target !== hiddenText) {
-    hiddenText.style.display = "none";
-    //hiddenText.style.display = "block";
-    body.classList.remove("blur");
   }
 });
 
