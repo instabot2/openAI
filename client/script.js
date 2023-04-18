@@ -37,10 +37,12 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
+
 function typeText(element, text, callback) {
   let index = 0;
   const intervalId = setInterval(() => {
     if (index < text.length) {
+      element.insertAdjacentHTML('beforeend', `<span class="typing-cursor">|</span>`);
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
@@ -56,7 +58,18 @@ function typeText(element, text, callback) {
   }, 20);
   // Add this line to clear the text before typing
   element.innerHTML = '';
+
+  // Add a CSS class to style the blinking cursor
+  const cursorClass = 'typing-cursor';
+  const cursorBlinkClass = 'typing-cursor-blink';
+  setInterval(() => {
+    const cursor = element.querySelector(`.${cursorClass}`);
+    if (cursor) {
+      cursor.classList.toggle(cursorBlinkClass);
+    }
+  }, 500);
 }
+
 
 function chatStripe(isAi, value, uniqueId) {
   return `
