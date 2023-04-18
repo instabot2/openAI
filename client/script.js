@@ -245,6 +245,10 @@ function handleBodyClick(event) {
   if (event.target !== textarea) {
     hiddenText.style.display = "none";
     body.classList.remove("blur");
+  } else {
+    hiddenText.style.display = "block";
+    hiddenText.value = textarea.value;
+    body.classList.add("blur");
   }
 }
 function handleTextareaClick() {
