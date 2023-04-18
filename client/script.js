@@ -44,7 +44,7 @@ function typeText(element, text, callback) {
   const intervalId = setInterval(() => {
     if (index <= text.length) {
       const visibleText = text.substring(0, index);
-      const cursor = (index < text.length) ? (showCursor ? '&#x2588;' : '&nbsp;') : '';
+      const cursor = (index < text.length) ? (showCursor ? 'U+25A0;' : '&nbsp;') : '';
       element.innerHTML = visibleText + cursor;
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
