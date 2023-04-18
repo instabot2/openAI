@@ -236,6 +236,7 @@ function writeMessageToFile(isBot, messageXml) {
 }
 
 
+
 const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
@@ -281,13 +282,21 @@ textarea.addEventListener("focus", removeBlur);
 textarea.addEventListener("input", () => {
   hiddenText.style.display = "block";
   hiddenText.textContent = textarea.value;
+  removeBlur();
 });
+
 // Hide hidden_text when body is clicked
 body.addEventListener("click", () => {
   hiddenText.style.display = "none";
+  removeBlur();
 });
+
 // Add blur effect to body when typing in the textarea
 textarea.addEventListener("input", addBlur);
+
+// Remove blur effect from body once user has finished typing
+textarea.addEventListener("blur", removeBlur);
+
 
 
 
