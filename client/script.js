@@ -247,30 +247,22 @@ function handleBodyClick(event) {
     body.classList.remove("blur");
   } else {
     hiddenText.style.display = "block";
-    hiddenText.value = textarea.value;
     body.classList.add("blur");
   }
 }
-function handleTextareaClick() {
-  hiddenText.style.display = "block";
-  hiddenText.value = textarea.value;
-  body.classList.add("blur");
-}
 function handleTextareaInput() {
   hiddenText.style.display = "block";
-  hiddenText.value = textarea.value;
+  hiddenText.textContent = textarea.value;
   body.classList.remove("blur");
 }
 function handleHiddenTextInput() {
-  textarea.value = hiddenText.value;
+  textarea.value = hiddenText.textContent;
 }
-
 // Add event listeners
-textarea.addEventListener("focus", handleTextareaClick);
+textarea.addEventListener("focus", handleBodyClick);
 textarea.addEventListener("input", handleTextareaInput);
 hiddenText.addEventListener("input", handleHiddenTextInput);
 body.addEventListener("click", handleBodyClick);
-
 
 
 
