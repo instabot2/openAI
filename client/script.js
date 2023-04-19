@@ -49,6 +49,7 @@ function typeText(element, text, callback) {
   element.innerHTML = ''; // Clear the text before typing
 
   function updateText() {
+    const scrollTop = element.scrollTop;
     const visibleText = text.substring(0, index);
     const cursor = (index < text.length) ? (showCursor ? cursorSymbol : '') : '';
     element.innerHTML = visibleText + cursor;
@@ -59,7 +60,7 @@ function typeText(element, text, callback) {
       element.scrollTop = element.scrollHeight;
     }
 
-    if (index <= text.length) {
+    if (scrollTop === element.scrollTop && index <= text.length) {
       setTimeout(updateText, intervalTime);
     } else {
       if (callback) {
@@ -76,7 +77,6 @@ function typeText(element, text, callback) {
   updateText();
   updateCursor();
 }
-
 
 
 
