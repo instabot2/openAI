@@ -62,12 +62,12 @@ function typeText(element, text, callback) {
         if (callback) {
           callback();
         }
-      }, 100); // Wait for 1 second before showing cursor
+      }, 1000); // Wait for 1 second before showing cursor
     }
   }
   function updateCursor() {
     showCursor = !showCursor;
-    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+    const cursorHtml = showCursor ? `<span style="font-size: 0.8em;">${cursorSymbol}</span>` : '';
     element.innerHTML = `${text}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
