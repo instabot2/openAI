@@ -47,7 +47,7 @@ function typeText(element, text, callback) {
 
   element.innerHTML = ''; // Clear the text before typing
 
-  const intervalId = setInterval(() => {
+  function updateText() {
     if (index <= text.length) {
       const visibleText = text.substring(0, index);
       const cursor = (index < text.length) ? (showCursor ? cursorSymbol : '') : '';
@@ -60,13 +60,15 @@ function typeText(element, text, callback) {
       }
 
       showCursor = !showCursor;
+      setTimeout(updateText, intervalTime);
     } else {
-      clearInterval(intervalId);
       if (callback) {
         callback();
       }
     }
-  }, intervalTime);
+  }
+
+  updateText();
 }
 
 
