@@ -43,12 +43,9 @@ function typeText(element, text, callback) {
   const intervalTime = 50; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
-
   let index = 0;
   let showCursor = false;
-
   element.innerHTML = ''; // Clear the text before typing
-
   function updateText() {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
@@ -67,16 +64,13 @@ function typeText(element, text, callback) {
       }
     }
   }
-
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = text + (showCursor ? cursorSymbol : ' ');
+    element.innerHTML = text + (showCursor ? cursorSymbol + ' ' : '');
     setTimeout(updateCursor, cursorIntervalTime);
   }
-
   setTimeout(updateText, intervalTime);
 }
-
 
 
 
