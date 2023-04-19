@@ -56,18 +56,16 @@ function typeText(element, text, callback) {
       }
       setTimeout(updateText, intervalTime);
     } else {
-      setTimeout(() => {
-        showCursor = true;
-        setTimeout(updateCursor, cursorIntervalTime);
-        if (callback) {
-          callback();
-        }
-      }, 1000); // Wait for 1 second before showing cursor
+      showCursor = true;
+      setTimeout(updateCursor, cursorIntervalTime);
+      if (callback) {
+        callback();
+      }
     }
   }
   function updateCursor() {
     showCursor = !showCursor;
-    const cursorHtml = showCursor ? `<span style="font-size: 0.8em;">${cursorSymbol}</span>` : '';
+    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
     element.innerHTML = `${text}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
