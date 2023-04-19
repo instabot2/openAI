@@ -39,7 +39,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 function typeText(element, text, callback) {
-  const intervalTime = 20; // Set the interval time in milliseconds
+  const intervalTime = 50; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
 
   let index = 0;
@@ -48,26 +48,28 @@ function typeText(element, text, callback) {
   element.innerHTML = ''; // Clear the text before typing
 
   function updateText() {
+    const visibleText = text.substring(0, index);
+    const cursor = (index < text.length) ? (showCursor ? cursorSymbol : '') : '';
+    element.innerHTML = visibleText + cursor;
+    index++;
+
+    // Check if the element is already scrolled to the bottom and scroll it up
+    if (element.scrollHeight - element.scrollTop <= element.clientHeight + 1) {
+      element.scrollTop = element.scrollHeight;
+    }
+
+    showCursor = !showCursor;
+
     if (index <= text.length) {
-      const visibleText = text.substring(0, index);
-      const cursor = (index < text.length) ? (showCursor ? cursorSymbol : '') : '';
-      element.innerHTML = visibleText + cursor;
-      index++;
-
-      // Check if the element is already scrolled to the bottom and scroll it up
-      if (element.scrollHeight - element.scrollTop <= element.clientHeight + 1) {
-        element.scrollTop = element.scrollHeight;
-      }
-
-      showCursor = !showCursor;
-      window.requestAnimationFrame(updateText);
+      setTimeout(updateText, intervalTime);
     } else {
       if (callback) {
         callback();
       }
     }
   }
-  window.requestAnimationFrame(updateText);
+
+  updateText();
 }
 
 
