@@ -39,7 +39,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 function typeText(element, text, callback) {
-  const intervalTime = 50; // Set the interval time in milliseconds
+  const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
 
   let index = 0;
@@ -60,16 +60,16 @@ function typeText(element, text, callback) {
       }
 
       showCursor = !showCursor;
-      setTimeout(updateText, intervalTime);
+      window.requestAnimationFrame(updateText);
     } else {
       if (callback) {
         callback();
       }
     }
   }
-
-  updateText();
+  window.requestAnimationFrame(updateText);
 }
+
 
 
 
