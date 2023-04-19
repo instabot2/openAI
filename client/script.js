@@ -41,7 +41,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 function typeText(element, text, callback) {
   const intervalTime = 20; // Set the interval time in milliseconds
-  const cursorSymbol = '\u25A0'; // Set the cursor symbol to a black square
+  const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
   let index = 0;
   let showCursor = false;
@@ -65,7 +65,9 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = text + (showCursor ? ' <span style="font-size: 1em;">'+cursorSymbol+'</span>' : '');
+    //element.innerHTML = text + (showCursor ? ' <span style="font-size: 0.8em;">'+cursorSymbol+'</span>' : '');
+    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+    element.innerHTML = `${text}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
