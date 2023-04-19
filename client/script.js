@@ -62,7 +62,7 @@ function typeText(element, text, callback) {
         if (callback) {
           callback();
         }
-      }, 1000); // Wait for 1 second before showing cursor
+      }, 100); // Wait for 1 second before showing cursor
     }
   }
   function updateCursor() {
