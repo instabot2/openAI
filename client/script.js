@@ -57,7 +57,6 @@ function typeText(element, text, callback) {
       setTimeout(updateText, intervalTime);
     } else {
       showCursor = true;
-      element.insertAdjacentHTML('beforeend', ' ');
       setTimeout(updateCursor, cursorIntervalTime);
       if (callback) {
         callback();
@@ -66,12 +65,11 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = text + (showCursor ? cursorSymbol + ' ' : '');
+    element.innerHTML = text + (showCursor ? ' ' + cursorSymbol : '');
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
 }
-
 
 
 
