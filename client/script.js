@@ -43,7 +43,6 @@ function typeText(element, text, callback) {
   const intervalTime = 50; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
-  const defaultFontSize = window.getComputedStyle(element).getPropertyValue('font-size');
   let index = 0;
   let showCursor = false;
   element.innerHTML = ''; // Clear the text before typing
@@ -66,11 +65,12 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = text + (showCursor ? ' <span style="font-size:' + defaultFontSize + '">' + cursorSymbol + '</span>' : '');
+    element.innerHTML = text + (showCursor ? ' <span style="font-size: 0.5em;">'+cursorSymbol+'</span>' : '');
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
 }
+
 
 
 
