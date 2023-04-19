@@ -44,7 +44,7 @@ function typeText(element, text, callback) {
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
   let index = 0;
-  let showCursor = false;
+  let showCursor = true;
   element.innerHTML = ''; // Clear the text before typing
   function updateText() {
     if (index < text.length) {
@@ -54,20 +54,19 @@ function typeText(element, text, callback) {
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
-      setTimeout(updateText, intervalTime);
     } else {
       showCursor = true;
-      setTimeout(updateCursor, cursorIntervalTime);
+    }
+    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+    element.innerHTML = `${text.substring(0, index)}${cursorHtml}`;
+    if (index < text.length || showCursor) {
+      showCursor = !showCursor;
+      setTimeout(updateText, showCursor ? cursorIntervalTime : intervalTime);
+    } else {
       if (callback) {
         callback();
       }
     }
-  }
-  function updateCursor() {
-    showCursor = !showCursor;
-    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
-    element.innerHTML = `${text}${cursorHtml}`;
-    setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
 }
