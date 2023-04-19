@@ -197,16 +197,3 @@ form img {
     opacity: 0;
   }
 }
-
-.cursor {
-  display: inline-block;
-  width: 0.8em;
-  height: 1em;
-  background-color: white;
-  animation: blink 0.5s infinite;
-}
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
