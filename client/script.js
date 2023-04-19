@@ -38,7 +38,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
-
 function typeText(element, text, callback) {
   const intervalTime = 50; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
@@ -56,7 +55,7 @@ function typeText(element, text, callback) {
       index++;
 
       // Check if the element is already scrolled to the bottom and scroll it up
-      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      if (element.scrollHeight - element.scrollTop <= element.clientHeight + 1) {
         element.scrollTop = element.scrollHeight;
       }
 
@@ -69,6 +68,7 @@ function typeText(element, text, callback) {
     }
   }, intervalTime);
 }
+
 
 
 function chatStripe(isAi, value, uniqueId) {
