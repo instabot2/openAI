@@ -38,16 +38,16 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
+
 function typeText(element, text, callback) {
   let index = 0;
   let showCursor = true;
-  // Clear the text before typing
-  element.innerHTML = '';
+  element.innerHTML = ''; // Clear the text before typing
   const intervalId = setInterval(() => {
     if (index <= text.length) {
       const visibleText = text.substring(0, index);
-      const cursor = (index < text.length) ? (showCursor ? '&#x275A;' : '&nbsp;') : '';
-      element.innerHTML = visibleText + cursor;
+      const cursor = (index < text.length) ? (showCursor ? '&#x258B;' : '&nbsp;') : '';
+      element.innerHTML = visibleText + '<span class="typing-cursor">' + cursor + '</span>';
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
@@ -60,9 +60,8 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }, 20);
+  }, 50);
 }
-
 
 
 function chatStripe(isAi, value, uniqueId) {
