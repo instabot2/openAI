@@ -52,17 +52,14 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
-      showCursor = true;
-      element.innerHTML += cursorSymbol;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
+      showCursor = true;
       setTimeout(updateText, intervalTime);
     } else {
       clearInterval(intervalId);
-      showCursor = false;
-      element.innerHTML = element.innerHTML.slice(0, -1);
       if (callback) {
         callback();
       }
@@ -72,12 +69,23 @@ function typeText(element, text, callback) {
   function updateCursor() {
     showCursor = !showCursor;
     element.innerHTML = element.innerHTML.slice(0, -1) + (showCursor ? cursorSymbol : '');
-    setTimeout(updateCursor, cursorIntervalTime);
   }
 
-  const intervalId = setInterval(updateText, intervalTime);
-  updateCursor();
+  const intervalId = setInterval(() => {
+    updateText();
+    updateCursor();
+  }, intervalTime);
+
+  setTimeout(() => {
+    clearInterval(intervalId);
+    showCursor = false;
+    element.innerHTML = element.innerHTML.slice(0, -1);
+    if (callback) {
+      callback();
+    }
+  }, intervalTime * text.length + cursorIntervalTime);
 }
+
 
 
 
