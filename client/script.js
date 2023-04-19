@@ -56,11 +56,13 @@ function typeText(element, text, callback) {
       }
       setTimeout(updateText, intervalTime);
     } else {
-      showCursor = true;
-      setTimeout(updateCursor, cursorIntervalTime);
-      if (callback) {
-        callback();
-      }
+      setTimeout(() => {
+        showCursor = true;
+        setTimeout(updateCursor, cursorIntervalTime);
+        if (callback) {
+          callback();
+        }
+      }, 1000); // Wait for 1 second before showing cursor
     }
   }
   function updateCursor() {
