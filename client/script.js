@@ -45,7 +45,7 @@ function typeText(element, text, callback) {
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
 
   let index = 0;
-  let showCursor = false;
+  let showCursor = true;
 
   element.innerHTML = ''; // Clear the text before typing
 
@@ -53,16 +53,17 @@ function typeText(element, text, callback) {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
+      showCursor = true;
+      element.innerHTML += cursorSymbol;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
       setTimeout(updateText, intervalTime);
     } else {
-      element.insertAdjacentHTML('beforeend', ' '); // Add a space after the last character
       clearInterval(intervalId);
-      showCursor = true;
-      setTimeout(updateCursor, cursorIntervalTime);
+      showCursor = false;
+      element.innerHTML = element.innerHTML.slice(0, -1) + ' ';
       if (callback) {
         callback();
       }
@@ -71,11 +72,12 @@ function typeText(element, text, callback) {
 
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = element.innerHTML.slice(0, -1) + (showCursor ? cursorSymbol : ' ') + '&nbsp;';
+    element.innerHTML = element.innerHTML.slice(0, -1) + (showCursor ? cursorSymbol : ' ');
     setTimeout(updateCursor, cursorIntervalTime);
   }
 
   const intervalId = setInterval(updateText, intervalTime);
+  updateCursor();
 }
 
 
