@@ -44,21 +44,19 @@ function typeText(element, text, callback) {
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
   let index = 0;
   let showCursor = false;
-  let intervalTime = Math.floor(Math.random() * 80) + 20; // Randomize the interval time between 20 and 100 milliseconds
   element.innerHTML = ''; // Clear the text before typing
   function updateText() {
     if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', text.charAt(index));
-      index++;
-      // Check if the element is already scrolled to the bottom and scroll it up
-      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-        element.scrollTop = element.scrollHeight;
-      }
-      setTimeout(updateText, intervalTime);
-      if (index % 5 === 0) {
-        showCursor = true;
-        setTimeout(updateCursor, cursorIntervalTime);
-      }
+      const typingTime = Math.floor(Math.random() * 100) + 20; // Randomize typing interval length
+      setTimeout(() => {
+        element.insertAdjacentHTML('beforeend', text.charAt(index));
+        index++;
+        // Check if the element is already scrolled to the bottom and scroll it up
+        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+          element.scrollTop = element.scrollHeight;
+        }
+        updateText();
+      }, typingTime);
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
@@ -67,17 +65,16 @@ function typeText(element, text, callback) {
       }
     }
   }
+
   function updateCursor() {
     showCursor = !showCursor;
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
     element.innerHTML = `${text}${cursorHtml}`;
-    if (showCursor) {
-      intervalTime = Math.floor(Math.random() * 80) + 20; // Randomize the interval time between 20 and 100 milliseconds
-    }
     setTimeout(updateCursor, cursorIntervalTime);
   }
-  setTimeout(updateText, intervalTime);
+  setTimeout(updateText, 20); // Start typing with a fixed interval time
 }
+
 
 
 
