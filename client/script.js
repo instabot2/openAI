@@ -40,6 +40,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 function typeText(element, text, callback) {
+  const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
   let index = 0;
@@ -47,16 +48,13 @@ function typeText(element, text, callback) {
   element.innerHTML = ''; // Clear the text before typing
   function updateText() {
     if (index < text.length) {
-      const typingTime = Math.floor(Math.random() * 100) + 20; // Randomize typing interval length
-      setTimeout(() => {
-        element.insertAdjacentHTML('beforeend', text.charAt(index));
-        index++;
-        // Check if the element is already scrolled to the bottom and scroll it up
-        if (element.scrollHeight - element.scrollTop === element.clientHeight) {
-          element.scrollTop = element.scrollHeight;
-        }
-        updateText();
-      }, typingTime);
+      element.insertAdjacentHTML('beforeend', text.charAt(index));
+      index++;
+      // Check if the element is already scrolled to the bottom and scroll it up
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        element.scrollTop = element.scrollHeight;
+      }
+      setTimeout(updateText, intervalTime);
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
@@ -65,16 +63,14 @@ function typeText(element, text, callback) {
       }
     }
   }
-
   function updateCursor() {
     showCursor = !showCursor;
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
     element.innerHTML = `${text}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
-  setTimeout(updateText, 20); // Start typing with a fixed interval time
+  setTimeout(updateText, intervalTime);
 }
-
 
 
 
