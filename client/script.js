@@ -43,24 +43,21 @@ function typeText(element, text, callback) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
+  const pauseTime = 1000; // Set the pause time in milliseconds before the cursor starts blinking
   let index = 0;
-  let showCursor = false;
+  let showCursor = true;
+  let isTyping = true;
   element.innerHTML = ''; // Clear the text before typing
-  // Split the text into words and randomize their length
-  const words = text.split(' ').map(word => {
-    const length = Math.floor(Math.random() * (word.length - 1)) + 1;
-    return word.slice(0, length) + cursorSymbol + word.slice(length);
-  });
   function updateText() {
-    if (index < words.length) {
-      const word = words[index];
-      element.insertAdjacentHTML('beforeend', word);
+    if (index < text.length) {
+      element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
-      setTimeout(updateText, intervalTime * word.length);
+      isTyping = true;
+      setTimeout(updateText, intervalTime * (Math.random() * 2 + 1));
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
@@ -71,12 +68,28 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
-    const word = words[index - 1];
-    const cursorIndex = word.indexOf(cursorSymbol);
-    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
-    element.innerHTML = word.slice(0, cursorIndex) + cursorHtml + word.slice(cursorIndex + 1);
-    setTimeout(updateCursor, cursorIntervalTime);
+    element.innerHTML = text + (showCursor ? '' : cursorSymbol);
+    if (!isTyping) {
+      setTimeout(updateCursor, cursorIntervalTime);
+    } else {
+      setTimeout(startBlinking, pauseTime);
+    }
   }
+  function startBlinking() {
+    showCursor = true;
+    setTimeout(updateBlinkingCursor, cursorIntervalTime);
+  }
+  function updateBlinkingCursor() {
+    showCursor = !showCursor;
+    element.innerHTML = text + (showCursor ? '' : cursorSymbol);
+    if (isTyping) {
+      setTimeout(updateBlinkingCursor, cursorIntervalTime);
+    }
+  }
+  element.addEventListener('input', () => {
+    isTyping = false;
+    setTimeout(updateCursor, cursorIntervalTime);
+  });
   setTimeout(updateText, intervalTime);
 }
 
