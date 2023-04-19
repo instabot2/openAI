@@ -43,42 +43,36 @@ function typeText(element, text, callback) {
   const intervalTime = 50; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
-
   let index = 0;
-  let showCursor = true;
-
+  let showCursor = false;
   element.innerHTML = ''; // Clear the text before typing
-
   function updateText() {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
       index++;
-      showCursor = true;
-      element.innerHTML += cursorSymbol;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
       setTimeout(updateText, intervalTime);
     } else {
-      clearInterval(intervalId);
-      showCursor = false;
-      element.innerHTML = element.innerHTML.slice(0, -1) + ' ';
+      showCursor = true;
+      setTimeout(updateCursor, cursorIntervalTime);
       if (callback) {
         callback();
       }
     }
   }
-
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = element.innerHTML.slice(0, -1) + (showCursor ? cursorSymbol : ' ');
+    element.innerHTML = text + (showCursor ? cursorSymbol : ' ');
     setTimeout(updateCursor, cursorIntervalTime);
   }
-
-  const intervalId = setInterval(updateText, intervalTime);
-  updateCursor();
+  setTimeout(updateText, intervalTime);
 }
+
+
+
 
 
 
