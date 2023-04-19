@@ -40,11 +40,11 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 function typeText(element, text, callback) {
-  const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
   let index = 0;
   let showCursor = false;
+  let intervalTime = Math.floor(Math.random() * 80) + 20; // Randomize the interval time between 20 and 100 milliseconds
   element.innerHTML = ''; // Clear the text before typing
   function updateText() {
     if (index < text.length) {
@@ -55,6 +55,10 @@ function typeText(element, text, callback) {
         element.scrollTop = element.scrollHeight;
       }
       setTimeout(updateText, intervalTime);
+      if (index % 5 === 0) {
+        showCursor = true;
+        setTimeout(updateCursor, cursorIntervalTime);
+      }
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
@@ -67,6 +71,9 @@ function typeText(element, text, callback) {
     showCursor = !showCursor;
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
     element.innerHTML = `${text}${cursorHtml}`;
+    if (showCursor) {
+      intervalTime = Math.floor(Math.random() * 80) + 20; // Randomize the interval time between 20 and 100 milliseconds
+    }
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
