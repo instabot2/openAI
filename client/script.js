@@ -45,6 +45,7 @@ function typeText(element, text, callback) {
 
   let index = 0;
   let showCursor = false;
+  let scrollBottom = true;
 
   element.innerHTML = ''; // Clear the text before typing
 
@@ -55,12 +56,13 @@ function typeText(element, text, callback) {
     element.innerHTML = visibleText + cursor;
     index++;
 
-    // Check if the element is already scrolled to the bottom and scroll it up
-    if (element.scrollHeight - element.scrollTop <= element.clientHeight + 1) {
+    if (scrollBottom) {
       element.scrollTop = element.scrollHeight;
+    } else {
+      element.scrollTop = scrollTop;
     }
 
-    if (scrollTop === element.scrollTop && index <= text.length) {
+    if (index <= text.length) {
       setTimeout(updateText, intervalTime);
     } else {
       if (callback) {
@@ -73,6 +75,10 @@ function typeText(element, text, callback) {
     showCursor = !showCursor;
     setTimeout(updateCursor, cursorIntervalTime);
   }
+
+  element.addEventListener('scroll', function() {
+    scrollBottom = (element.scrollHeight - element.scrollTop <= element.clientHeight + 1);
+  });
 
   updateText();
   updateCursor();
