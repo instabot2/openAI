@@ -197,6 +197,9 @@ const handleSubmit = async (e) => {
     }
   } catch (err) {
     console.error(err);
+    // Display an error message to the user
+    const errorMessage = chatStripe(true, 'Oops! Something went wrong. Please try again later.', uniqueId);
+    messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
   }
 };
 
