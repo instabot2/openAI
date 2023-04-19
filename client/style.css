@@ -143,8 +143,8 @@ form img {
 #hidden_text {
   /* Change position to absolute instead of fixed to allow it to be hidden by default */
   position: absolute;
-  top: 20%;
-  left: 30%;
+  top: 30%;
+  left: 50%;
   transform: translate(-50%, -50%);
   
   /* Hide the div by default */
