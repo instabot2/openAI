@@ -46,15 +46,21 @@ function typeText(element, text, callback) {
   let index = 0;
   let showCursor = false;
   element.innerHTML = ''; // Clear the text before typing
+  // Split the text into words and randomize their length
+  const words = text.split(' ').map(word => {
+    const length = Math.floor(Math.random() * (word.length - 1)) + 1;
+    return word.slice(0, length) + cursorSymbol + word.slice(length);
+  });
   function updateText() {
-    if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', text.charAt(index));
+    if (index < words.length) {
+      const word = words[index];
+      element.insertAdjacentHTML('beforeend', word);
       index++;
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
-      setTimeout(updateText, intervalTime);
+      setTimeout(updateText, intervalTime * word.length);
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
@@ -65,8 +71,10 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
+    const word = words[index - 1];
+    const cursorIndex = word.indexOf(cursorSymbol);
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
-    element.innerHTML = `${text}${cursorHtml}`;
+    element.innerHTML = word.slice(0, cursorIndex) + cursorHtml + word.slice(cursorIndex + 1);
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
