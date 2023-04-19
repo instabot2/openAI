@@ -178,7 +178,6 @@ form img {
   display: inline-block;
   animation: blink 1s infinite;
 }
-
 .cursor-line {
   width: 2px;
   height: 1em; /* change line height to match font size */
@@ -187,7 +186,6 @@ form img {
   margin-left: 3px;
   animation: blink 1s infinite;
 }
-
 @keyframes blink {
   0% {
     opacity: 0;
@@ -196,6 +194,19 @@ form img {
     opacity: 1;
   }
   100% {
+    opacity: 0;
+  }
+}
+
+.cursor {
+  display: inline-block;
+  width: 0.8em;
+  height: 1em;
+  background-color: white;
+  animation: blink 0.5s infinite;
+}
+@keyframes blink {
+  50% {
     opacity: 0;
   }
 }
