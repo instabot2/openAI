@@ -43,10 +43,8 @@ function typeText(element, text, callback) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
-  const pauseTime = 1000; // Set the pause time in milliseconds before the cursor starts blinking
   let index = 0;
-  let showCursor = true;
-  let isTyping = true;
+  let showCursor = false;
   element.innerHTML = ''; // Clear the text before typing
   function updateText() {
     if (index < text.length) {
@@ -56,8 +54,7 @@ function typeText(element, text, callback) {
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
-      isTyping = true;
-      setTimeout(updateText, intervalTime * (Math.random() * 2 + 1));
+      setTimeout(updateText, intervalTime);
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
@@ -68,28 +65,10 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = text + (showCursor ? '' : cursorSymbol);
-    if (!isTyping) {
-      setTimeout(updateCursor, cursorIntervalTime);
-    } else {
-      setTimeout(startBlinking, pauseTime);
-    }
-  }
-  function startBlinking() {
-    showCursor = true;
-    setTimeout(updateBlinkingCursor, cursorIntervalTime);
-  }
-  function updateBlinkingCursor() {
-    showCursor = !showCursor;
-    element.innerHTML = text + (showCursor ? '' : cursorSymbol);
-    if (isTyping) {
-      setTimeout(updateBlinkingCursor, cursorIntervalTime);
-    }
-  }
-  element.addEventListener('input', () => {
-    isTyping = false;
+    const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+    element.innerHTML = `${text}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
-  });
+  }
   setTimeout(updateText, intervalTime);
 }
 
