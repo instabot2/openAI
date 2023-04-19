@@ -151,7 +151,8 @@ form img {
   display: none;
   
   /* Styling */
-  color: black;
+  color: rgba(0, 0, 0, 0.5); /* set the text color to a slightly transparent black */
+  filter: blur(2px); /* apply a 2px blur effect to the text */
   border: 1px solid #ccc;
   background-color: #f8f8f8;
   padding: 20px;
