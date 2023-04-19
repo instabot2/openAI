@@ -66,7 +66,7 @@ function typeText(element, text, callback) {
   function updateCursor() {
     showCursor = !showCursor;
     element.innerHTML = text + (showCursor ? ' ' + cursorSymbol : '');
-    element.style.fontSize = showCursor ? '0.8em' : ''; // Adjust font size of cursor symbol
+    element.style.fontSize = showCursor ? '1.0em' : ''; // Adjust font size of cursor symbol
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
