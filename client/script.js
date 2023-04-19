@@ -41,6 +41,8 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 function typeText(element, text, callback) {
   let index = 0;
   let showCursor = true;
+  // Clear the text before typing
+  element.innerHTML = '';
   const intervalId = setInterval(() => {
     if (index <= text.length) {
       const visibleText = text.substring(0, index);
@@ -59,9 +61,8 @@ function typeText(element, text, callback) {
       }
     }
   }, 20);
-  // Add this line to clear the text before typing
-  element.innerHTML = '';
 }
+
 
 
 function chatStripe(isAi, value, uniqueId) {
