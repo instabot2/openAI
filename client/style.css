@@ -143,8 +143,8 @@ form img {
 #hidden_text {
   /* Change position to absolute instead of fixed to allow it to be hidden by default */
   position: absolute;
-  top: 30%;
-  left: 50%;
+  top: 20%;
+  left: 30%;
   transform: translate(-50%, -50%);
   
   /* Hide the div by default */
@@ -153,7 +153,7 @@ form img {
   /* Styling */
   color: rgba(0, 0, 0, 0.5); /* set the text color to a slightly transparent black */
   border: 1px solid #ccc;
-  background-color: #f8f8f8;
+  background-color: #ccc; /* change the background color to gray */
   padding: 20px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   width: 80%;
