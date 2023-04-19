@@ -65,14 +65,12 @@ function typeText(element, text, callback) {
   }
   function updateCursor() {
     showCursor = !showCursor;
-    //element.innerHTML = text + (showCursor ? ' <span style="font-size: 0.8em;">'+cursorSymbol+'</span>' : '');
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
     element.innerHTML = `${text}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
   setTimeout(updateText, intervalTime);
 }
-
 
 
 
