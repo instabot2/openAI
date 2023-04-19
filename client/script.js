@@ -179,7 +179,6 @@ const handleSubmit = async (e) => {
         }
       });
 
-
       console.log('responseData:', responseData);
 
       // Combine conversation history with new messages received from the server
@@ -194,12 +193,12 @@ const handleSubmit = async (e) => {
 
     } else {
       console.error(`Response status: ${response.status}`);
+      // Display an error message to the user
+      const errorMessage = chatStripe(true, `Oops! Something went wrong. Error code: ${response.status}`, uniqueId);
+      messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
     }
   } catch (err) {
     console.error(err);
-    // Display an error message to the user
-    const errorMessage = chatStripe(true, 'Oops! Something went wrong. Please try again later.', uniqueId);
-    messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
   }
 };
 
