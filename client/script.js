@@ -40,19 +40,26 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 function typeText(element, text, callback) {
+  const intervalTime = 50; // Set the interval time in milliseconds
+  const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
+
   let index = 0;
   let showCursor = true;
+
   element.innerHTML = ''; // Clear the text before typing
+
   const intervalId = setInterval(() => {
     if (index <= text.length) {
       const visibleText = text.substring(0, index);
-      const cursor = (index < text.length) ? (showCursor ? '&#x258B;' : '&nbsp;') : '';
-      element.innerHTML = visibleText + '<span class="typing-cursor">' + cursor + '</span>';
+      const cursor = (index < text.length) ? (showCursor ? cursorSymbol : '') : '';
+      element.innerHTML = visibleText + cursor;
       index++;
+
       // Check if the element is already scrolled to the bottom and scroll it up
       if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         element.scrollTop = element.scrollHeight;
       }
+
       showCursor = !showCursor;
     } else {
       clearInterval(intervalId);
@@ -60,7 +67,7 @@ function typeText(element, text, callback) {
         callback();
       }
     }
-  }, 50);
+  }, intervalTime);
 }
 
 
