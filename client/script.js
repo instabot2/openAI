@@ -38,25 +38,30 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
+
 function typeText(element, text, callback) {
   const intervalTime = 50; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
 
   let index = 0;
-  let showCursor = false;
+  let showCursor = true;
 
   element.innerHTML = ''; // Clear the text before typing
 
   function updateText() {
     if (index < text.length) {
-      element.insertAdjacentHTML('beforeend', text.charAt(index));
+      const visibleText = text.substring(0, index + 1);
+      const cursor = showCursor ? cursorSymbol : '';
+      element.innerHTML = visibleText + cursor;
       index++;
+      // Check if the element is already scrolled to the bottom and scroll it up
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        element.scrollTop = element.scrollHeight;
+      }
       setTimeout(updateText, intervalTime);
     } else {
       clearInterval(intervalId);
-      showCursor = false;
-      element.innerHTML = element.innerHTML.slice(0, -1); // Remove the cursor at the end of the text
       if (callback) {
         callback();
       }
@@ -65,15 +70,15 @@ function typeText(element, text, callback) {
 
   function updateCursor() {
     showCursor = !showCursor;
-    element.innerHTML = element.innerHTML.slice(0, -1) + (showCursor ? cursorSymbol : ''); // Remove the old cursor and add the new one
+    const visibleText = text.substring(0, index);
+    const cursor = showCursor ? cursorSymbol : '';
+    element.innerHTML = visibleText + cursor;
     setTimeout(updateCursor, cursorIntervalTime);
   }
 
   const intervalId = setInterval(updateText, intervalTime);
   updateCursor();
 }
-
-
 
 
 
