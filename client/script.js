@@ -45,26 +45,24 @@ function typeText(element, text, callback) {
 
   let index = 0;
   let showCursor = false;
-  let scrollBottom = true;
 
   element.innerHTML = ''; // Clear the text before typing
 
   function updateText() {
-    const scrollTop = element.scrollTop;
-    const visibleText = text.substring(0, index);
-    const cursor = (index < text.length) ? (showCursor ? cursorSymbol : '') : '';
-    element.innerHTML = visibleText + cursor;
-    index++;
-
-    if (scrollBottom) {
-      element.scrollTop = element.scrollHeight;
-    } else {
-      element.scrollTop = scrollTop;
-    }
-
-    if (index <= text.length) {
+    if (index < text.length) {
+      element.insertAdjacentHTML('beforeend', text.charAt(index));
+      index++;
+      showCursor = true;
+      element.innerHTML += cursorSymbol;
+      // Check if the element is already scrolled to the bottom and scroll it up
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        element.scrollTop = element.scrollHeight;
+      }
       setTimeout(updateText, intervalTime);
     } else {
+      clearInterval(intervalId);
+      showCursor = false;
+      element.innerHTML = element.innerHTML.slice(0, -1);
       if (callback) {
         callback();
       }
@@ -73,16 +71,14 @@ function typeText(element, text, callback) {
 
   function updateCursor() {
     showCursor = !showCursor;
+    element.innerHTML = element.innerHTML.slice(0, -1) + (showCursor ? cursorSymbol : '');
     setTimeout(updateCursor, cursorIntervalTime);
   }
 
-  element.addEventListener('scroll', function() {
-    scrollBottom = (element.scrollHeight - element.scrollTop <= element.clientHeight + 1);
-  });
-
-  updateText();
+  const intervalId = setInterval(updateText, intervalTime);
   updateCursor();
 }
+
 
 
 
