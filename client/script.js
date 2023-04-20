@@ -205,11 +205,9 @@ const handleSubmit = async (e) => {
           <div style="background-color: lightcoral; padding: 10px;">
             <p>Oops! Looks like you've hit the usage limit of the free OpenAI API key. Please upgrade to a paid plan to continue using the service.</p>
             <button id="refresh-button">Refresh</button>
-            <button onclick="handleRefresh()">Try Again</button>
           </div>
         `;
         messageWrapper.insertAdjacentHTML('beforeend', chatStripe(true, errorMessage, uniqueId));
-
         // Add click event listener to refresh button
         const refreshButton = document.getElementById('refresh-button');
         refreshButton.addEventListener('click', () => {
@@ -218,13 +216,13 @@ const handleSubmit = async (e) => {
       } else {
         const errorMessage = chatStripe(true, `Something went wrong. Error code: ${response.status}`, uniqueId);
         messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
-
         // Add try again button
         const tryAgainButton = document.createElement('button');
         tryAgainButton.innerText = 'Try Again';
         tryAgainButton.addEventListener('click', handleRefresh);
         messageWrapper.insertAdjacentElement('beforeend', tryAgainButton);
       }
+
 
     }
   } catch (err) {
