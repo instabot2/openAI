@@ -213,8 +213,9 @@ const handleSubmit = async (e) => {
         messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
       }
       function handleRefresh() {
-         window.location.reload();
+        window.location.href = window.location.href;
       }
+
 
     }
   } catch (err) {
