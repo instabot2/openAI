@@ -211,7 +211,7 @@ const handleSubmit = async (e) => {
         // Add click event listener to refresh button
         const refreshButton = document.getElementById('refresh-button');
         refreshButton.addEventListener('click', () => {
-          location.reload();
+          location.href = location.href;
         });
       } else {
         const errorMessage = chatStripe(true, `Something went wrong. Error code: ${response.status}`, uniqueId);
