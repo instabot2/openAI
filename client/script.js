@@ -198,18 +198,22 @@ const handleSubmit = async (e) => {
     } else {
       console.error(`Response status: ${response.status}`);
       
+      
+      // Display an error message to the user
       if (response.status === 400) {
-        // Display an error message to the user
-        const errorMessage = (
-          <div style={{ backgroundColor: 'lightcoral', padding: '10px' }}>
+        const errorMessage = `
+          <div style="background-color: lightcoral; padding: 10px;">
             <p>Oops! Looks like you've hit the usage limit of the free OpenAI API key. Please upgrade to a paid plan to continue using the service.</p>
-            <button onClick={() => window.location.reload()}>Refresh</button>
+            <button onclick="handleRefresh()">Refresh</button>
           </div>
-        );
+        `;
         messageWrapper.insertAdjacentHTML('beforeend', chatStripe(true, errorMessage, uniqueId));
       } else {
         const errorMessage = chatStripe(true, `Something went wrong. Error code: ${response.status}`, uniqueId);
         messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
+      }
+      function handleRefresh() {
+         window.location.reload();
       }
 
     }
