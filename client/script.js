@@ -207,6 +207,7 @@ const handleSubmit = async (e) => {
           </div>
         `;
         messageWrapper.insertAdjacentHTML('beforeend', chatStripe(true, errorMessage, uniqueId));
+
         // Add click event listener to refresh button
         const refreshButton = document.getElementById('refresh-button');
         refreshButton.addEventListener('click', () => {
@@ -216,7 +217,7 @@ const handleSubmit = async (e) => {
         const errorMessage = chatStripe(true, `Something went wrong. Error code: ${response.status}`, uniqueId);
         messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
       }
-     
+
 
 
     }
