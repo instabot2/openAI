@@ -68,12 +68,10 @@ function typeText(element, text, callback, searchResults) {
       // Display search results after typing text
       if (searchResults) {
         const searchResultMessages = searchResults.map((result) => {
-          return chatStripe(true, `Title: ${result.title}\nLink: ${result.link}\nDescription: ${result.description}`);
+          return chatStripe(true, `Title: ${result.title}<br>Link: ${result.link}<br>Description: ${result.description}`);
         });
-
         element.insertAdjacentHTML('beforeend', searchResultMessages.join(''));
       }
-
       if (callback) {
         callback();
       }
@@ -86,10 +84,8 @@ function typeText(element, text, callback, searchResults) {
     element.innerHTML = `${text}${spaces}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
-
   setTimeout(updateText, intervalTime);
 }
-
 
 
 
