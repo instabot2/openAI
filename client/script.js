@@ -282,6 +282,7 @@ async function crawlData(conversationHistory, prompt) {
 
 
 
+
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
 
