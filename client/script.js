@@ -39,6 +39,7 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 
 
 
+
 function typeText(element, text, callback, searchResults) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
