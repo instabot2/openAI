@@ -249,27 +249,28 @@ function handleRefresh() {
 
 async function crawlData(conversationHistory, prompt) {
   try {
+    // Capture the prompt data in an alert
     //window.alert(`Prompt: ${prompt}`);
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
-    const response = await axios.get(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
-    const html = response.data;
-    const $ = cheerio.load(html);
+    const response = await fetch(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
     const searchResults = [];
-
-    $('.g').each((index, element) => {
-      const titleElement = $(element).find('h3');
-      const linkElement = $(element).find('a');
-      const descriptionElement = $(element).find('.aCOpRe');
+    const resultElements = doc.querySelectorAll('.g');
+    resultElements.forEach((element) => {
+      const titleElement = element.querySelector('h3');
+      const linkElement = element.querySelector('a');
+      const descriptionElement = element.querySelector('.aCOpRe');
 
       if (titleElement && linkElement && descriptionElement) {
-        const title = titleElement.text();
-        const link = linkElement.attr('href');
-        const description = descriptionElement.text();
+        const title = titleElement.textContent;
+        const link = linkElement.getAttribute('href');
+        const description = descriptionElement.textContent;
 
         searchResults.push({ title, link, description });
       }
     });
-
     return searchResults;
     //window.alert(`searchResults: ${searchResults}`);
   } catch (error) {
