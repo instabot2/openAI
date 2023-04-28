@@ -271,10 +271,10 @@ async function crawlData(conversationHistory, prompt) {
     });
 
     return searchResults;
-    window.alert(`searchResults: ${searchResults}`);
+    //window.alert(`searchResults: ${searchResults}`);
   } catch (error) {
     console.error('Error crawling data:', error);
-    window.alert('Error crawling data:', error.message);
+    window.alert('Error crawling data:', ${error});
     return null; // Handle error cases appropriately
   }
 }
