@@ -37,16 +37,15 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-
-
 function typeText(element, text, callback) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
-  //const cursorSymbol = '&#9616;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
+  const spaces = '&nbsp;&nbsp;'; // Two non-breaking space entities
   let index = 0;
   let showCursor = false;
   element.innerHTML = ''; // Clear the text before typing
+
   function updateText() {
     if (index < text.length) {
       element.insertAdjacentHTML('beforeend', text.charAt(index));
@@ -56,9 +55,8 @@ function typeText(element, text, callback) {
         element.scrollTop = element.scrollHeight;
       }
       showCursor = !showCursor;
-      //const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
-      const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : '&nbsp;&nbsp;'}</span>`;
-      element.innerHTML = `${text.substring(0, index)}${cursorHtml}`;
+      const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+      element.innerHTML = `${text.substring(0, index)}${spaces}${cursorHtml}`;
       setTimeout(updateText, intervalTime);
     } else {
       showCursor = true;
@@ -71,12 +69,12 @@ function typeText(element, text, callback) {
   function updateCursor() {
     showCursor = !showCursor;
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
-    element.innerHTML = `${text}${cursorHtml}`;
+    element.innerHTML = `${text}${spaces}${cursorHtml}`;
     setTimeout(updateCursor, cursorIntervalTime);
   }
+
   setTimeout(updateText, intervalTime);
 }
-
 
 
 function chatStripe(isAi, value, uniqueId) {
