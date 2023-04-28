@@ -37,7 +37,9 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
   });
 }
 
-function typeText(element, text, callback) {
+
+
+function typeText(element, text, callback, searchResults) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
@@ -61,11 +63,22 @@ function typeText(element, text, callback) {
     } else {
       showCursor = true;
       setTimeout(updateCursor, cursorIntervalTime);
+
+      // Display search results after typing text
+      if (searchResults) {
+        const searchResultMessages = searchResults.map((result) => {
+          return chatStripe(true, `Title: ${result.title}\nLink: ${result.link}\nDescription: ${result.description}`);
+        });
+
+        element.insertAdjacentHTML('beforeend', searchResultMessages.join(''));
+      }
+
       if (callback) {
         callback();
       }
     }
   }
+
   function updateCursor() {
     showCursor = !showCursor;
     const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
@@ -75,6 +88,9 @@ function typeText(element, text, callback) {
 
   setTimeout(updateText, intervalTime);
 }
+
+
+
 
 
 function chatStripe(isAi, value, uniqueId) {
@@ -227,12 +243,9 @@ function handleRefresh() {
 }
 
 
-const axios = require('axios');
-const cheerio = require('cheerio');
-
-async function crawlData() {
+async function crawlData(conversationHistory, prompt) {
   try {
-    const query = 'YOUR_QUERY'; // Replace with your desired search query
+    const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
 
     const response = await axios.get(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
     const html = response.data;
@@ -260,7 +273,6 @@ async function crawlData() {
     return null; // Handle error cases appropriately
   }
 }
-
 
 
 
