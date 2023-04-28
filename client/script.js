@@ -197,8 +197,7 @@ const handleSubmit = async (e) => {
 
     } else {
       console.error(`Response status: ${response.status}`);
-      
-      
+            
       // Display an error message to the user
       if (response.status === 400) {
         const errorMessage = `>
@@ -209,7 +208,6 @@ const handleSubmit = async (e) => {
           </div>   
         `;
         messageWrapper.insertAdjacentHTML('beforeend', chatStripe(true, errorMessage, uniqueId));
-
         // Add click event listener to refresh button
         const refreshButton = document.getElementById('refresh-button');
         refreshButton.addEventListener('click', handleRefresh);
@@ -217,7 +215,6 @@ const handleSubmit = async (e) => {
         const errorMessage = chatStripe(true, `Something went wrong. Error code: ${response.status}`, uniqueId);
         messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
       }
-
 
     }
   } catch (err) {
@@ -291,10 +288,13 @@ const body = document.querySelector("body");
 function handleBodyClick(event) {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
-    //body.classList.remove("blur");
+    // body.classList.remove("blur");
   } else {
     hiddenText.style.display = "block";
-    //body.classList.add("blur");
+    // body.classList.add("blur");
+    if (event.target === textarea) {
+      textarea.focus();
+    }
   }
 }
 
@@ -320,11 +320,6 @@ textarea.addEventListener("focus", handleBodyClick);
 textarea.addEventListener("input", handleTextareaInput);
 hiddenText.addEventListener("input", handleHiddenTextInput);
 body.addEventListener("click", handleBodyClick);
-
-
-
-
-
 
 
 
