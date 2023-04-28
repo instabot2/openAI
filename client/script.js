@@ -227,6 +227,44 @@ function handleRefresh() {
 }
 
 
+const axios = require('axios');
+const cheerio = require('cheerio');
+
+async function crawlData() {
+  try {
+    const query = 'YOUR_QUERY'; // Replace with your desired search query
+
+    const response = await axios.get(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
+    const html = response.data;
+
+    const $ = cheerio.load(html);
+    const searchResults = [];
+
+    $('.g').each((index, element) => {
+      const titleElement = $(element).find('h3');
+      const linkElement = $(element).find('a');
+      const descriptionElement = $(element).find('.aCOpRe');
+
+      if (titleElement && linkElement && descriptionElement) {
+        const title = titleElement.text();
+        const link = linkElement.attr('href');
+        const description = descriptionElement.text();
+
+        searchResults.push({ title, link, description });
+      }
+    });
+
+    return searchResults;
+  } catch (error) {
+    console.error('Error crawling data:', error);
+    return null; // Handle error cases appropriately
+  }
+}
+
+
+
+
+
 
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
