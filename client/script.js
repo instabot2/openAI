@@ -249,8 +249,6 @@ function handleRefresh() {
 
 async function crawlData(conversationHistory, prompt) {
   try {
-    // Capture the prompt data in an alert
-    //window.alert(`Prompt: ${prompt}`);
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
     const response = await fetch(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
     const html = await response.text();
@@ -267,7 +265,6 @@ async function crawlData(conversationHistory, prompt) {
         const title = titleElement.textContent;
         const link = linkElement.getAttribute('href');
         const description = descriptionElement.textContent;
-
         searchResults.push({ title, link, description });
       }
     });
