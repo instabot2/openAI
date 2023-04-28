@@ -56,7 +56,8 @@ function typeText(element, text, callback) {
         element.scrollTop = element.scrollHeight;
       }
       showCursor = !showCursor;
-      const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+      //const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : ''}</span>`;
+      const cursorHtml = `<span style="font-size: 0.8em;">${showCursor ? cursorSymbol : '&nbsp;'}</span>`;
       element.innerHTML = `${text.substring(0, index)}${cursorHtml}`;
       setTimeout(updateText, intervalTime);
     } else {
