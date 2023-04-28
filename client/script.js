@@ -249,11 +249,10 @@ function handleRefresh() {
 
 async function crawlData(conversationHistory, prompt) {
   try {
+    window.alert(`Prompt: ${prompt}`);
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
-
     const response = await axios.get(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
     const html = response.data;
-
     const $ = cheerio.load(html);
     const searchResults = [];
 
