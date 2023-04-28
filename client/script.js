@@ -169,6 +169,14 @@ const handleSubmit = async (e) => {
       conversationHistory.push(botMessage);
       //window.alert(`Writing botMessage conversationHistory: ${JSON.stringify(conversationHistory)}`);
       
+      // Call crawlData function
+      const searchResults = await crawlData(conversationHistory, data.get('prompt'));
+      if (searchResults) {
+        console.log('Search results:', searchResults);
+        // Handle the search results as needed
+      }
+
+      
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
         scrollIntoView(messageDiv);
