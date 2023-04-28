@@ -274,6 +274,7 @@ async function crawlData(conversationHistory, prompt) {
     window.alert(`searchResults: ${searchResults}`);
   } catch (error) {
     console.error('Error crawling data:', error);
+    window.alert(`Error crawling data`);
     return null; // Handle error cases appropriately
   }
 }
