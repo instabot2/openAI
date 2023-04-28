@@ -249,7 +249,7 @@ function handleRefresh() {
 
 async function crawlData(conversationHistory, prompt) {
   try {
-    window.alert(`Prompt: ${prompt}`);
+    //window.alert(`Prompt: ${prompt}`);
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
     const response = await axios.get(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
     const html = response.data;
@@ -271,6 +271,7 @@ async function crawlData(conversationHistory, prompt) {
     });
 
     return searchResults;
+    window.alert(`searchResults: ${searchResults}`);
   } catch (error) {
     console.error('Error crawling data:', error);
     return null; // Handle error cases appropriately
