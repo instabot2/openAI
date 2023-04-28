@@ -41,7 +41,7 @@ function typeText(element, text, callback) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
   const cursorIntervalTime = 500; // Set the interval time for the cursor blink
-  const spaces = '&nbsp;&nbsp;'; // Two non-breaking space entities
+  const spaces = '&nbsp;'; // Two non-breaking space entities
   let index = 0;
   let showCursor = false;
   element.innerHTML = ''; // Clear the text before typing
