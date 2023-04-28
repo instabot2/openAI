@@ -175,7 +175,6 @@ const handleSubmit = async (e) => {
         console.log('Search results:', searchResults);
         // Handle the search results as needed
       }
-
       
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
@@ -200,11 +199,11 @@ const handleSubmit = async (e) => {
           //window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
           //write Message To File
           //writeMessageToFile(true, messageXml);
-          
+
         } catch (err) {
           console.error(err);
         }
-      });
+      }, searchResults);
 
       console.log('responseData:', responseData);
 
