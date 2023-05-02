@@ -110,11 +110,11 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const textarea = document.querySelector("textarea");
-  if (textarea === null) {
-    alert("Textarea element is null!");
+  if (!textarea || textarea.value.trim() === "") {
+    alert("Textarea element is empty!");
     return;
   }
-
+  
   //hidden text
   hiddenText.style.display = "none";
   
