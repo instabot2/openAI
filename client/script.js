@@ -109,6 +109,12 @@ let conversationHistory = [];
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  const textarea = document.querySelector("textarea");
+  if (textarea === null) {
+    alert("Textarea element is null!");
+    return;
+  }
+
   //hidden text
   hiddenText.style.display = "none";
   
