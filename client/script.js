@@ -107,7 +107,7 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 
-const googleIt = require('google-it');
+//const googleIt = require('google-it');
 async function crawlData(conversationHistory, prompt) {
   try {
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
