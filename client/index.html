@@ -38,7 +38,19 @@
         var sendButton = document.getElementById("sendButton");
         var isFirstTime = localStorage.getItem("isFirstTime");
         if (!isFirstTime) {
-          promptTextarea.value = "Hello!";
+          var greetings = [
+            "Hello!",
+            "Greetings!",
+            "Good day!",
+            "Welcome!",
+            "Salutations!",
+            "Hi there!",
+            "How can I assist you today?",
+            "Pleasure to meet you!",
+          ];
+          var randomIndex = Math.floor(Math.random() * greetings.length);
+          var randomGreeting = greetings[randomIndex];
+          promptTextarea.value = randomGreeting;
           sendButton.click();
           // Store the information that it's not the first time
           localStorage.setItem("isFirstTime", "false");
