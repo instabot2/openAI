@@ -256,7 +256,7 @@ function handleRefresh() {
 
 
 //const fetch = require('node-fetch');
-//const cheerio = require('cheerio');
+const cheerio = require('cheerio');
 async function crawlData(conversationHistory, prompt) {
   try {
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
