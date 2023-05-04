@@ -107,27 +107,19 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 
+const googleIt = require('google-it');
 async function crawlData(conversationHistory, prompt) {
   try {
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
-    const encodedQuery = encodeURIComponent(query);
-    const response = await fetch(`https://www.google.com/search?q=${encodedQuery}`);
-    const html = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const searchResults = [];
-    const elements = doc.querySelectorAll('.tF2Cxc');
-    elements.forEach((element) => {
-      const titleElement = element.querySelector('h3');
-      const linkElement = element.querySelector('a');
-      const descriptionElement = element.querySelector('.aCOpRe');
-      if (titleElement && linkElement && descriptionElement) {
-        const title = titleElement.textContent;
-        const link = linkElement.getAttribute('href');
-        const description = descriptionElement.textContent;
-        searchResults.push({ title, link, description });
-      }
-    });
+    const results = await googleIt({ query });
+
+    const searchResults = results.map((result) => ({
+      title: result.title,
+      link: result.link,
+      description: result.snippet,
+    }));
+
+    console.log('Search Results:', searchResults);
     window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
@@ -136,6 +128,7 @@ async function crawlData(conversationHistory, prompt) {
     return null; // Handle error cases appropriately
   }
 }
+
 
 
 
