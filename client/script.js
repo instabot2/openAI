@@ -347,6 +347,10 @@ const hiddenText = document.getElementById("hidden_text");
 const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
+document.addEventListener('keydown', (e) => {
+  handleBodyClick(e);
+});
+
 function handleBodyClick(event) {
   if (event.target !== textarea && event.target !== hiddenText) {
     hiddenText.style.display = "none";
@@ -421,4 +425,3 @@ form.addEventListener('keyup', (e) => {
     handleSubmit(e);
   }
 });
-
