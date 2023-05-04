@@ -255,7 +255,7 @@ function handleRefresh() {
 }
 
 
-//const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 async function crawlData(conversationHistory, prompt) {
   try {
