@@ -293,37 +293,6 @@ function handleRefresh() {
 }
 
 
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-async function crawlData(conversationHistory, prompt) {
-  try {
-    const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
-    const response = await fetch(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
-    const html = await response.text();
-    const $ = cheerio.load(html);
-    const searchResults = [];
-    $('.tF2Cxc').each((index, element) => {
-      const titleElement = $(element).find('h3');
-      const linkElement = $(element).find('a');
-      const descriptionElement = $(element).find('.aCOpRe');
-      if (titleElement && linkElement && descriptionElement) {
-        const title = $(titleElement).text();
-        const link = $(linkElement).attr('href');
-        const description = $(descriptionElement).text();
-        searchResults.push({ title, link, description });
-      }
-    });
-    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-    return searchResults;
-  } catch (error) {
-    console.error('Error crawling data:', error);
-    //window.alert('An error occurred while crawling data.');
-    return null; // Handle error cases appropriately
-  }
-}
-
-
-
 
 function writeMessageToFile(isBot, messageXml) {
   if (!isBot) return; // Only save bot messages
