@@ -112,13 +112,11 @@ async function crawlData(conversationHistory, prompt) {
   try {
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
     const results = await googleIt({ query });
-
     const searchResults = results.map((result) => ({
       title: result.title,
       link: result.link,
       description: result.snippet,
     }));
-
     console.log('Search Results:', searchResults);
     window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
