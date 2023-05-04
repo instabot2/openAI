@@ -12,25 +12,38 @@
       }
     </style>
   </head>
-  <body>
+  <body onload="initChat()">
     <div id="app">
       <div id="chat_container">
         <div id="message_wrapper"></div>
       </div>
-      <form>
+      <form id="chatForm">
         <textarea
+          id="promptTextarea"
           name="prompt"
           rows="1"
           cols="1"
           style="overflow:auto;"
           placeholder="Ask anything..."
         ></textarea>
-        <button type="submit"><img src="assets/send.svg" alt="send" /></button>
+        <button id="sendButton" type="submit"><img src="assets/send.svg" alt="send" /></button>
       </form>
       <!-- New div with invisible style -->
       <div id="hidden_text">Ask anything...</div>
     </div>
     <script type="module" src="script.js"></script>
+    <script>
+      function initChat() {
+        var promptTextarea = document.getElementById("promptTextarea");
+        var sendButton = document.getElementById("sendButton");
+        var isFirstTime = localStorage.getItem("isFirstTime");
+        if (!isFirstTime) {
+          promptTextarea.value = "Hello!";
+          sendButton.click();
+          // Store the information that it's not the first time
+          localStorage.setItem("isFirstTime", "false");
+        }
+      }
+    </script>
   </body>
 </html>
-
