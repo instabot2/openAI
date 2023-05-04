@@ -275,11 +275,11 @@ async function crawlData(conversationHistory, prompt) {
         searchResults.push({ title, link, description });
       }
     });
-    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    window.alert('An error occurred while crawling data.');
+    //window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
 }
