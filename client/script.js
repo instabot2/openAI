@@ -351,7 +351,7 @@ const textarea = document.querySelector("textarea");
 const body = document.querySelector("body");
 
 document.addEventListener('keydown', (e) => {
-  textarea.focus();
+  //textarea.focus();
 });
 
 function handleBodyClick(event) {
