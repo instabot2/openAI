@@ -122,7 +122,7 @@ async function crawlData(conversationHistory, prompt) {
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    window.alert('An error occurred while crawling data.');
+    //window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
 }
