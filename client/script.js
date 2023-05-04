@@ -106,13 +106,14 @@ function chatStripe(isAi, value, uniqueId) {
 
 let conversationHistory = [];
 
-
-// Define the crawlData function
+const axios = require('axios');
+const cheerio = require('cheerio');
 async function crawlData(conversationHistory, prompt) {
   try {
     const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
-    const response = await fetch(`https://www.google.com/search?q=${encodeURIComponent(query)}`);
-    const html = await response.text();
+    const encodedQuery = encodeURIComponent(query);
+    const response = await axios.get(`https://www.google.com/search?q=${encodedQuery}`);
+    const html = response.data;
     const $ = cheerio.load(html);
     const searchResults = [];
     $('.tF2Cxc').each((index, element) => {
@@ -126,14 +127,15 @@ async function crawlData(conversationHistory, prompt) {
         searchResults.push({ title, link, description });
       }
     });
-    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    //window.alert('An error occurred while crawling data.');
+    window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
 }
+
 
 
 const handleSubmit = async (e) => {
