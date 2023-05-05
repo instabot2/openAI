@@ -106,24 +106,9 @@ function chatStripe(isAi, value, uniqueId) {
 
 let conversationHistory = [];
 
-
-
-
-
-
-
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const textarea = document.querySelector("textarea");
-  if (!textarea || textarea.value.trim() === "") {
-    //alert("Textarea input is empty!");
-    hiddenText.style.display = "block";
-    textarea.focus();
-    return;
-  }
-  
   //hidden text
   hiddenText.style.display = "none";
   
@@ -158,18 +143,6 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
-  
-
-    
-    // Call crawlData function
-    //const searchResults = await crawlData(conversationHistory, data.get('prompt'), index, domain, page);
-    //if (searchResults) {
-    //  console.log('Search results:', searchResults);
-    //  window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-    //  // Handle the search results as needed
-    //}
-    
-    
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
@@ -180,10 +153,7 @@ const handleSubmit = async (e) => {
         prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
     });
-       //prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt') + '\n\n' + JSON.stringify(searchResults),
-    
-    
-    
+
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
@@ -219,11 +189,11 @@ const handleSubmit = async (e) => {
           //window.alert(`Writing messages to file: ${JSON.stringify(messageXml)}`);
           //write Message To File
           //writeMessageToFile(true, messageXml);
-
+          
         } catch (err) {
           console.error(err);
         }
-      }, searchResults);
+      });
 
       console.log('responseData:', responseData);
 
@@ -268,6 +238,7 @@ const handleSubmit = async (e) => {
 function handleRefresh() {
   location.reload();
 }
+
 
 
 
