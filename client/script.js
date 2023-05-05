@@ -109,12 +109,11 @@ let conversationHistory = [];
 
 import axios from 'axios';
 // Function to crawl data
-async function crawlData(conversationHistory, prompt) {
+async function crawlData(conversationHistory, prompt, index, domain, page) {
   try {
     const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
     const response = await axios.get(url);
     const data = response.data.split('\n').slice(0, -1);
-
     const searchResults = data.map((result) => {
       const resultObj = JSON.parse(result);
       return {
@@ -132,6 +131,7 @@ async function crawlData(conversationHistory, prompt) {
     return null; // Handle error cases appropriately
   }
 }
+
 
 
 
@@ -182,13 +182,15 @@ const handleSubmit = async (e) => {
 
   try {
   
+
     // Call crawlData function
-    const searchResults = await crawlData(conversationHistory, data.get('prompt'));
+    const searchResults = await crawlData(conversationHistory, data.get('prompt'), index, domain, page);
     if (searchResults) {
       console.log('Search results:', searchResults);
       // Handle the search results as needed
     }
-  
+    
+    
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
