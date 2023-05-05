@@ -123,11 +123,11 @@ async function crawlData(conversationHistory, prompt, index, domain, page) {
       };
     });
     console.log('Search Results:', searchResults);
-    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    window.alert('An error occurred while crawling data.');
+    //window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
 }
@@ -187,6 +187,7 @@ const handleSubmit = async (e) => {
     const searchResults = await crawlData(conversationHistory, data.get('prompt'), index, domain, page);
     if (searchResults) {
       console.log('Search results:', searchResults);
+      window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
       // Handle the search results as needed
     }
     
@@ -198,10 +199,10 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         conversationHistory: conversationHistory,
-        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt') + '\n\n' + JSON.stringify(searchResults),
+        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
     });
-
+       //prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt') + '\n\n' + JSON.stringify(searchResults),
     
     
     
