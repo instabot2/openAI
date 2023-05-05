@@ -186,12 +186,12 @@ const handleSubmit = async (e) => {
 
     
     // Call crawlData function
-    const searchResults = await crawlData(conversationHistory, data.get('prompt'), index, domain, page);
-    if (searchResults) {
-      console.log('Search results:', searchResults);
-      window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-      // Handle the search results as needed
-    }
+    //const searchResults = await crawlData(conversationHistory, data.get('prompt'), index, domain, page);
+    //if (searchResults) {
+    //  console.log('Search results:', searchResults);
+    //  window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    //  // Handle the search results as needed
+    //}
     
     
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
