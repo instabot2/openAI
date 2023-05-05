@@ -106,6 +106,36 @@ function chatStripe(isAi, value, uniqueId) {
 
 let conversationHistory = [];
 
+
+import axios from 'axios';
+// Function to crawl data
+async function crawlData(conversationHistory, prompt, index, domain, page) {
+  try {
+    const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
+    const response = await axios.get(url);
+    const data = response.data.split('\n').slice(0, -1);
+    const searchResults = data.map((result) => {
+      const resultObj = JSON.parse(result);
+      return {
+        title: resultObj.title,
+        link: resultObj.link,
+        description: resultObj.description,
+      };
+    });
+    console.log('Search Results:', searchResults);
+    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    return searchResults;
+  } catch (error) {
+    console.error('Error crawling data:', error);
+    //window.alert('An error occurred while crawling data.');
+    return null; // Handle error cases appropriately
+  }
+}
+
+
+
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
