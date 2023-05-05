@@ -107,61 +107,55 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 
+
 import axios from 'axios';
 
 // Function to crawl data with a time limit
-const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
-async function crawlData(conversationHistory, prompt, domain, page, timeout) {
+async function crawlData(prompt, domain, page, timeout) {
   try {
     const currentYear = new Date().getFullYear();
     const index = `CC-MAIN-${currentYear}`;
     const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
-    
-    const crawlPromise = new Promise(async (resolve, reject) => {
-      try {
-        const response = await axios.get(url);
-        const data = response.data.split('\n').slice(0, -1);
-        
-        const searchResults = await Promise.all(data.map(async (result) => {
-          const resultObj = JSON.parse(result);
-          const searchData = {
-            title: resultObj.title,
-            link: resultObj.link,
-            description: resultObj.description,
-          };
-          // Perform additional processing or data retrieval for each search result
-          // You can make additional async requests or perform computationally intensive tasks here
-          return searchData;
-        }));
-        
-        resolve(searchResults);
-      } catch (error) {
-        reject(error);
-      }
-    });
-
-    const timeoutPromise = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(null); // Resolve with null when the timeout is reached
-      }, timeout);
-    });
-
-    const searchResults = await Promise.race([crawlPromise, timeoutPromise]);
-    
-    if (searchResults) {
-      console.log('Search Results:', searchResults);
-      window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-    } else {
-      console.log('Crawl timed out.');
-      window.alert('The crawl timed out.');
-    }
-    
+    const response = await axios.get(url);
+    const data = response.data.split('\n').slice(0, -1);
+    const searchResults = await Promise.all(data.map(async (result) => {
+      const resultObj = JSON.parse(result);
+      const searchData = {
+        title: resultObj.title,
+        link: resultObj.link,
+        description: resultObj.description,
+      };
+      // Perform additional processing or data retrieval for each search result
+      // You can make additional async requests or perform computationally intensive tasks here
+      return searchData;
+    }));
+    console.log('Search Results:', searchResults);
+    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`); 
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
     window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
+}
+
+// Example usage:
+const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
+const searchResultsPromise = crawlData(data.get('prompt'), index, domain, page);
+const timeoutPromise = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve(null); // Resolve with null when the timeout is reached
+  }, timeout);
+});
+
+const searchResults = await Promise.race([searchResultsPromise, timeoutPromise]);
+if (searchResults) {
+  console.log('Search results:', searchResults);
+  window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+  // Handle the search results as needed
+} else {
+  console.log('An error occurred or the crawl timed out.');
+  window.alert('An error occurred or the crawl timed out.');
 }
 
 
