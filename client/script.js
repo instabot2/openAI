@@ -1,5 +1,6 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
+import axios from 'axios';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -108,8 +109,7 @@ let conversationHistory = [];
 
 
 
-const axios = require('axios');
-
+//import axios from 'axios';
 async function crawlData(conversationHistory, prompt, index, domain, page) {
   try {
     const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
