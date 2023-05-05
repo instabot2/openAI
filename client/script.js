@@ -108,22 +108,24 @@ let conversationHistory = [];
 
 
 import axios from 'axios';
-
 // Function to crawl data
-async function crawlData(conversationHistory, prompt, index, domain, page) {
+async function crawlData(conversationHistory, prompt, domain, page) {
   try {
+    const currentYear = new Date().getFullYear();
+    const index = `CC-MAIN-${currentYear}`;
     const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
     const response = await axios.get(url);
-    const data = response.data.split('\n').slice(0, -1);   
+    const data = response.data.split('\n').slice(0, -1);
+    
     const searchResults = await Promise.all(data.map(async (result) => {
       const resultObj = JSON.parse(result);
       const searchData = {
         title: resultObj.title,
         link: resultObj.link,
         description: resultObj.description,
-      };     
+      };
       // Perform additional processing or data retrieval for each search result
-      // You can make additional async requests or perform computationally intensive tasks here    
+      // You can make additional async requests or perform computationally intensive tasks here      
       return searchData;
     }));
     
