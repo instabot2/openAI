@@ -1,6 +1,5 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-import axios from 'axios';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -108,9 +107,9 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 
-
-//import axios from 'axios';
-async function crawlData(conversationHistory, prompt, index, domain, page) {
+import axios from 'axios';
+// Function to crawl data
+async function crawlData(conversationHistory, prompt) {
   try {
     const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
     const response = await axios.get(url);
@@ -124,7 +123,6 @@ async function crawlData(conversationHistory, prompt, index, domain, page) {
         description: resultObj.description,
       };
     });
-
     console.log('Search Results:', searchResults);
     window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
@@ -134,11 +132,6 @@ async function crawlData(conversationHistory, prompt, index, domain, page) {
     return null; // Handle error cases appropriately
   }
 }
-
-
-
-
-
 
 
 
@@ -204,9 +197,13 @@ const handleSubmit = async (e) => {
       body: JSON.stringify({
         conversationHistory: conversationHistory,
         prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+        searchResults: searchResults,
       }),
     });
 
+    
+    
+    
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
