@@ -110,6 +110,7 @@ let conversationHistory = [];
 import axios from 'axios';
 
 // Function to crawl data with a time limit
+const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
 async function crawlData(conversationHistory, prompt, domain, page, timeout) {
   try {
     const currentYear = new Date().getFullYear();
