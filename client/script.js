@@ -107,25 +107,38 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 
-//const googleIt = require('google-it');
-async function crawlData(conversationHistory, prompt) {
+
+const axios = require('axios');
+
+async function crawlData(conversationHistory, prompt, index, domain, page) {
   try {
-    const query = `${conversationHistory.map((msg) => msg.message).join('\n')}\n${prompt}`;
-    const results = await googleIt({ query });
-    const searchResults = results.map((result) => ({
-      title: result.title,
-      link: result.link,
-      description: result.snippet,
-    }));
+    const url = `http://index.commoncrawl.org/${index}-index?url=*.${domain}&output=json&page=${page}`;
+    const response = await axios.get(url);
+    const data = response.data.split('\n').slice(0, -1);
+
+    const searchResults = data.map((result) => {
+      const resultObj = JSON.parse(result);
+      return {
+        title: resultObj.title,
+        link: resultObj.link,
+        description: resultObj.description,
+      };
+    });
+
     console.log('Search Results:', searchResults);
     window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    //window.alert('An error occurred while crawling data.');
+    window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
 }
+
+
+
+
+
 
 
 
