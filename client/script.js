@@ -130,7 +130,7 @@ async function crawlData(conversationHistory, prompt, domain, page) {
     }));
     
     console.log('Search Results:', searchResults);
-    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
