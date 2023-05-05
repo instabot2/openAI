@@ -107,6 +107,7 @@ function chatStripe(isAi, value, uniqueId) {
 let conversationHistory = [];
 
 
+
 import axios from 'axios';
 // Function to crawl data
 async function crawlData(conversationHistory, prompt, index, domain, page) {
@@ -183,6 +184,7 @@ const handleSubmit = async (e) => {
   try {
   
 
+    
     // Call crawlData function
     const searchResults = await crawlData(conversationHistory, data.get('prompt'), index, domain, page);
     if (searchResults) {
@@ -217,13 +219,6 @@ const handleSubmit = async (e) => {
       const botMessage = { isBot: true, message: parsedData };
       conversationHistory.push(botMessage);
       //window.alert(`Writing botMessage conversationHistory: ${JSON.stringify(conversationHistory)}`);
-      
-      // Call crawlData function
-      const searchResults = await crawlData(conversationHistory, data.get('prompt'));
-      if (searchResults) {
-        console.log('Search results:', searchResults);
-        // Handle the search results as needed
-      }
       
       typeText(messageDiv, parsedData, () => {
         // scroll to the new message
