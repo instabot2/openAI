@@ -30,6 +30,7 @@ async function crawlData(prompt, page, timeout) {
 
 // Define a function to get the search results
 async function getCrawlData(prompt, timeout) {
+  window.alert(`Search Input:\n\n${JSON.stringify(prompt, null, 2)}`);
   const page = 1;
   const searchResultsPromise = crawlData(prompt, page, timeout);
   const timeoutPromise = new Promise((resolve, reject) => {
