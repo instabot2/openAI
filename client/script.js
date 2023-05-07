@@ -112,19 +112,6 @@ const handleSubmit = async (e) => {
   
   const data = new FormData(form);
 
- 
-  const timeout = 60000; // Timeout in milliseconds (60,000 milliseconds for 1 minute)
-  getCrawlData(data.get('prompt'), timeout)
-    .then((searchResults) => {
-      // Handle the search results as needed
-     console.log('Received search results:', searchResults);
-      //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
- 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
