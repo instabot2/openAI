@@ -1,9 +1,11 @@
+const Parser = require('rss-parser');
+
+// Get today's date
 const today = new Date();
 const date = today.getDate();
 const month = today.getMonth() + 1; // January is 0
 const year = today.getFullYear();
-const formattedDate = `${month}/${date}/${year}`;
-console.log(formattedDate);
+const formattedDate = `${year}-${month}-${date}`;
 
 // RSS feed URL
 const rssUrl = 'https://news.google.com/rss';
@@ -15,41 +17,16 @@ const userInput = `market news ${formattedDate}`;
 console.log(`Fetching RSS feed from ${rssUrl}?q=${userInput}`);
 
 // Fetch the RSS feed
-fetch(`${rssUrl}?q=${userInput}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.text();
-  })
-  .then(data => {
-    // Parse the RSS feed data
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data, 'application/xml');
-    const items = xml.querySelectorAll('item');
-    const feedData = {
-      title: xml.querySelector('title').textContent,
-      description: xml.querySelector('description').textContent,
-      link: xml.querySelector('link').textContent,
-      items: [],
-    };
-    // Extract data for each item in the RSS feed
-    items.forEach(item => {
-      const itemData = {
-        title: item.querySelector('title').textContent,
-        link: item.querySelector('link').textContent,
-        description: item.querySelector('description').textContent,
-        pubDate: item.querySelector('pubDate').textContent,
-      };
-      feedData.items.push(itemData);
-    });
+const parser = new Parser();
+parser.parseURL(`${rssUrl}?q=${userInput}`, (err, feed) => {
+  if (err) {
+    console.error('There was an error fetching the RSS feed. Please try again later.', err);
+    alert(`Error fetching RSS feed: ${err}`);
+  } else {
     // Pass the RSS feed data and user input to the getCrawlData function
-    getCrawlData(feedData, userInput);
-  })
-  .catch(error => {
-    console.error('There was an error fetching the RSS feed. Please try again later.', error);
-    alert(`Error fetching RSS feed: ${error}`);
-  });
+    getCrawlData(feed, userInput);
+  }
+});
 
 // Define the getCrawlData function
 function getCrawlData(feedData, userInput) {
