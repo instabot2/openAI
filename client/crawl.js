@@ -1,10 +1,18 @@
-function getCrawlData(feedData) {
-  // do something with the feed data
-  console.log(feedData);
+function getCrawlData(feedData, userInput) {
+  // Filter feed data based on user input
+  const filteredData = {
+    ...feedData,
+    items: feedData.items.filter(item => item.title.toLowerCase().includes(userInput.toLowerCase())),
+  };
+  // Do something with the filtered data
+  console.log(filteredData);
 }
 
 // RSS feed URL
 const rssUrl = 'https://news.google.com/rss';
+
+// Get user input
+const userInput = data.get('prompt');
 
 // Fetch the RSS feed
 fetch(rssUrl)
@@ -30,8 +38,8 @@ fetch(rssUrl)
       };
       feedData.items.push(itemData);
     });
-    // Pass the RSS feed data to the getCrawlData function
-    getCrawlData(feedData);
+    // Pass the RSS feed data and user input to the getCrawlData function
+    getCrawlData(feedData, userInput);
   })
   .catch(error => {
     console.error('Error fetching RSS feed:', error);
