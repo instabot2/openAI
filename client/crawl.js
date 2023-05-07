@@ -2,7 +2,8 @@
 const rssUrl = 'https://news.google.com/rss';
 
 // Get user input from the data object
-const userInput = data.get('prompt');
+//const userInput = data.get('prompt');
+const userInput = "market news";
 
 // Log the URL to the console
 console.log(`Fetching RSS feed from ${rssUrl}?q=${userInput}`);
