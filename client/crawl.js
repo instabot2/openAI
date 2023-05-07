@@ -34,6 +34,7 @@ fetch(`${rssUrl}?q=${userInput}`)
   })
   .catch(error => {
     console.error('Error fetching RSS feed:', error);
+    alert(`Error fetching RSS feed: ${error}`);
   });
 
 // Define the getCrawlData function
@@ -44,3 +45,4 @@ function getCrawlData(feedData, userInput) {
 
 // Export the getCrawlData function
 module.exports = { getCrawlData };
+
