@@ -5,7 +5,7 @@ async function crawlData(prompt, page, timeout) {
   try {
     const searchDomain = 'google.com';
     const url = `http://index.commoncrawl.org/CC-MAIN-2023-index?url=*.${searchDomain}&output=json&page=${page}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url, { timeout });
     const data = response.data.split('\n').slice(0, -1);
     const searchResults = await Promise.all(data.map(async (result) => {
       const resultObj = JSON.parse(result);
@@ -23,7 +23,13 @@ async function crawlData(prompt, page, timeout) {
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    window.alert('An error occurred while crawling data.');
+    if (error.response && error.response.status === 404) {
+      window.alert('Page not found!');
+    } else if (error.code === 'ECONNABORTED') {
+      window.alert('Request timed out!');
+    } else {
+      window.alert('An error occurred while crawling data.');
+    }
     return null; // Handle error cases appropriately
   }
 }
