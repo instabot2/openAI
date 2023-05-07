@@ -4,7 +4,7 @@ const month = today.getMonth() + 1; // January is 0
 const year = today.getFullYear();
 const formattedDate = `${month}/${date}/${year}`;
 console.log(formattedDate);
-alert(`Today's date is ${formattedDate}`);
+//alert(`Today's date is ${formattedDate}`);
 
 
 // RSS feed URL
@@ -46,7 +46,7 @@ fetch(`${rssUrl}?q=${userInput}`)
   })
   .catch(error => {
     console.error('There was an error fetching the RSS feed. Please try again later.', error);
-    //alert(`Error fetching RSS feed: ${error}`);
+    alert(`Error fetching RSS feed: ${error}`);
   });
 
 // Define the getCrawlData function
