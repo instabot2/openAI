@@ -40,8 +40,6 @@ function scrollIntoView(element, behavior = 'smooth', block = 'start') {
 }
 
 
-
-
 function typeText(element, text, callback, searchResults) {
   const intervalTime = 20; // Set the interval time in milliseconds
   const cursorSymbol = '&#x258B;'; // Set the cursor symbol to a block character
@@ -90,8 +88,6 @@ function typeText(element, text, callback, searchResults) {
 }
 
 
-
-
 function chatStripe(isAi, value, uniqueId) {
   return `
     <div class="wrapper ${isAi && 'ai'}">
@@ -104,10 +100,6 @@ function chatStripe(isAi, value, uniqueId) {
     </div>
   `;
 }
-
-
-
-
 
 
 let conversationHistory = [];
