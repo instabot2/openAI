@@ -108,9 +108,19 @@ let conversationHistory = [];
 
 
 
-
-
-
+import { getCrawlData } from './crawl.js';
+// Call getCrawlData to get the search results
+const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
+getCrawlData(data.get('prompt'), timeout)
+  .then((searchResults) => {
+    // Handle the search results as needed
+    console.log('Received search results:', searchResults);
+    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+  })
+  .catch((error) => {
+    // Handle errors as needed
+    console.error('An error occurred while getting search results:', error);
+  });
 
 
 
