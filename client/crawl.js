@@ -1,8 +1,8 @@
 // RSS feed URL
 const rssUrl = 'https://news.google.com/rss';
 
-// Get user input
-const userInput = prompt('Enter a search term');
+// Get user input from the data object
+const userInput = data.get('prompt');
 
 // Fetch the RSS feed
 fetch(`${rssUrl}?q=${userInput}`)
