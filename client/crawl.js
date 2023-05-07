@@ -4,14 +4,11 @@ const month = today.getMonth() + 1; // January is 0
 const year = today.getFullYear();
 const formattedDate = `${month}/${date}/${year}`;
 console.log(formattedDate);
-//alert(`Today's date is ${formattedDate}`);
-
 
 // RSS feed URL
-const rssUrl = 'https://news.google.com/rss';
+const rssUrl = 'https://news.google.com/rss?hl=en-MY&gl=MY&ceid=MY:en';
 
 // Get user input from the data object
-//const userInput = data.get('prompt');
 const userInput = `market news ${formattedDate}`;
 
 // Log the URL to the console
