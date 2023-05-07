@@ -1,64 +1,41 @@
-const request = require('request');
-const cheerio = require('cheerio');
+function getCrawlData(feedData) {
+  // do something with the feed data
+  console.log(feedData);
+}
 
-// Function to crawl data with a time limit
-async function crawlData(prompt, page, timeout) {
-  try {
-    const searchDomain = 'google.com';
-    const url = `http://index.commoncrawl.org/CC-MAIN-2023-index?url=*.${searchDomain}&output=json&page=${page}`;
-    const data = await new Promise((resolve, reject) => {
-      request.get(url, (err, res, body) => {
-        if (err) reject(err);
-        else resolve(body);
-      });
-    });
-    const searchResults = [];
-    const rawData = data.split('\n').slice(0, -1);
-    rawData.forEach((result) => {
-      const resultObj = JSON.parse(result);
-      const searchData = {
-        title: resultObj.title,
-        link: resultObj.link,
-        description: resultObj.description,
+// RSS feed URL
+const rssUrl = 'https://news.google.com/rss';
+
+// Fetch the RSS feed
+fetch(rssUrl)
+  .then(response => response.text())
+  .then(data => {
+    // Parse the RSS feed data
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data, 'application/xml');
+    const items = xml.querySelectorAll('item');
+    const feedData = {
+      title: xml.querySelector('title').textContent,
+      description: xml.querySelector('description').textContent,
+      link: xml.querySelector('link').textContent,
+      items: [],
+    };
+    // Extract data for each item in the RSS feed
+    items.forEach(item => {
+      const itemData = {
+        title: item.querySelector('title').textContent,
+        link: item.querySelector('link').textContent,
+        description: item.querySelector('description').textContent,
+        pubDate: item.querySelector('pubDate').textContent,
       };
-      // Perform additional processing or data retrieval for each search result
-      // You can make additional async requests or perform computationally intensive tasks here
-      searchResults.push(searchData);
+      feedData.items.push(itemData);
     });
-    console.log('Search Results:', searchResults);
-    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-    return searchResults;
-  } catch (error) {
-    console.error('Error crawling data:', error);
-    //window.alert('An error occurred while crawling data.');
-    return null; // Handle error cases appropriately
-  }
-}
-
-// Call crawlData function
-const prompt = data.get('prompt');
-const page = 1;
-const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
-const searchResultsPromise = crawlData(prompt, page, timeout);
-const timeoutPromise = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    reject('Timeout occurred while crawling data.');
-  }, timeout);
-});
-try {
-  const searchResults = await Promise.race([searchResultsPromise, timeoutPromise]);
-  if (searchResults) {
-    console.log('Search results:', searchResults);
-    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-    // Handle the search results as needed
-  } else {
-    console.log('An error occurred or the crawl timed out.');
-    //window.alert('An error occurred or the crawl timed out.');
-  }
-} catch (error) {
-  console.error('Error while crawling data:', error);
-  //window.alert('An error occurred while crawling data.');
-}
+    // Pass the RSS feed data to the getCrawlData function
+    getCrawlData(feedData);
+  })
+  .catch(error => {
+    console.error('Error fetching RSS feed:', error);
+  });
 
 // Export the getCrawlData function
 module.exports = { getCrawlData };
