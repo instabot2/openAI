@@ -1,3 +1,12 @@
+const today = new Date();
+const date = today.getDate();
+const month = today.getMonth() + 1; // January is 0
+const year = today.getFullYear();
+const formattedDate = `${month}/${date}/${year}`;
+console.log(formattedDate);
+alert(`Today's date is ${formattedDate}`);
+
+
 // RSS feed URL
 const rssUrl = 'https://news.google.com/rss';
 
