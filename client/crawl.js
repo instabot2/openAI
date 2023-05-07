@@ -6,7 +6,7 @@ const formattedDate = `${month}/${date}/${year}`;
 console.log(formattedDate);
 
 // RSS feed URL
-const rssUrl = 'https://news.google.com/rss?hl=en-MY&gl=MY&ceid=MY:en';
+const rssUrl = 'https://news.google.com/rss';
 
 // Get user input from the data object
 const userInput = `market news ${formattedDate}`;
@@ -16,7 +16,12 @@ console.log(`Fetching RSS feed from ${rssUrl}?q=${userInput}`);
 
 // Fetch the RSS feed
 fetch(`${rssUrl}?q=${userInput}`)
-  .then(response => response.text())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  })
   .then(data => {
     // Parse the RSS feed data
     const parser = new DOMParser();
