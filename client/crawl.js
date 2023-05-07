@@ -1,22 +1,31 @@
-import fetch from 'node-fetch';
-import cheerio from 'cheerio';
+const request = require('request');
+const cheerio = require('cheerio');
 
 // Function to crawl data with a time limit
 async function crawlData(prompt, page, timeout) {
   try {
     const searchDomain = 'msn.com';
     const url = `https://www.bing.com/search?q=${prompt}&first=${(page-1)*10}`;
-    const response = await fetch(url);
-    const html = await response.text();
+    const html = await new Promise((resolve, reject) => {
+      request(url, (error, response, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      });
+    });
     const $ = cheerio.load(html);
     const searchResults = [];
-    $('h2 a').each((i, element) => {
-      const link = $(element).attr('href');
-      const title = $(element).text();
-      const description = $(element).closest('.b_algo').find('.b_caption p').text();
-      searchResults.push({ link, title, description });
+    $('li.b_algo').each((i, el) => {
+      let result = {};
+      result.link = $(el).find('h2 a').attr('href');
+      result.title = $(el).find('h2').text().trim();
+      result.description = $(el).find('p').text().trim();
+      searchResults.push(result);
     });
     console.log('Search Results:', searchResults);
+    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
@@ -61,4 +70,4 @@ async function getCrawlData(prompt, timeout) {
 }
 
 // Export the getCrawlData function
-export { getCrawlData };
+module.exports = { getCrawlData };
