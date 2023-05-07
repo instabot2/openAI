@@ -112,7 +112,6 @@ function chatStripe(isAi, value, uniqueId) {
 
 let conversationHistory = [];
 
-
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -121,6 +120,19 @@ const handleSubmit = async (e) => {
   
   const data = new FormData(form);
 
+  
+  const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
+  getCrawlData(data.get('prompt'), timeout)
+    .then((searchResults) => {
+      // Handle the search results as needed
+      console.log('Received search results:', searchResults);
+      window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+ 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
