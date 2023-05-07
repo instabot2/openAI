@@ -18,11 +18,11 @@ async function crawlData(prompt, page, timeout) {
       return searchData;
     }));
     console.log('Search Results:', searchResults);
-    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`); 
+    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`); 
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
-    window.alert('An error occurred while crawling data.');
+    //window.alert('An error occurred while crawling data.');
     return null; // Handle error cases appropriately
   }
 }
@@ -41,14 +41,14 @@ try {
   const searchResults = await Promise.race([searchResultsPromise, timeoutPromise]);
   if (searchResults) {
     console.log('Search results:', searchResults);
-    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     // Handle the search results as needed
   } else {
     console.log('An error occurred or the crawl timed out.');
-    window.alert('An error occurred or the crawl timed out.');
+    //window.alert('An error occurred or the crawl timed out.');
   }
 } catch (error) {
   console.error('Error while crawling data:', error);
-  window.alert('An error occurred while crawling data.');
+  //window.alert('An error occurred while crawling data.');
 }
 
