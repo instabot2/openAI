@@ -1,12 +1,12 @@
 // RSS feed URL
-const rssUrl = 'https://news.google.com/rss';
+const rssUrl = 'https://feeds.finance.yahoo.com/rss/2.0/headline?s=yhoo,yhoo.pk';
 
 // Get user input from the data object
-//const userInput = data.get('prompt');
+// const userInput = data.get('prompt');
 const userInput = "market news";
 
 // Fetch the RSS feed
-fetch(`${rssUrl}?q=${userInput}`)
+fetch(rssUrl)
   .then(response => response.text())
   .then(data => {
     // Parse the RSS feed data
@@ -34,7 +34,7 @@ fetch(`${rssUrl}?q=${userInput}`)
   })
   .catch(error => {
     console.error('Error fetching RSS feed:', error);
-    alert(`Error fetching RSS feed: ${error}`);
+    alert('There was an error fetching the RSS feed. Please try again later.');
   });
 
 // Define the getCrawlData function
@@ -45,4 +45,3 @@ function getCrawlData(feedData, userInput) {
 
 // Export the getCrawlData function
 module.exports = { getCrawlData };
-
