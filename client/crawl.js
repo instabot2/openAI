@@ -24,7 +24,7 @@ async function crawlData(prompt, page, timeout) {
     } else if (error.code === 'ECONNABORTED') {
       window.alert('Request timed out!');
     } else {
-      window.alert(`An error occurred while crawling data: ${error.message}`);
+      //window.alert(`An error occurred while crawling data: ${error.message}`);
     }  
     return null; // Handle error cases appropriately
   }
