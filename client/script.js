@@ -120,13 +120,13 @@ const handleSubmit = async (e) => {
   
   const data = new FormData(form);
 
-  
-  const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
+ 
+  const timeout = 60000; // Timeout in milliseconds (60,000 milliseconds for 1 minute)
   getCrawlData(data.get('prompt'), timeout)
     .then((searchResults) => {
       // Handle the search results as needed
       console.log('Received search results:', searchResults);
-      window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
+      //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     })
     .catch((error) => {
       console.error(error);
