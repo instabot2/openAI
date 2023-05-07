@@ -1,21 +1,22 @@
-import axios from 'axios';
+import fetch from 'node-fetch';
+import cheerio from 'cheerio';
 
 // Function to crawl data with a time limit
 async function crawlData(prompt, page, timeout) {
   try {
     const searchDomain = 'msn.com';
     const url = `https://www.bing.com/search?q=${prompt}&first=${(page-1)*10}`;
-    const response = await axios.get(url);
-    const searchResults = response.data.match(/<h2><a href="(.*?)"/g).map((val) => {
-      let result = {};
-      let temp = val.split('"');
-      result.link = temp[1];
-      result.title = temp[2].substring(temp[2].indexOf('>') + 1, temp[2].lastIndexOf('<'));
-      result.description = temp[3];
-      return result;
+    const response = await fetch(url);
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    const searchResults = [];
+    $('h2 a').each((i, element) => {
+      const link = $(element).attr('href');
+      const title = $(element).text();
+      const description = $(element).closest('.b_algo').find('.b_caption p').text();
+      searchResults.push({ link, title, description });
     });
     console.log('Search Results:', searchResults);
-    //window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
     return searchResults;
   } catch (error) {
     console.error('Error crawling data:', error);
@@ -61,7 +62,3 @@ async function getCrawlData(prompt, timeout) {
 
 // Export the getCrawlData function
 export { getCrawlData };
-
-
-//const url = `http://index.commoncrawl.org/CC-MAIN-2023-index?url=*.${searchDomain}&output=json&page=${page}`;
-
