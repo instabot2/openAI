@@ -8,17 +8,17 @@ const year = today.getFullYear();
 const formattedDate = `${year}-${month}-${date}`;
 
 // RSS feed URL
-const rssUrl = 'https://news.google.com/rss';
+const rssUrl = 'https://news.google.com/rss/search?q=';
 
 // Get user input from the data object
 const userInput = `market news ${formattedDate}`;
 
 // Log the URL to the console
-console.log(`Fetching RSS feed from ${rssUrl}?q=${userInput}`);
+console.log(`Fetching RSS feed from ${rssUrl}${userInput}`);
 
 // Fetch the RSS feed
 const parser = new Parser();
-parser.parseURL(`${rssUrl}?q=${userInput}`, (err, feed) => {
+parser.parseURL(`${rssUrl}${userInput}`, (err, feed) => {
   if (err) {
     console.error('There was an error fetching the RSS feed. Please try again later.', err);
     alert(`Error fetching RSS feed: ${err}`);
