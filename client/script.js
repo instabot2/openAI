@@ -1,5 +1,7 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
+import { getCrawlData } from './crawl.js';
+
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -104,24 +106,11 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
+
+
+
+
 let conversationHistory = [];
-
-
-
-import { getCrawlData } from './crawl.js';
-// Call getCrawlData to get the search results
-const timeout = 5000; // Timeout in milliseconds (e.g., 5000 for 5 seconds)
-getCrawlData(data.get('prompt'), timeout)
-  .then((searchResults) => {
-    // Handle the search results as needed
-    console.log('Received search results:', searchResults);
-    window.alert(`Search Results:\n\n${JSON.stringify(searchResults, null, 2)}`);
-  })
-  .catch((error) => {
-    // Handle errors as needed
-    console.error('An error occurred while getting search results:', error);
-  });
-
 
 
 const handleSubmit = async (e) => {
@@ -161,9 +150,6 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
-    
-
-
     
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
