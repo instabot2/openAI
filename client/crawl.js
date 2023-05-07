@@ -1,21 +1,11 @@
-function getCrawlData(feedData, userInput) {
-  // Filter feed data based on user input
-  const filteredData = {
-    ...feedData,
-    items: feedData.items.filter(item => item.title.toLowerCase().includes(userInput.toLowerCase())),
-  };
-  // Do something with the filtered data
-  console.log(filteredData);
-}
-
 // RSS feed URL
 const rssUrl = 'https://news.google.com/rss';
 
 // Get user input
-const userInput = data.get('prompt');
+const userInput = prompt('Enter a search term');
 
 // Fetch the RSS feed
-fetch(rssUrl)
+fetch(`${rssUrl}?q=${userInput}`)
   .then(response => response.text())
   .then(data => {
     // Parse the RSS feed data
@@ -44,6 +34,12 @@ fetch(rssUrl)
   .catch(error => {
     console.error('Error fetching RSS feed:', error);
   });
+
+// Define the getCrawlData function
+function getCrawlData(feedData, userInput) {
+  // do something with the feed data and user input
+  console.log(`Search results for "${userInput}":`, feedData);
+}
 
 // Export the getCrawlData function
 module.exports = { getCrawlData };
