@@ -37,7 +37,7 @@ fetch(`${rssUrl}?q=${userInput}`)
   })
   .catch(error => {
     console.error('There was an error fetching the RSS feed. Please try again later.', error);
-    alert(`Error fetching RSS feed: ${error}`);
+    //alert(`Error fetching RSS feed: ${error}`);
   });
 
 // Define the getCrawlData function
