@@ -1,7 +1,5 @@
-// Import the fetchRSSFeed function from rss.js
 import { fetchRSSFeed } from './rss.js';
 
-// Define a function to render the RSS feed data in the DOM
 function renderRSSFeed(feed) {
   // Get a reference to the container element in the DOM
   const container = document.querySelector('.rss-container');
@@ -41,19 +39,15 @@ function renderRSSFeed(feed) {
   });
 }
 
-// Prompt the user for a search query
-const searchQuery = data.get('prompt');
-alert(`Searching for "${searchQuery}" on MSN News RSS feed...`);
+async function fetchAndRenderRSSFeed(searchQuery) {
+  alert(`Searching for "${searchQuery}" on MSN News RSS feed...`);
 
-// Define the URL of the RSS feed to fetch
-const feedUrl = `https://www.msn.com/en-us/news/rss?q=${encodeURIComponent(searchQuery)}`;
+  const feedUrl = `https://www.msn.com/en-us/news/rss?q=${encodeURIComponent(searchQuery)}`;
 
-// Fetch and parse the RSS feed using the fetchRSSFeed function
-fetchRSSFeed(feedUrl)
-  .then(feed => {
-    // Render the parsed feed data in the DOM
+  try {
+    const feed = await fetchRSSFeed(feedUrl);
     renderRSSFeed(feed);
-  })
-  .catch(error => {
+  } catch (error) {
     console.error(`Failed to fetch or parse RSS feed: ${error}`);
-  });
+  }
+}
