@@ -107,6 +107,10 @@ let conversationHistory = [];
 const handleSubmit = async (e) => {
   e.preventDefault();
   
+  const searchQuery = data.get('prompt');
+  // Fetch and render the RSS feed
+  await fetchAndRenderRSSFeed(searchQuery);
+  
   //hidden text
   hiddenText.style.display = "none";
   
