@@ -1,5 +1,6 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
+import { fetchAndRenderRSSFeed } from './main.js';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -107,15 +108,12 @@ let conversationHistory = [];
 const handleSubmit = async (e) => {
   e.preventDefault();
   
-  const searchQuery = data.get('prompt');
-  // Fetch and render the RSS feed
-  await fetchAndRenderRSSFeed(searchQuery);
-  
   //hidden text
   hiddenText.style.display = "none";
   
   const data = new FormData(form);
 
+  
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
@@ -125,6 +123,10 @@ const handleSubmit = async (e) => {
   conversationHistory.push(userMessage);
   //window.alert(`current conversationHistory: ${JSON.stringify(conversationHistory)}`);
  
+  const searchQuery = { isBot: false, message: data.get('prompt') };
+  // Fetch and render the RSS feed
+  await fetchAndRenderRSSFeed(searchQuery.message);
+  
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
   
