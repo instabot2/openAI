@@ -6,6 +6,9 @@ function renderRSSFeed(feed) {
   // Get a reference to the container element in the DOM
   const container = document.querySelector('.rss-container');
 
+  // Clear any existing content in the container
+  container.innerHTML = '';
+
   // Create a new element to display the feed title
   const titleEl = document.createElement('h2');
   titleEl.textContent = feed.title;
