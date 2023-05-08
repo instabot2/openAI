@@ -113,7 +113,6 @@ const handleSubmit = async (e) => {
   
   const data = new FormData(form);
 
-  
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
@@ -122,11 +121,7 @@ const handleSubmit = async (e) => {
   const userMessage = { isBot: false, message: data.get('prompt') };
   conversationHistory.push(userMessage);
   //window.alert(`current conversationHistory: ${JSON.stringify(conversationHistory)}`);
- 
-  const searchQuery = { isBot: false, message: data.get('prompt') };
-  // Fetch and render the RSS feed
-  await fetchAndRenderRSSFeed(searchQuery.message);
-  
+
   // Clear existing chat messages
   messageWrapper.innerHTML = '';
   
