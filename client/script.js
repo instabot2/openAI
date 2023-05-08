@@ -1,6 +1,6 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-//import { getCrawlData } from './crawl.js';
+import { getCrawlData } from './crawl.js';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -107,22 +107,6 @@ let conversationHistory = [];
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-
-  
-  const Parser = require('rss-parser');
-  const parser = new Parser();
-  (async () => {
-    const crawlData = await getCrawlData();
-    const feed = await parser.parseURL('https://www.reddit.com/.rss');
-    console.log(crawlData);
-    console.log(feed.title);
-    feed.items.forEach(item => {
-      console.log(item.title + ':' + item.link);
-    });
-  })();
-  
-  
-  
   
   //hidden text
   hiddenText.style.display = "none";
