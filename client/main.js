@@ -41,8 +41,11 @@ function renderRSSFeed(feed) {
   });
 }
 
+// Get the search query from user input
+const searchQuery = data.get('prompt');
+
 // Define the URL of the RSS feed to fetch
-const feedUrl = 'https://www.msn.com/en-us/news/rss';
+const feedUrl = `https://www.msn.com/en-us/news/rss?q=${searchQuery}`;
 
 // Fetch and parse the RSS feed using the fetchRSSFeed function
 fetchRSSFeed(feedUrl)
