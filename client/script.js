@@ -1,6 +1,5 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-import { getCrawlData } from './crawl.js';
 
 
 const form = document.querySelector('form');
