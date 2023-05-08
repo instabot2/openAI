@@ -1,6 +1,6 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-import { fetchData } from './crawl.js';
+
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -99,6 +99,17 @@ function chatStripe(isAi, value, uniqueId) {
     </div>
   `;
 }
+
+
+import { getCrawlData } from './crawl.js';
+(async () => {
+  try {
+    const crawlData = await getCrawlData();
+    console.log(crawlData);
+  } catch (err) {
+    console.error(err);
+  }
+})();
 
 
 
