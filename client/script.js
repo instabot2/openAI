@@ -102,8 +102,8 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
-async function getFeed() {
-  const response = await fetch('https://cors-anywhere.herokuapp.com/https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml');
+async function getFeed(rssUrl) {
+  const response = await fetch(`https://cors-anywhere.herokuapp.com/${rssUrl}`);
   const xml = await response.text();
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xml, 'text/xml');
@@ -118,45 +118,6 @@ async function getFeed() {
   return items;
 }
 
-async function displayFeed() {
-  const items = await getFeed();
-  const rssContainer = document.querySelector('.rss-container');
-
-  items.forEach(item => {
-    const title = item.title;
-    const link = item.link;
-    const description = item.contentSnippet;
-    const pubDate = new Date(item.isoDate).toLocaleDateString();
-
-    const rssItem = document.createElement('div');
-    rssItem.classList.add('rss-item');
-
-    const rssTitle = document.createElement('a');
-    rssTitle.href = link;
-    rssTitle.target = '_blank';
-    rssTitle.textContent = title;
-
-    const rssPubDate = document.createElement('span');
-    rssPubDate.classList.add('rss-pubdate');
-    rssPubDate.textContent = pubDate;
-
-    const rssDescription = document.createElement('p');
-    rssDescription.classList.add('rss-description');
-    rssDescription.textContent = description;
-
-    rssItem.appendChild(rssTitle);
-    rssItem.appendChild(rssPubDate);
-    rssItem.appendChild(rssDescription);
-
-    rssContainer.appendChild(rssItem);
-  });
-}
-displayFeed();
-
-
-
-
-
 
 
 let conversationHistory = [];
@@ -167,8 +128,15 @@ const handleSubmit = async (e) => {
   //hidden text
   hiddenText.style.display = "none";
   
+  // Retrieve prompt string from form data
   const data = new FormData(form);
+  
+  
+  const promptRSS = data.get('prompt');
+  // Call RSS feed function with prompt string
+  const rssFeed = await getFeed(promptRSS);
 
+ 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
