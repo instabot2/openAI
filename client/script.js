@@ -103,7 +103,7 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 const targetUrl = 'https://www.msn.com/en-us/news/rss';
-const proxyUrl = 'https://robwu.nl/cors-anywhere.html?url=' + encodeURIComponent(targetUrl);
+const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
 
 async function getFeed() {
   try {
