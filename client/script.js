@@ -107,16 +107,21 @@ function chatStripe(isAi, value, uniqueId) {
 const getFeed = require('./rss');
 async function displayFeed() {
   const items = await getFeed();
-
   // Display the feed items
+  const rssContainer = document.querySelector('.rss-container');
+  const list = document.createElement('ul');
   items.forEach(item => {
-    console.log(item.title);
-    console.log(item.link);
-    console.log(item.pubDate);
-    console.log(item.content);
+    const listItem = document.createElement('li');
+    const title = document.createElement('a');
+    title.textContent = item.title;
+    title.href = item.link;
+    listItem.appendChild(title);
+    list.appendChild(listItem);
   });
+  rssContainer.appendChild(list);
 }
 displayFeed();
+
 
 
 
