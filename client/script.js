@@ -102,12 +102,12 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
-async function getFeed(rssUrl) {
+const targetUrl = 'https://www.msn.com/en-us/news/rss';
+const proxyUrl = 'https://robwu.nl/cors-anywhere.html?url=' + encodeURIComponent(targetUrl);
+
+async function getFeed() {
   try {
-    const targetUrl = 'https://google.com';
-    const proxyUrl = `https://robwu.nl/cors-anywhere.html?url=${encodeURIComponent(targetUrl)}`;
     const response = await fetch(proxyUrl);
-    
     const xml = await response.text();
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xml, 'text/xml');
@@ -137,9 +137,6 @@ async function getFeed(rssUrl) {
     return [];
   }
 }
-
-
-
 
 
 
