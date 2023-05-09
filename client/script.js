@@ -117,6 +117,17 @@ async function getFeed(rssUrl) {
     }));
 
     alert(`Successfully fetched ${items.length} items.`);
+
+    items.forEach(item => {
+      const title = item.title;
+      const link = item.link;
+      const description = item.contentSnippet;
+      const pubDate = new Date(item.isoDate).toLocaleDateString();
+
+      const message = `${title}\n${description}\n${pubDate}\n${link}`;
+      alert(message);
+    });
+
     return items;
   } catch (error) {
     alert('An error occurred while fetching the RSS feed. Please try again later.');
