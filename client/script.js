@@ -133,7 +133,7 @@ async function getFeed() {
 
     return items;
   } catch (error) {
-    alert('An error occurred while fetching the RSS feed. Please try again later.');
+    //alert('An error occurred while fetching the RSS feed. Please try again later.');
     return [];
   }
 }
