@@ -104,7 +104,7 @@ function chatStripe(isAi, value, uniqueId) {
 
 async function getFeed(rssUrl) {
   try {
-    const response = await fetch(`https://proxy.cors.sh/https://cors-anywhere.herokuapp.com/${rssUrl}`);
+    const response = await fetch(`https://proxy.cors.sh/${rssUrl}`);
     
     const xml = await response.text();
     const parser = new DOMParser();
@@ -135,6 +135,7 @@ async function getFeed(rssUrl) {
     return [];
   }
 }
+
 
 
 
