@@ -103,6 +103,25 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
+// script.js
+const getFeed = require('./rss');
+async function displayFeed() {
+  const items = await getFeed();
+
+  // Display the feed items
+  items.forEach(item => {
+    console.log(item.title);
+    console.log(item.link);
+    console.log(item.pubDate);
+    console.log(item.content);
+  });
+}
+displayFeed();
+
+
+
+
+
 let conversationHistory = [];
 
 const handleSubmit = async (e) => {
