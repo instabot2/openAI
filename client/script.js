@@ -1,6 +1,5 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
-//import { fetchAndRenderRSSFeed } from './main.js';
 
 const form = document.querySelector('form');
 const chatContainer = document.querySelector('#chat_container');
@@ -103,25 +102,35 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
-// script.js
-const getFeed = require('./rss');
+import getFeed from './rss.js';
+
 async function displayFeed() {
   const items = await getFeed();
-  // Display the feed items
   const rssContainer = document.querySelector('.rss-container');
-  const list = document.createElement('ul');
   items.forEach(item => {
-    const listItem = document.createElement('li');
-    const title = document.createElement('a');
-    title.textContent = item.title;
-    title.href = item.link;
-    listItem.appendChild(title);
-    list.appendChild(listItem);
+    const title = item.title;
+    const link = item.link;
+    const description = item.contentSnippet;
+    const pubDate = new Date(item.isoDate).toLocaleDateString();
+    const rssItem = document.createElement('div');
+    rssItem.classList.add('rss-item');
+    const rssTitle = document.createElement('a');
+    rssTitle.href = link;
+    rssTitle.target = '_blank';
+    rssTitle.textContent = title;
+    const rssPubDate = document.createElement('span');
+    rssPubDate.classList.add('rss-pubdate');
+    rssPubDate.textContent = pubDate;
+    const rssDescription = document.createElement('p');
+    rssDescription.classList.add('rss-description');
+    rssDescription.textContent = description;
+    rssItem.appendChild(rssTitle);
+    rssItem.appendChild(rssPubDate);
+    rssItem.appendChild(rssDescription);
+    rssContainer.appendChild(rssItem);
   });
-  rssContainer.appendChild(list);
 }
 displayFeed();
-
 
 
 
