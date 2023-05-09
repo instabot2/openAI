@@ -103,20 +103,28 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 async function getFeed(rssUrl) {
-  const response = await fetch(`https://cors-anywhere.herokuapp.com/${rssUrl}`);
-  const xml = await response.text();
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xml, 'text/xml');
+  try {
+    const response = await fetch(`https://cors-anywhere.herokuapp.com/${rssUrl}`);
+    const xml = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xml, 'text/xml');
 
-  const items = Array.from(xmlDoc.querySelectorAll('item')).map(item => ({
-    title: item.querySelector('title').textContent,
-    link: item.querySelector('link').textContent,
-    contentSnippet: item.querySelector('description').textContent,
-    isoDate: item.querySelector('pubDate').textContent,
-  }));
+    const items = Array.from(xmlDoc.querySelectorAll('item')).map(item => ({
+      title: item.querySelector('title').textContent,
+      link: item.querySelector('link').textContent,
+      contentSnippet: item.querySelector('description').textContent,
+      isoDate: item.querySelector('pubDate').textContent,
+    }));
 
-  return items;
+    alert(`Successfully fetched ${items.length} items.`);
+    return items;
+  } catch (error) {
+    alert('An error occurred while fetching the RSS feed. Please try again later.');
+    return [];
+  }
 }
+
+
 
 
 
