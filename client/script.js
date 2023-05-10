@@ -102,10 +102,9 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
-const targetUrl = 'https://www.msn.com/en-us/news/rss';
-const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
+async function getFeed(targetUrl) {
+  const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
 
-async function getFeed() {
   try {
     const response = await fetch(proxyUrl);
     const xml = await response.text();
