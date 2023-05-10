@@ -102,24 +102,25 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
-async function getFeed(targetUrl) {
-  const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
+async function getFeed() {
+  const apiKey = '4c7b3dd6ff024a2a878f173ef2391f2f'; // Replace with your NewsAPI API key
+  const topic = 'market summary today';
+  const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(topic)}&sortBy=publishedAt&apiKey=${apiKey}`;
 
   try {
-    const response = await fetch(proxyUrl);
-    const xml = await response.text();
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xml, 'text/xml');
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-    const items = Array.from(xmlDoc.querySelectorAll('item')).map(item => ({
-      title: item.querySelector('title').textContent,
-      link: item.querySelector('link').textContent,
-      contentSnippet: item.querySelector('description').textContent,
-      isoDate: item.querySelector('pubDate').textContent,
+    const items = data.articles.map(article => ({
+      title: article.title,
+      link: article.url,
+      contentSnippet: article.description,
+      isoDate: article.publishedAt,
     }));
 
     const rssContainer = document.querySelector('.rss-container');
-    const fragment = document.createDocumentFragment();
+
+    rssContainer.innerHTML = '';
 
     items.forEach(item => {
       const title = item.title;
@@ -128,7 +129,7 @@ async function getFeed(targetUrl) {
       const pubDate = new Date(item.isoDate).toLocaleDateString();
 
       const message = `${title}\n${description}\n${pubDate}\n${link}`;
-
+      
       const itemElement = document.createElement('div');
       itemElement.classList.add('rss-item');
 
@@ -151,12 +152,8 @@ async function getFeed(targetUrl) {
       itemElement.appendChild(pubDateElement);
       itemElement.appendChild(descriptionElement);
 
-      fragment.appendChild(itemElement);
+      rssContainer.appendChild(itemElement);
     });
-
-    // Display the results in the RSS container
-    rssContainer.innerHTML = '';
-    rssContainer.appendChild(fragment);
 
     // Display a success message after the feed has been fetched and displayed
     const itemCount = items.length;
@@ -169,7 +166,6 @@ async function getFeed(targetUrl) {
     return [];
   }
 }
-
 
 
 
