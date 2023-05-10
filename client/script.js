@@ -118,7 +118,9 @@ async function getFeed(targetUrl) {
       isoDate: item.querySelector('pubDate').textContent,
     }));
 
-    alert(`Successfully fetched ${items.length} items.`);
+    const rssContainer = document.querySelector('.rss-container');
+
+    rssContainer.innerHTML = '';
 
     items.forEach(item => {
       const title = item.title;
@@ -127,8 +129,33 @@ async function getFeed(targetUrl) {
       const pubDate = new Date(item.isoDate).toLocaleDateString();
 
       const message = `${title}\n${description}\n${pubDate}\n${link}`;
-      alert(message);
+      
+      const itemElement = document.createElement('div');
+      itemElement.classList.add('rss-item');
+
+      const titleElement = document.createElement('a');
+      titleElement.classList.add('rss-title');
+      titleElement.href = link;
+      titleElement.target = '_blank';
+      titleElement.rel = 'noopener noreferrer';
+      titleElement.textContent = title;
+
+      const pubDateElement = document.createElement('span');
+      pubDateElement.classList.add('rss-pubdate');
+      pubDateElement.textContent = pubDate;
+
+      const descriptionElement = document.createElement('div');
+      descriptionElement.classList.add('rss-description');
+      descriptionElement.textContent = description;
+
+      itemElement.appendChild(titleElement);
+      itemElement.appendChild(pubDateElement);
+      itemElement.appendChild(descriptionElement);
+
+      rssContainer.appendChild(itemElement);
     });
+
+    alert(`Successfully fetched ${items.length} items.`);
 
     return items;
   } catch (error) {
