@@ -104,7 +104,7 @@ function chatStripe(isAi, value, uniqueId) {
 
 async function getFeed() {
   const apiKey = '4c7b3dd6ff024a2a878f173ef2391f2f'; // Replace with your NewsAPI API key
-  const topic = 'market summary today';
+  const topic = `market summary ${searchQuery}`;
   const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(topic)}&sortBy=publishedAt&apiKey=${apiKey}`;
 
   try {
@@ -181,14 +181,12 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
   
   
-  const msn = 'https://www.msn.com/';
-  const prompt = 'search?q=';
-  const query = encodeURIComponent(data.get('prompt'));
-  const targetUrl = msn + prompt + query;
+  const searchQuery = encodeURIComponent(data.get('prompt'));  
   // Call RSS feed function with target URL
-  const rssFeed = await getFeed(targetUrl);
+  const rssFeed = await getFeed(searchQuery);
 
- 
+
+
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
