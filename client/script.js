@@ -119,8 +119,7 @@ async function getFeed(targetUrl) {
     }));
 
     const rssContainer = document.querySelector('.rss-container');
-
-    rssContainer.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     items.forEach(item => {
       const title = item.title;
@@ -129,7 +128,7 @@ async function getFeed(targetUrl) {
       const pubDate = new Date(item.isoDate).toLocaleDateString();
 
       const message = `${title}\n${description}\n${pubDate}\n${link}`;
-      
+
       const itemElement = document.createElement('div');
       itemElement.classList.add('rss-item');
 
@@ -152,8 +151,12 @@ async function getFeed(targetUrl) {
       itemElement.appendChild(pubDateElement);
       itemElement.appendChild(descriptionElement);
 
-      rssContainer.appendChild(itemElement);
+      fragment.appendChild(itemElement);
     });
+
+    // Display the results in the RSS container
+    rssContainer.innerHTML = '';
+    rssContainer.appendChild(fragment);
 
     // Display a success message after the feed has been fetched and displayed
     const itemCount = items.length;
