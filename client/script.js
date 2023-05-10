@@ -182,9 +182,12 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
   
   
-  const promptRSS = data.get('prompt');
-  // Call RSS feed function with prompt string
-  const rssFeed = await getFeed(promptRSS);
+  const msn = 'https://www.msn.com/';
+  const prompt = 'search?q=';
+  const query = encodeURIComponent(data.get('prompt'));
+  const targetUrl = msn + prompt + query;
+  // Call RSS feed function with target URL
+  const rssFeed = await getFeed(targetUrl);
 
  
   // Retrieve stored messages from local storage
