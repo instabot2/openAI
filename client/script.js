@@ -104,6 +104,7 @@ function chatStripe(isAi, value, uniqueId) {
 
 async function getFeed(targetUrl) {
   const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
+
   try {
     const response = await fetch(proxyUrl);
     const xml = await response.text();
@@ -116,47 +117,55 @@ async function getFeed(targetUrl) {
       contentSnippet: item.querySelector('description').textContent,
       isoDate: item.querySelector('pubDate').textContent,
     }));
-    const rssContainer = document.createElement('div');
-    rssContainer.classList.add('rss-container');
+
+    const rssContainer = document.querySelector('.rss-container');
+
+    rssContainer.innerHTML = '';
+
     items.forEach(item => {
       const title = item.title;
       const link = item.link;
       const description = item.contentSnippet;
       const pubDate = new Date(item.isoDate).toLocaleDateString();
-      const message = `${title}\n${description}\n${pubDate}\n${link}`;     
+
+      const message = `${title}\n${description}\n${pubDate}\n${link}`;
+      
       const itemElement = document.createElement('div');
       itemElement.classList.add('rss-item');
+
       const titleElement = document.createElement('a');
       titleElement.classList.add('rss-title');
       titleElement.href = link;
       titleElement.target = '_blank';
       titleElement.rel = 'noopener noreferrer';
       titleElement.textContent = title;
+
       const pubDateElement = document.createElement('span');
       pubDateElement.classList.add('rss-pubdate');
       pubDateElement.textContent = pubDate;
+
       const descriptionElement = document.createElement('div');
       descriptionElement.classList.add('rss-description');
       descriptionElement.textContent = description;
+
       itemElement.appendChild(titleElement);
       itemElement.appendChild(pubDateElement);
       itemElement.appendChild(descriptionElement);
+
       rssContainer.appendChild(itemElement);
     });
-    const existingRssContainer = document.querySelector('.rss-container');
-    if (existingRssContainer) {
-      existingRssContainer.replaceWith(rssContainer);
-    } else {
-      document.body.appendChild(rssContainer);
-    }
-    alert(`Successfully fetched ${items.length} items.`);
+
+    // Display a success message after the feed has been fetched and displayed
+    const itemCount = items.length;
+    const successMessage = `Successfully fetched ${itemCount} item${itemCount === 1 ? '' : 's'}.`;
+    console.log(successMessage);
+
     return items;
   } catch (error) {
-    alert('An error occurred while fetching the RSS feed. Please try again later.');
+    console.error('An error occurred while fetching the RSS feed:', error);
     return [];
   }
 }
-
 
 
 
