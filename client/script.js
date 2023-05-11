@@ -103,11 +103,8 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 async function getFeed(searchQuery) {
-  const currentDate = new Date().toISOString().split('T')[0];
   const url = 'https://newsapi.org/v2/everything?' +
-              `q=${searchQuery}&` +
-              `from=${currentDate}&` +
-              'sortBy=popularity&' +
+              `domains=wsj.com&` +
               'apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
   try {
     const response = await fetch(url);
