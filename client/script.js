@@ -102,69 +102,16 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
-async function getFeed() {
-  const apiKey = '4c7b3dd6ff024a2a878f173ef2391f2f'; // Replace with your NewsAPI API key
-  const topic = `market summary ${searchQuery}`;
-  const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(topic)}&sortBy=publishedAt&apiKey=${apiKey}`;
-
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-
-    const items = data.articles.map(article => ({
-      title: article.title,
-      link: article.url,
-      contentSnippet: article.description,
-      isoDate: article.publishedAt,
-    }));
-
-    const rssContainer = document.querySelector('.rss-container');
-
-    rssContainer.innerHTML = '';
-
-    items.forEach(item => {
-      const title = item.title;
-      const link = item.link;
-      const description = item.contentSnippet;
-      const pubDate = new Date(item.isoDate).toLocaleDateString();
-
-      const message = `${title}\n${description}\n${pubDate}\n${link}`;
-      
-      const itemElement = document.createElement('div');
-      itemElement.classList.add('rss-item');
-
-      const titleElement = document.createElement('a');
-      titleElement.classList.add('rss-title');
-      titleElement.href = link;
-      titleElement.target = '_blank';
-      titleElement.rel = 'noopener noreferrer';
-      titleElement.textContent = title;
-
-      const pubDateElement = document.createElement('span');
-      pubDateElement.classList.add('rss-pubdate');
-      pubDateElement.textContent = pubDate;
-
-      const descriptionElement = document.createElement('div');
-      descriptionElement.classList.add('rss-description');
-      descriptionElement.textContent = description;
-
-      itemElement.appendChild(titleElement);
-      itemElement.appendChild(pubDateElement);
-      itemElement.appendChild(descriptionElement);
-
-      rssContainer.appendChild(itemElement);
-    });
-
-    // Display a success message after the feed has been fetched and displayed
-    const itemCount = items.length;
-    const successMessage = `Successfully fetched ${itemCount} item${itemCount === 1 ? '' : 's'}.`;
-    console.log(successMessage);
-
-    return items;
-  } catch (error) {
-    console.error('An error occurred while fetching the RSS feed:', error);
-    return [];
-  }
+async function getFeed(searchQuery) {
+  const currentDate = new Date().toISOString().split('T')[0];
+  const url = 'https://newsapi.org/v2/everything?' +
+              `q=${searchQuery}&` +
+              `from=${currentDate}&` +
+              'sortBy=popularity&' +
+              'apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
 }
 
 
@@ -180,10 +127,23 @@ const handleSubmit = async (e) => {
   // Retrieve prompt string from form data
   const data = new FormData(form);
   
-  
-  const searchQuery = encodeURIComponent(data.get('prompt'));  
-  // Call RSS feed function with target URL
+   
+  const searchQuery = encodeURIComponent(data.get('prompt'));
+  // Call getFeed function with search query
   const rssFeed = await getFeed(searchQuery);
+  // Display news articles in the DOM
+  const articlesContainer = document.getElementById('articles');
+  articlesContainer.innerHTML = '';
+  rssFeed.articles.forEach((article) => {
+    const articleEl = document.createElement('div');
+    articleEl.classList.add('article');
+    articleEl.innerHTML = `
+      <h2>${article.title}</h2>
+      <p>${article.description}</p>
+      <a href="${article.url}" target="_blank">Read more</a>
+    `;
+    articlesContainer.appendChild(articleEl);
+  });
 
 
 
