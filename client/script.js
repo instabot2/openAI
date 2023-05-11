@@ -132,7 +132,7 @@ const handleSubmit = async (e) => {
   // Call getFeed function with search query
   const rssFeed = await getFeed(searchQuery);
   // Display news articles in the DOM
-  const articlesContainer = document.getElementById('articles');
+  const articlesContainer = document.getElementById('rss-container');
   articlesContainer.innerHTML = '';
   rssFeed.articles.forEach((article) => {
     const articleEl = document.createElement('div');
