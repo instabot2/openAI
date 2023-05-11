@@ -115,34 +115,14 @@ async function getFeed(searchQuery) {
       throw new Error('Failed to fetch news articles');
     }
     const data = await response.json();
+    alert('News articles successfully fetched!');
     return data;
   } catch (error) {
     alert(error.message);
   }
 }
 
-// Call getFeed function with search query
-const searchQuery = encodeURIComponent(data.get('prompt'));
-const rssFeed = await getFeed(searchQuery);
 
-// Display news articles in the DOM
-const articlesContainer = document.getElementById('articles');
-articlesContainer.innerHTML = '';
-if (rssFeed && rssFeed.articles) {
-  rssFeed.articles.forEach((article) => {
-    const articleEl = document.createElement('div');
-    articleEl.classList.add('article');
-    articleEl.innerHTML = `
-      <h2>${article.title}</h2>
-      <p>${article.description}</p>
-      <a href="${article.url}" target="_blank">Read more</a>
-    `;
-    articlesContainer.appendChild(articleEl);
-  });
-  alert('News articles fetched successfully!');
-} else {
-  alert('Failed to fetch news articles');
-}
 
 
 
