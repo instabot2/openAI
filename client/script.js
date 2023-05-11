@@ -246,14 +246,14 @@ const handleSubmit = async (e) => {
             
       // Display an error message to the user
       if (response.status === 400) {
-        const errorMessage = `>
+        const errorMessage = `
           <div style="background-color: rgb(240, 128, 128); padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
             <p>Oops! Looks like you've hit the usage limit of the free OpenAI API key. Please upgrade to a paid plan to continue using the service.</p>
             <p>Note: Refreshing the page will erase all memory and start a new conversation.</p>
             <button id="refresh-button">Refresh</button>
-          </div>   
+          </div>
         `;
-        messageWrapper.insertAdjacentHTML('beforeend', chatStripe(true, errorMessage, uniqueId));
+        messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
         // Add click event listener to refresh button
         const refreshButton = document.getElementById('refresh-button');
         refreshButton.addEventListener('click', handleRefresh);
@@ -262,6 +262,7 @@ const handleSubmit = async (e) => {
         messageWrapper.insertAdjacentHTML('beforeend', errorMessage);
       }
 
+      
     }
   } catch (err) {
     console.error(err);
