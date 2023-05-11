@@ -106,20 +106,24 @@ const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
 
 async function getFeed(searchQuery) {
+  const options = {
+    q: searchQuery,
+    sources: 'bbc-news,the-verge',
+    category: 'business',
+    language: 'en',
+    country: 'us'
+  };
+
   try {
-    const response = await newsapi.v2.everything({
-      q: searchQuery,
-      domains: 'wsj.com',
-      language: 'en',
-      sortBy: 'relevancy',
-      page: 1
-    });
-    alert('News articles successfully fetched!');
-    return response;
+    const response = await newsapi.v2.topHeadlines(options);
+    console.log(response);
+    return response.articles;
   } catch (error) {
-    alert(`Failed to fetch news articles. ${error.message}`);
+    console.error('Error fetching news:', error);
+    return [];
   }
 }
+
 
 
 
