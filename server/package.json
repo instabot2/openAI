@@ -16,6 +16,6 @@
     "google-it": "^1.2.3",
     "cheerio": "^1.0.0-rc.10",
     "rss-parser": "^3.10.0",
-    "newsapi": "^2.5.1"
+    "newsapi": "^2.4.0"
   }
 }
