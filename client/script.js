@@ -102,18 +102,20 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 
+const NewsAPI = require('newsapi');
+const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
+
 async function getFeed(searchQuery) {
-  const url = 'https://newsapi.org/v2/everything?' +
-              `domains=wsj.com&` +
-              'apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch news articles. Server responded with status ${response.status}`);
-    }
-    const data = await response.json();
+    const response = await newsapi.v2.everything({
+      q: searchQuery,
+      domains: 'wsj.com',
+      language: 'en',
+      sortBy: 'relevancy',
+      page: 1
+    });
     alert('News articles successfully fetched!');
-    return data;
+    return response;
   } catch (error) {
     alert(`Failed to fetch news articles. ${error.message}`);
   }
