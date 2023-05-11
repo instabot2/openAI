@@ -112,16 +112,20 @@ async function getFeed(searchQuery) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error('Failed to fetch news articles');
+      if (response.status === 401) {
+        throw new Error('API key is invalid or has exceeded its usage limit');
+      } else if (response.status === 429) {
+        throw new Error('API key has exceeded its usage limit');
+      } else {
+        throw new Error(`Failed to fetch news articles (status code ${response.status})`);
+      }
     }
     const data = await response.json();
-    alert('News articles successfully fetched!');
     return data;
   } catch (error) {
-    alert(error.message);
+    throw new Error(`Failed to fetch news articles. ${error.message}`);
   }
 }
-
 
 
 
