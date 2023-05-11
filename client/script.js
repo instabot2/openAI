@@ -109,9 +109,39 @@ async function getFeed(searchQuery) {
               `from=${currentDate}&` +
               'sortBy=popularity&' +
               'apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to fetch news articles');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+// Call getFeed function with search query
+const searchQuery = encodeURIComponent(data.get('prompt'));
+const rssFeed = await getFeed(searchQuery);
+
+// Display news articles in the DOM
+const articlesContainer = document.getElementById('articles');
+articlesContainer.innerHTML = '';
+if (rssFeed && rssFeed.articles) {
+  rssFeed.articles.forEach((article) => {
+    const articleEl = document.createElement('div');
+    articleEl.classList.add('article');
+    articleEl.innerHTML = `
+      <h2>${article.title}</h2>
+      <p>${article.description}</p>
+      <a href="${article.url}" target="_blank">Read more</a>
+    `;
+    articlesContainer.appendChild(articleEl);
+  });
+  alert('News articles fetched successfully!');
+} else {
+  alert('Failed to fetch news articles');
 }
 
 
