@@ -24,6 +24,12 @@ newsapi.v2.topHeadlines({
   // Render articles to the news-container div
   const newsContainer = document.getElementById('news-container');
   newsContainer.innerHTML = articleHTML;
+
+  // Display success message
+  alert('News articles successfully loaded!');
 }).catch(error => {
   console.log(error);
+
+  // Display error message
+  alert('Failed to load news articles.');
 });
