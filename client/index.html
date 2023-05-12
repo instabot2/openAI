@@ -12,53 +12,7 @@
       }
     </style>
   </head>
-  <body onload="initChat()">
-    <div id="app">
-      <div id="chat_container">
-        <div id="message_wrapper"></div>
-        <div class="rss-container"></div>
-      </div>
-      <form id="chatForm">
-        <textarea
-          id="promptTextarea"
-          name="prompt"
-          rows="1"
-          cols="1"
-          style="overflow:auto;"
-          placeholder="Ask anything..."
-        ></textarea>
-        <button id="sendButton" type="submit"><img src="assets/send.svg" alt="send" /></button>
-      </form>
-      <!-- New div with invisible style -->
-      <div id="hidden_text">Ask anything...</div>
-    </div>
-    <script type="module" src="script.js"></script>
-    <script>
-      function initChat() {
-        var promptTextarea = document.getElementById("promptTextarea");
-        var sendButton = document.getElementById("sendButton");
-        var isFirstTime = localStorage.getItem("isFirstTime");
-        if (!isFirstTime) {
-          var greetings = [
-            "Hello!",
-            "Greetings!",
-            "Good day!",
-            "Welcome!",
-            "Salutations!",
-            "Hi there!",
-            "How can I assist you today?",
-            "Pleasure to meet you!",
-          ];
-          var randomIndex = Math.floor(Math.random() * greetings.length);
-          var randomGreeting = greetings[randomIndex];
-          promptTextarea.value = randomGreeting;
-          sendButton.click();
-          // Store the information that it's not the first time
-          localStorage.setItem("isFirstTime", "false");
-        }
-      }
-    </script>
-    
+  
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/newsapi/dist/browser/newsapi.min.js"></script>
     <script>
@@ -108,8 +62,56 @@
       }).catch((error) => {
         console.error(error);
       });
-    </script>    
+    </script> 
+  
+  
+  <body onload="initChat()">
+    <div id="app">
+      <div id="chat_container">
+        <div id="message_wrapper"></div>
+      </div>
+      <form id="chatForm">
+        <textarea
+          id="promptTextarea"
+          name="prompt"
+          rows="1"
+          cols="1"
+          style="overflow:auto;"
+          placeholder="Ask anything..."
+        ></textarea>
+        <button id="sendButton" type="submit"><img src="assets/send.svg" alt="send" /></button>
+      </form>
+      <!-- New div with invisible style -->
+      <div id="hidden_text">Ask anything...</div>
+    </div>
+    <script type="module" src="script.js"></script>
+    <script>
+      function initChat() {
+        var promptTextarea = document.getElementById("promptTextarea");
+        var sendButton = document.getElementById("sendButton");
+        var isFirstTime = localStorage.getItem("isFirstTime");
+        if (!isFirstTime) {
+          var greetings = [
+            "Hello!",
+            "Greetings!",
+            "Good day!",
+            "Welcome!",
+            "Salutations!",
+            "Hi there!",
+            "How can I assist you today?",
+            "Pleasure to meet you!",
+          ];
+          var randomIndex = Math.floor(Math.random() * greetings.length);
+          var randomGreeting = greetings[randomIndex];
+          promptTextarea.value = randomGreeting;
+          sendButton.click();
+          // Store the information that it's not the first time
+          localStorage.setItem("isFirstTime", "false");
+        }
+      }
+    </script>
     
+    <div class="rss-container"></div>
     
   </body>
 </html>
