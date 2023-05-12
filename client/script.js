@@ -97,6 +97,7 @@ function chatStripe(isAi, value, uniqueId) {
         <div class="message" id=${uniqueId}>${value}</div>
       </div>
     </div>
+    <div id="news-container"></div>
   `;
 }
 
