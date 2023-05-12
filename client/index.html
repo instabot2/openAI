@@ -32,7 +32,6 @@
       <!-- New div with invisible style -->
       <div id="hidden_text">Ask anything...</div>
     </div>
-    <script src="app.js"></script>
     <script type="module" src="script.js"></script>
     <script>
       function initChat() {
@@ -59,5 +58,58 @@
         }
       }
     </script>
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/newsapi/dist/browser/newsapi.min.js"></script>
+    <script>
+      const NewsAPI = require('newsapi');
+      const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
+      async function getFeed(searchQuery) {
+        const options = {
+          q: searchQuery,
+          sources: 'bbc-news,the-verge',
+          category: 'business',
+          language: 'en',
+          country: 'us'
+        };
+
+        try {
+          const response = await newsapi.v2.topHeadlines(options);
+          console.log(response);
+          return response.articles;
+        } catch (error) {
+          console.error('Error fetching news:', error);
+          return [];
+        }
+      }
+
+      getFeed('your-search-query').then((articles) => {
+        const container = document.querySelector('.rss-container');
+
+        articles.forEach((article) => {
+          const articleDiv = document.createElement('div');
+          articleDiv.classList.add('article');
+
+          const title = document.createElement('h2');
+          title.textContent = article.title;
+          articleDiv.appendChild(title);
+
+          const description = document.createElement('p');
+          description.textContent = article.description;
+          articleDiv.appendChild(description);
+
+          const link = document.createElement('a');
+          link.href = article.url;
+          link.textContent = 'Read More';
+          articleDiv.appendChild(link);
+
+          container.appendChild(articleDiv);
+        });
+      }).catch((error) => {
+        console.error(error);
+      });
+    </script>    
+    
+    
   </body>
 </html>
