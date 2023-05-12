@@ -1,21 +1,29 @@
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
 
-async function getFeed(searchQuery) {
-  const options = {
-    q: searchQuery,
-    sources: 'bbc-news,the-verge',
-    category: 'business',
-    language: 'en',
-    country: 'us'
-  };
+newsapi.v2.topHeadlines({
+  sources: 'bbc-news,the-verge',
+  q: 'bitcoin',
+  category: 'business',
+  language: 'en',
+  country: 'us'
+}).then(response => {
+  const articles = response.articles;
 
-  try {
-    const response = await newsapi.v2.topHeadlines(options);
-    console.log(response);
-    return response.articles;
-  } catch (error) {
-    console.error('Error fetching news:', error);
-    return [];
-  }
-}
+  // Create HTML string to render articles
+  const articleHTML = articles.map(article => {
+    return `
+      <div>
+        <h2>${article.title}</h2>
+        <p>${article.description}</p>
+        <a href="${article.url}">Read more</a>
+      </div>
+    `;
+  }).join('');
+
+  // Render articles to the news-container div
+  const newsContainer = document.getElementById('news-container');
+  newsContainer.innerHTML = articleHTML;
+}).catch(error => {
+  console.log(error);
+});
