@@ -19,42 +19,38 @@
     <script src="https://cdn.jsdelivr.net/npm/newsapi/dist/browser.min.js"></script>
     <script>
       const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
-      newsapi.v2
-        .topHeadlines({
-          sources: 'bbc-news,the-verge',
-          q: 'bitcoin',
-          category: 'business',
-          language: 'en',
-          country: 'us',
-        })
-        .then(response => {
-          const articles = response.articles;
-          // Create HTML string to render articles
-          const articleHTML = articles
-            .map(article => {
-              return `
-                <div>
-                  <h2>${article.title}</h2>
-                  <p>${article.description}</p>
-                  <a href="${article.url}">Read more</a>
-                </div>
-              `;
-            })
-            .join('');
+      newsapi.v2.everything({
+        q: 'tesla',
+        from: '2023-04-12',
+        sortBy: 'publishedAt',
+        apiKey: '4c7b3dd6ff024a2a878f173ef2391f2f'
+      })
+      .then(response => {
+        const articles = response.articles;
+        // Create HTML string to render articles
+        const articleHTML = articles
+          .map(article => {
+            return `
+              <div>
+                <h2>${article.title}</h2>
+                <p>${article.description}</p>
+                <a href="${article.url}">Read more</a>
+              </div>
+            `;
+          })
+          .join('');
+        // Render articles to the news-container div
+        const newsContainer = document.getElementById('news-container');
+        newsContainer.innerHTML = articleHTML;
 
-          // Render articles to the news-container div
-          const newsContainer = document.getElementById('news-container');
-          newsContainer.innerHTML = articleHTML;
-
-          // Display success message
-          alert('News articles successfully loaded!');
-        })
-        .catch(error => {
-          console.log(error);
-
-          // Display error message
-          alert('Failed to load news articles.');
-        });
+        // Display success message
+        alert('News articles successfully loaded!');
+      })
+      .catch(error => {
+        console.log(error);
+        // Display error message
+        alert('Failed to load news articles.');
+      });
     </script>
 
     
