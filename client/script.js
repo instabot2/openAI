@@ -112,14 +112,6 @@ const handleSubmit = async (e) => {
   
   // Retrieve prompt string from form data
   const data = new FormData(form);
-  
-   
-  const searchQuery = encodeURIComponent(data.get('prompt'));
-  // Call getFeed function with search query
-  const rssFeed = await getFeed(searchQuery);
- 
-
-
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
