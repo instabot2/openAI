@@ -141,9 +141,9 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
   
    
-  const searchQuery = encodeURIComponent(data.get('prompt'));
+  //const searchQuery = encodeURIComponent(data.get('prompt'));
   // Call getFeed function with search query
-  const rssFeed = await getFeed(searchQuery);
+  //const rssFeed = await getFeed(searchQuery);
  
 
 
