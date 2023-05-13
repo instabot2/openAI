@@ -13,7 +13,7 @@
     </style>
   </head>
   
-  <body onload="initNewsFeed();">
+  <body onload="initChat();">
     
     <div id="app">
       <div id="chat_container">
@@ -39,7 +39,7 @@
       function initNewsFeed() { 
         alert('News page successfully loaded!');
         console.log('initNewsFeed() called!');
-        window.location.href = "https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f";
+        window.location.href = "https://content.guardianapis.com/search?api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9";
       }
  
       function initChat() {
