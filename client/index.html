@@ -29,7 +29,7 @@
           placeholder="Ask anything..."
         ></textarea>
 
-        <button id="sendButton" type="submit" onclick="initNewsFeed()"><img src="assets/send.svg" alt="send" /></button>
+        <button id="sendButton" type="submit" onclick="initNewsFeed();"><img src="assets/send.svg" alt="send" /></button>
 
       </form>
       <!-- New div with invisible style -->
@@ -61,11 +61,11 @@
         }
       }
       
-      function initNewsFeed() {
-        var newsWindow = window.open("https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f", "_self");
-        newsWindow.onload = function() {
+      function initNewsFeed() {      
+        window.location.href = "https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f";
+        //newsWindow.onload = function() {
           alert('News page successfully loaded!');
-        };
+        //};
       }
 
       
