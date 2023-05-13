@@ -21,44 +21,41 @@
       function initNewsFeed() {
         //alert('..successfully run!');
         const url = 'https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
-        const proxyUrl = 'https://robwu.nl/cors-anywhere.html/';
 
-        $.ajax({
-          url: proxyUrl + url,
-          method: 'GET',
-          dataType: 'json'
-        })
-        .done(response => {
-          const articles = response.articles;
-          // Create HTML string to render articles
-          const articleHTML = articles
-            .map(article => {
-              return `
-                <div>
-                  <h2>${article.title}</h2>
-                  <p>${article.description}</p>
-                  <a href="${article.url}">Read more</a>
-                </div>
-              `;
-            })
-            .join('');
-          // Render articles to the news-container div
-          const newsContainer = document.getElementById('news-container');
-          if (newsContainer) {
-            newsContainer.innerHTML = articleHTML;
-            // Display success message
-            alert('News articles successfully loaded!');
-          } else {
-            console.log('News container not found.');
-            alert('News container not found.');
-          }
-        })
-        .fail(error => {
-          console.log(error);
-          // Display error message
-          alert('Failed to load news articles.');
-        });
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const articles = data.articles;
+            // Create HTML string to render articles
+            const articleHTML = articles
+              .map(article => {
+                return `
+                  <div>
+                    <h2>${article.title}</h2>
+                    <p>${article.description}</p>
+                    <a href="${article.url}">Read more</a>
+                  </div>
+                `;
+              })
+              .join('');
+            // Render articles to the news-container div
+            const newsContainer = document.getElementById('news-container');
+            if (newsContainer) {
+              newsContainer.innerHTML = articleHTML;
+              // Display success message
+              alert('News articles successfully loaded!');
+            } else {
+              console.log('News container not found.');
+              alert('News container not found.');
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            // Display error message
+            alert('Failed to load news articles.');
+          });
       }
+
     </script>
 
     
