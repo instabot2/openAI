@@ -58,32 +58,37 @@
           localStorage.setItem("isFirstTime", "false");
         }
       }
-
+      
       function initNewsFeed() {
-        var newsUrl = 'https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
-        var request = new XMLHttpRequest();
-        request.open('GET', newsUrl, true);
-        request.onload = function () {
-          if (request.status === 200) {
-            var data = JSON.parse(request.responseText);
-            var articles = data.articles;
-            var messageWrapper = document.getElementById('message_wrapper');
-            for (var i = 0; i < articles.length; i++) {
-              var article = articles[i];
-              var message = '<div class="message received blur"><p>' + article.title + '</p><img src="' + article.urlToImage + '" alt="' + article.title + '"/><a href="' + article.url + '" target="_blank">Read more</a></div>';
-              messageWrapper.innerHTML += message;
-            }
-          } else {
-            messageWrapper.innerHTML = '<div class="message received">Failed to load news articles.</div>';
+        // Make an API request to the News API
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            // Parse the response as JSON
+            var response = JSON.parse(this.responseText);
+            // Get the list of articles from the response
+            var articles = response.articles;
+            // Create a new HTML page to display the articles
+            var newsWindow = window.open("news.html", "_blank");
+            // Wait for the new page to load
+            newsWindow.onload = function() {
+              // Get the article container element from the new page
+              var articleContainer = newsWindow.document.getElementById("article_container");
+              // Loop through the articles and create HTML elements to display them
+              for (var i = 0; i < articles.length; i++) {
+                var article = articles[i];
+                var articleElement = document.createElement("div");
+                articleElement.innerHTML = "<h2>" + article.title + "</h2><p>" + article.description + "</p><p>" + article.publishedAt + "</p><a href='" + article.url + "' target='_blank'>Read more</a>";
+                articleContainer.appendChild(articleElement);
+              }
+            };
           }
         };
-        request.onerror = function () {
-          var messageWrapper = document.getElementById('message_wrapper');
-          messageWrapper.innerHTML = '<div class="message received">Failed to load news articles.</div>';
-        };
-        request.send();
-      }
-    </script>
+        xhr.open("GET", "https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f");
+        xhr.send();
+        }
+
+          </script>
 
   </body>
 </html>
