@@ -59,47 +59,12 @@
         }
       }
       
-    function initNewsFeed() {
-    alert('..successfully loaded!');
-    // Make an API request to the News API
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        // Parse the response as JSON
-        var response = JSON.parse(this.responseText);
-        // Get the list of articles from the response
-        var articles = response.articles;
-
-        // Create a new HTML page to display the articles
-        var newsWindow = window.open("", "_blank");
-        if (newsWindow == null || typeof(newsWindow) == 'undefined') {
-          // Popup blocker detected
-          alert("Please disable your popup blocker to view the news feed.");
-          return;
-        }
-
-        // Wait for the new page to load
+      function initNewsFeed() {
+        var newsWindow = window.open("https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f", "_blank");
         newsWindow.onload = function() {
-          // Get the article container element from the new page
-          var articleContainer = newsWindow.document.getElementById("article_container");
-          // Loop through the articles and create HTML elements to display them
-          for (var i = 0; i < articles.length; i++) {
-            var article = articles[i];
-            var articleElement = document.createElement("div");
-            articleElement.innerHTML = "<h2>" + article.title + "</h2><p>" + article.description + "</p><p>" + article.publishedAt + "</p><a href='" + article.url + "' target='_blank'>Read more</a>";
-            articleContainer.appendChild(articleElement);
-          }
+          alert('News page successfully loaded!');
         };
-
-        // Set the URL and send the request
-        newsWindow.location.href = "news.html";
       }
-    };
-    xhr.open("GET", "https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f");
-    xhr.send();
-  }
-
-
 
  </script>
 
