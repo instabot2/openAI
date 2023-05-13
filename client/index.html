@@ -42,10 +42,14 @@
             .join('');
           // Render articles to the news-container div
           const newsContainer = document.getElementById('news-container');
-          newsContainer.innerHTML = articleHTML;
+          if (newsContainer) {
+            newsContainer.innerHTML = articleHTML;
 
-          // Display success message
-          alert('News articles successfully loaded!');
+            // Display success message
+            alert('News articles successfully loaded!');
+          } else {
+            console.log('News container not found.');
+          }
         })
         .catch(error => {
           console.log(error);
@@ -53,6 +57,7 @@
           alert('Failed to load news articles.');
         });
       }
+
     </script>
     
     <div id="app">
