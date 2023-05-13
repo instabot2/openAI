@@ -38,7 +38,7 @@
     <script type="module" src="script.js"></script>
     <script>
       function initChat() {
-        alert('Prompt successfully loaded!');
+        //alert('Prompt successfully loaded!');
         var promptTextarea = document.getElementById("promptTextarea");
         var sendButton = document.getElementById("sendButton");
         var isFirstTime = localStorage.getItem("isFirstTime");
@@ -61,14 +61,14 @@
           localStorage.setItem("isFirstTime", "false");
         }
       }
-      
-      function initNewsFeed() { 
-        alert('News page successfully loaded!');
-        window.location.href = "https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f";
-      }
-
-      
- </script>
-
+       
+    </script>
+    <script>
+          function initNewsFeed() { 
+            alert('News page successfully loaded!');
+            window.location.href = "https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f";
+          }
+    </script>
+    
   </body>
 </html>
