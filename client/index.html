@@ -19,6 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/newsapi/dist/browser.min.js"></script>
     <script> 
         function initNewsFeed() {
+          alert('..successfully loaded!');
           const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
           try {
             newsapi.v2.topHeadlines({
