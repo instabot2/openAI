@@ -17,19 +17,17 @@
     
     <div id="news-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/newsapi/dist/browser.min.js"></script>
-    <script>
-      function initNewsFeed() {
-        try {
+    <script> 
+        function initNewsFeed() {
           const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
-          // To query /v2/top-headlines
-          // All options passed to topHeadlines are optional, but you need to include at least one of them
-          newsapi.v2.topHeadlines({
-            sources: 'bbc-news,the-verge',
-            q: 'bitcoin',
-            category: 'business',
-            language: 'en',
-            country: 'us'
-          })
+          try {
+            newsapi.v2.topHeadlines({
+              sources: 'bbc-news,the-verge',
+              q: 'bitcoin',
+              category: 'business',
+              language: 'en',
+              country: 'us'
+            })
             .then(response => {
               const articles = response.articles;
               // Create HTML string to render articles
@@ -54,13 +52,20 @@
                 console.log('News container not found.');
                 alert('News container not found.');
               }
+            })
+            .catch(error => {
+              console.log(error);
+              // Display error message
+              throw new Error('Failed to load news articles.');
+              alert('Failed to load news articles. ' + error);
             });
-        } catch (error) {
-          console.log(error);
-          // Display error message
-          alert('Failed to load news articles.');
+          } catch (error) {
+            console.log(error);
+            // Display error message
+            alert('Failed to load news articles.');
+          }
         }
-      }
+
 
     </script>
     
