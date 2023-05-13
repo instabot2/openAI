@@ -28,7 +28,7 @@
           style="overflow:auto;"
           placeholder="Ask anything..."
         ></textarea>
-        <button id="sendButton" type="submit" onclick="initNewsFeed();"><img src="assets/send.svg" alt="send" /></button> 
+        <button id="sendButton" type="submit"><img src="assets/send.svg" alt="send" /></button> 
       </form>
       <!-- New div with invisible style -->
       <div id="hidden_text">Ask anything...</div>
@@ -39,13 +39,14 @@
       function initNewsFeed() { 
         alert('News page successfully loaded!');
         console.log('initNewsFeed() called!');
-        window.location.href = "https://content.guardianapis.com/search?api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9";
+        window.location.href = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=test";
       }
  
       function initChat() {
         //alert('Prompt successfully loaded!');
         var promptTextarea = document.getElementById("promptTextarea");
         var sendButton = document.getElementById("sendButton");
+        var chatForm = document.getElementById("chatForm");
         var isFirstTime = localStorage.getItem("isFirstTime");
         if (!isFirstTime) {
           var greetings = [
@@ -65,6 +66,11 @@
           // Store the information that it's not the first time
           localStorage.setItem("isFirstTime", "false");
         }
+        
+        chatForm.addEventListener("submit", function(event) {
+          event.preventDefault(); // Prevents the form from submitting
+          initNewsFeed();
+        });
       }
        
     </script>
