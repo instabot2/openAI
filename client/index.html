@@ -19,46 +19,53 @@
     <script src="https://cdn.jsdelivr.net/npm/newsapi/dist/browser.min.js"></script>
     <script>
       function initNewsFeed() {
-        alert('..successfully loaded!');
-        
-        const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
-        newsapi.v2.everything({
-          q: 'tesla',
-          from: '2023-04-12',
-          sortBy: 'publishedAt',
-          apiKey: '4c7b3dd6ff024a2a878f173ef2391f2f'
-        })
-        .then(response => {
-          const articles = response.articles;
-          // Create HTML string to render articles
-          const articleHTML = articles
-            .map(article => {
-              return `
-                <div>
-                  <h2>${article.title}</h2>
-                  <p>${article.description}</p>
-                  <a href="${article.url}">Read more</a>
-                </div>
-              `;
-            })
-            .join('');
-          // Render articles to the news-container div
-          const newsContainer = document.getElementById('news-container');
-          if (newsContainer) {
-            newsContainer.innerHTML = articleHTML;
+        //alert('..successfully loaded!');
 
-            // Display success message
-            alert('News articles successfully loaded!');
-          } else {
-            console.log('News container not found.');
-          }
-        })
-        .catch(error => {
+        try {
+          const newsapi = new NewsAPI('4c7b3dd6ff024a2a878f173ef2391f2f');
+          newsapi.v2.everything({
+            q: 'tesla',
+            from: '2023-04-12',
+            sortBy: 'publishedAt',
+            apiKey: '4c7b3dd6ff024a2a878f173ef2391f2f'
+          })
+          .then(response => {
+            const articles = response.articles;
+            // Create HTML string to render articles
+            const articleHTML = articles
+              .map(article => {
+                return `
+                  <div>
+                    <h2>${article.title}</h2>
+                    <p>${article.description}</p>
+                    <a href="${article.url}">Read more</a>
+                  </div>
+                `;
+              })
+              .join('');
+            // Render articles to the news-container div
+            const newsContainer = document.getElementById('news-container');
+            if (newsContainer) {
+              newsContainer.innerHTML = articleHTML;
+              // Display success message
+              alert('News articles successfully loaded!');
+            } else {
+              console.log('News container not found.');
+              alert('News container not found.');
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            // Display error message
+            alert('Failed to load news articles.');
+          });
+        } catch (error) {
           console.log(error);
           // Display error message
           alert('Failed to load news articles.');
-        });
+        }
       }
+
 
     </script>
     
