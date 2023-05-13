@@ -15,61 +15,6 @@
   
   <body onload="initChat(); initNewsFeed();">
     
-    <div id="news-container"></div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      function initNewsFeed() {
-        //alert('..successfully run!');
-        const url = 'https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-
-        xhr.onload = function() {
-          if (xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            const articles = response.articles;
-            // Create HTML string to render articles
-            const articleHTML = articles
-              .map(article => {
-                return `
-                  <div>
-                    <h2>${article.title}</h2>
-                    <p>${article.description}</p>
-                    <a href="${article.url}">Read more</a>
-                  </div>
-                `;
-              })
-              .join('');
-            // Render articles to the news-container div
-            const newsContainer = document.getElementById('news-container');
-            if (newsContainer) {
-              newsContainer.innerHTML = articleHTML;
-              // Display success message
-              alert('News articles successfully loaded!');
-            } else {
-              console.log('News container not found.');
-              alert('News container not found.');
-            }
-          } else {
-            console.log('Request failed.  Returned status of ' + xhr.status);
-            // Display error message
-            alert('Failed to load news articles.');
-          }
-        };
-
-        xhr.onerror = function() {
-          console.log('Request failed.  There was a network error.');
-          // Display error message
-          alert('Failed to load news articles.');
-        };
-
-        xhr.send();
-      }
-
-
-    </script>
-
-    
     <div id="app">
       <div id="chat_container">
         <div id="message_wrapper"></div>
@@ -112,6 +57,31 @@
           // Store the information that it's not the first time
           localStorage.setItem("isFirstTime", "false");
         }
+      }
+
+      function initNewsFeed() {
+        var newsUrl = 'https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f';
+        var request = new XMLHttpRequest();
+        request.open('GET', newsUrl, true);
+        request.onload = function () {
+          if (request.status === 200) {
+            var data = JSON.parse(request.responseText);
+            var articles = data.articles;
+            var messageWrapper = document.getElementById('message_wrapper');
+            for (var i = 0; i < articles.length; i++) {
+              var article = articles[i];
+              var message = '<div class="message received blur"><p>' + article.title + '</p><img src="' + article.urlToImage + '" alt="' + article.title + '"/><a href="' + article.url + '" target="_blank">Read more</a></div>';
+              messageWrapper.innerHTML += message;
+            }
+          } else {
+            messageWrapper.innerHTML = '<div class="message received">Failed to load news articles.</div>';
+          }
+        };
+        request.onerror = function () {
+          var messageWrapper = document.getElementById('message_wrapper');
+          messageWrapper.innerHTML = '<div class="message received">Failed to load news articles.</div>';
+        };
+        request.send();
       }
     </script>
 
