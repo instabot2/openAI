@@ -60,7 +60,7 @@
       }
       
       function initNewsFeed() {
-        var newsWindow = window.open("https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f", "_blank");
+        var newsWindow = window.open("https://newsapi.org/v2/top-headlines?country=us&category=business&q=bitcoin&apiKey=4c7b3dd6ff024a2a878f173ef2391f2f", "_self");
         newsWindow.onload = function() {
           alert('News page successfully loaded!');
         };
