@@ -119,7 +119,7 @@ function loadData(queryString) {
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const articlesDiv = document.getElementById('articlesDiv');
+      const articlesDiv = document.getElementById('dataDiv');
       
       // Clear any previous articles
       articlesDiv.innerHTML = '';
