@@ -102,8 +102,8 @@ function chatStripe(isAi, value, uniqueId) {
 
 
 //const apiUrl = `https://content.guardianapis.com/search?tag=${encodeURIComponent(queryString)}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
-function loadData(queryString) {
-  const apiUrl = `https://content.guardianapis.com/search?q=market&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
+function loadData(queryString = "market") {
+  const apiUrl = `https://content.guardianapis.com/search?q=${encodeURIComponent(queryString)}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
