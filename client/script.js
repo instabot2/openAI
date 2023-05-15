@@ -118,38 +118,29 @@ function loadData(queryString) {
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
+      const articles = data.response.results;
       const dataDiv = document.getElementById('dataDiv');
-      
-      // Clear any existing data from the div
       dataDiv.innerHTML = '';
-      
-      // Iterate over each article returned by the API
-      data.response.results.forEach(article => {
-        
-        // Create a new div for this article's content
+      articles.forEach(article => {
         const articleDiv = document.createElement('div');
-        articleDiv.classList.add('article');
-        
-        // Create a heading element for the article title
-        const heading = document.createElement('h3');
-        heading.textContent = article.webTitle;
-        
-        // Create a paragraph element for the section and publication date
-        const meta = document.createElement('p');
-        meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
-        
-        // Add the heading and meta elements to the article div
-        articleDiv.appendChild(heading);
-        articleDiv.appendChild(meta);
-        
-        // Add the article div to the data div
+        const title = document.createElement('h2');
+        title.textContent = article.webTitle;
+        const date = document.createElement('p');
+        date.textContent = new Date(article.webPublicationDate).toLocaleDateString();
+        const description = document.createElement('p');
+        description.textContent = article.fields.trailText;
+        const content = document.createElement('p');
+        content.textContent = article.fields.bodyText;
+        articleDiv.appendChild(title);
+        articleDiv.appendChild(date);
+        articleDiv.appendChild(description);
+        articleDiv.appendChild(content);
         dataDiv.appendChild(articleDiv);
       });
-      
-      // Display the data div
       dataDiv.style.display = 'block';
     });
 }
+
 
 
 
