@@ -35,13 +35,6 @@
     </div>
     <script type="module" src="script.js"></script>
     <script>
-
-      function initNewsFeed() { 
-        alert('News page successfully loaded!');
-        console.log('initNewsFeed() called!');
-        window.location.href = "https://content.guardianapis.com/search?q=debate&tag=politics/politics&from-date=2014-01-01&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9";
-      }
- 
       function initChat() {
         //alert('Prompt successfully loaded!');
         var promptTextarea = document.getElementById("promptTextarea");
@@ -66,11 +59,6 @@
           // Store the information that it's not the first time
           localStorage.setItem("isFirstTime", "false");
         }
-        
-        chatForm.addEventListener("submit", function(event) {
-          event.preventDefault(); // Prevents the form from submitting
-          initNewsFeed();
-        });
       }
        
     </script>
