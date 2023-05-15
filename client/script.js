@@ -124,6 +124,9 @@ const handleSubmit = async (e) => {
   // Retrieve prompt string from form data
   const data = new FormData(form);
 
+  // Call the loadData function to fetch data from the Guardian API
+  loadData();
+
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
