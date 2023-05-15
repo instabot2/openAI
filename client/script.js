@@ -100,14 +100,12 @@ function chatStripe(isAi, value, uniqueId) {
   `;
 }
 
-
-
+  
 function loadData(queryString) {
   const encodedQuery = encodeURIComponent(queryString.replace(/\%0A$/, '').trim());
   //window.alert(`The string: ${JSON.stringify(encodedQuery)}`);
   //const encodedQuery = "market today";
   const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;  
-  
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
@@ -130,10 +128,10 @@ function loadData(queryString) {
         // Create a paragraph element for the section and publication date
         const meta = document.createElement('p');
         meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
-        
+           
         // Create a paragraph element for the article content
         const content = document.createElement('p');
-        content.textContent = article.fields.bodyText;
+        content.textContent = article.fields.bodyText;   
         
         // Add the heading, meta, and content elements to the article div
         articleDiv.appendChild(heading);
@@ -148,6 +146,10 @@ function loadData(queryString) {
       dataDiv.style.display = 'block';
     });
 }
+       
+    
+
+        
 
 
 
