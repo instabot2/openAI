@@ -101,6 +101,17 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
+// Define the function to load data from the Guardian API
+function loadData() {
+  fetch('https://content.guardianapis.com/search?api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9')
+    .then(response => response.json())
+    .then(data => {
+      const dataDiv = document.getElementById('dataDiv');
+      dataDiv.innerHTML = JSON.stringify(data);
+      dataDiv.style.display = 'block';
+    });
+}
+
 
 let conversationHistory = [];
 
