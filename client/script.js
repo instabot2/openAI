@@ -104,17 +104,50 @@ function chatStripe(isAi, value, uniqueId) {
 //const apiUrl = `https://content.guardianapis.com/search?tag=${encodeURIComponent(queryString)}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
 function loadData(queryString) {
   const encodedQuery = encodeURIComponent(queryString.replace(/\%0A$/, '').trim());
-  window.alert(`The string: ${JSON.stringify(encodedQuery)}`);
+  //window.alert(`The string: ${JSON.stringify(encodedQuery)}`);
   //const encodedQuery = "market today";
   const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
+  //fetch(apiUrl)
+  //  .then(response => response.json())
+  //  .then(data => {
+  //    const dataDiv = document.getElementById('dataDiv');
+  //    dataDiv.innerHTML = JSON.stringify(data);
+  //    dataDiv.style.display = 'block';
+  //  });
+//}
+
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const dataDiv = document.getElementById('dataDiv');
-      dataDiv.innerHTML = JSON.stringify(data);
-      dataDiv.style.display = 'block';
+      const articlesDiv = document.getElementById('articlesDiv');
+      
+      // Clear any previous articles
+      articlesDiv.innerHTML = '';
+      
+      // Loop through the articles and create an HTML element for each
+      data.response.results.forEach(article => {
+        const title = article.webTitle;
+        const description = article.fields?.trailText || '';
+        
+        const articleDiv = document.createElement('div');
+        articleDiv.classList.add('article');
+        
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = title;
+        articleDiv.appendChild(titleElement);
+        
+        const descriptionElement = document.createElement('p');
+        descriptionElement.textContent = description;
+        articleDiv.appendChild(descriptionElement);
+        
+        articlesDiv.appendChild(articleDiv);
+      });
+      
+      // Show the articles
+      articlesDiv.style.display = 'block';
     });
 }
+
 
 
 
