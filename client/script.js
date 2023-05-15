@@ -101,20 +101,13 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-//const apiUrl = `https://content.guardianapis.com/search?tag=${encodeURIComponent(queryString)}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
+
 function loadData(queryString) {
   const encodedQuery = encodeURIComponent(queryString.replace(/\%0A$/, '').trim());
   //window.alert(`The string: ${JSON.stringify(encodedQuery)}`);
   //const encodedQuery = "market today";
-  const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
-  //fetch(apiUrl)
-  //  .then(response => response.json())
-  //  .then(data => {
-  //    const dataDiv = document.getElementById('dataDiv');
-  //    dataDiv.innerHTML = JSON.stringify(data);
-  //    dataDiv.style.display = 'block';
-  //  });
-//}   
+  const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;  
+  
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
@@ -138,9 +131,14 @@ function loadData(queryString) {
         const meta = document.createElement('p');
         meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
         
-        // Add the heading and meta elements to the article div
+        // Create a paragraph element for the article content
+        const content = document.createElement('p');
+        content.textContent = article.fields.bodyText;
+        
+        // Add the heading, meta, and content elements to the article div
         articleDiv.appendChild(heading);
         articleDiv.appendChild(meta);
+        articleDiv.appendChild(content);
         
         // Add the article div to the data div
         dataDiv.appendChild(articleDiv);
@@ -150,7 +148,6 @@ function loadData(queryString) {
       dataDiv.style.display = 'block';
     });
 }
-
 
 
 
