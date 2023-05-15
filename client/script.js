@@ -115,10 +115,6 @@ function loadData(queryString) {
   //    dataDiv.style.display = 'block';
   //  });
 //}  
-function loadData(queryString) {
-  const encodedQuery = encodeURIComponent(queryString.replace(/\%0A$/, '').trim());
-  const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
-  
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
