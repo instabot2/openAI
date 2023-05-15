@@ -115,59 +115,42 @@ function loadData(queryString) {
   //    dataDiv.style.display = 'block';
   //  });
 //}  
+function loadData(queryString) {
+  const encodedQuery = encodeURIComponent(queryString.replace(/\%0A$/, '').trim());
+  const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
+  
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const dataDiv = document.getElementById('dataDiv');
-
-      // Clear any existing data from the div
-      dataDiv.innerHTML = '';
-
-      // Iterate over each article returned by the API
+      const articlesDiv = document.getElementById('dataDiv');
+      
+      // Clear any previous articles
+      articlesDiv.innerHTML = '';
+      
+      // Loop through the articles and create an HTML element for each
       data.response.results.forEach(article => {
-
-        // Create a new div for this article's content
+        const title = article.webTitle;
+        const description = article.fields?.trailText || '';
+        
         const articleDiv = document.createElement('div');
         articleDiv.classList.add('article');
-
-        // Create a heading element for the article title
-        const heading = document.createElement('h3');
-        heading.textContent = article.webTitle;
-
-        // Create a paragraph element for the section and publication date
-        const meta = document.createElement('p');
-        meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
-
-        // Create a paragraph element for the article summary
-        const summary = document.createElement('p');
-        summary.textContent = article.fields.trailText;
-
-        // Add the heading, meta, and summary elements to the article div
-        articleDiv.appendChild(heading);
-        articleDiv.appendChild(meta);
-        articleDiv.appendChild(summary);
-
-        // Fetch the full article content from the API
-        const contentUrl = `https://content.guardianapis.com/${article.id}?api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9&show-fields=body`;
-        fetch(contentUrl)
-          .then(response => response.json())
-          .then(data => {
-            // Create a div for the full article content
-            const content = document.createElement('div');
-            content.innerHTML = data.response.content.fields.body;
-
-            // Add the content div to the article div
-            articleDiv.appendChild(content);
-          });
-
-        // Add the article div to the data div
-        dataDiv.appendChild(articleDiv);
+        
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = title;
+        articleDiv.appendChild(titleElement);
+        
+        const descriptionElement = document.createElement('p');
+        descriptionElement.textContent = description;
+        articleDiv.appendChild(descriptionElement);
+        
+        articlesDiv.appendChild(articleDiv);
       });
-
-      // Display the data div
-      dataDiv.style.display = 'block';
+      
+      // Show the articles
+      articlesDiv.style.display = 'block';
     });
 }
+
 
 
 
