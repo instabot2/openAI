@@ -128,7 +128,13 @@ function loadData(queryString) {
         // Create a paragraph element for the section and publication date
         const meta = document.createElement('p');
         meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
-           
+        
+        // Store the meta text content in localStorage
+        const oldMessages = JSON.parse(localStorage.getItem('metaTextContent')) || [];
+        oldMessages.push(meta.textContent);
+        localStorage.setItem('metaTextContent', JSON.stringify(oldMessages));
+
+        
         // Create a paragraph element for the article content
         //const content = document.createElement('p');
         //content.textContent = article.fields.bodyText;   
@@ -147,12 +153,7 @@ function loadData(queryString) {
     });
 }
        
-    
-
-        
-
-
-
+  
 let conversationHistory = [];
 
 const handleSubmit = async (e) => {
