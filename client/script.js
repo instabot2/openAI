@@ -130,9 +130,9 @@ function loadData(queryString) {
         meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
         
         // Store the meta text content in localStorage
-        const oldMessages = JSON.parse(localStorage.getItem('metaTextContent')) || [];
-        oldMessages.push(meta.textContent);
-        localStorage.setItem('metaTextContent', JSON.stringify(oldMessages));
+        const NewsUpdate = JSON.parse(localStorage.getItem('metaTextContent')) || [];
+        NewsUpdate.push(meta.textContent);
+        localStorage.setItem('metaTextContent', JSON.stringify(NewsUpdate));
 
         
         // Create a paragraph element for the article content
