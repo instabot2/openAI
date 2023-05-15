@@ -101,9 +101,9 @@ function chatStripe(isAi, value, uniqueId) {
 }
 
 
-// Define the function to load data from the Guardian API
-function loadData() {
-  fetch('https://content.guardianapis.com/search?api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9')
+function loadData(queryString) {
+  const apiUrl = `https://content.guardianapis.com/search?q=${encodeURIComponent(queryString)}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
+  fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
       const dataDiv = document.getElementById('dataDiv');
@@ -111,6 +111,7 @@ function loadData() {
       dataDiv.style.display = 'block';
     });
 }
+
 
 
 let conversationHistory = [];
@@ -125,7 +126,7 @@ const handleSubmit = async (e) => {
   const data = new FormData(form);
 
   // Call the loadData function to fetch data from the Guardian API
-  loadData();
+  loadData(data.get('prompt'));
 
   // Retrieve stored messages from local storage
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
