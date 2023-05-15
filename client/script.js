@@ -104,6 +104,7 @@ function chatStripe(isAi, value, uniqueId) {
 //const apiUrl = `https://content.guardianapis.com/search?tag=${encodeURIComponent(queryString)}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
 function loadData(queryString) {
   const encodedQuery = encodeURIComponent(queryString);
+  window.alert(`The string: ${JSON.stringify(encodedQuery)}`);
   //const encodedQuery = "market today";
   const apiUrl = `https://content.guardianapis.com/search?q=${encodedQuery}&api-key=35831ef2-e9cf-4977-b5ef-00856e0563c9`;
   fetch(apiUrl)
