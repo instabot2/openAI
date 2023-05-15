@@ -130,8 +130,8 @@ function loadData(queryString) {
         meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
            
         // Create a paragraph element for the article content
-        const content = document.createElement('p');
-        content.textContent = article.fields.bodyText;   
+        //const content = document.createElement('p');
+        //content.textContent = article.fields.bodyText;   
         
         // Add the heading, meta, and content elements to the article div
         articleDiv.appendChild(heading);
