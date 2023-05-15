@@ -114,39 +114,43 @@ function loadData(queryString) {
   //    dataDiv.innerHTML = JSON.stringify(data);
   //    dataDiv.style.display = 'block';
   //  });
-//}
-
+//}  
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const articlesDiv = document.getElementById('dataDiv');
+      const dataDiv = document.getElementById('dataDiv');
       
-      // Clear any previous articles
-      articlesDiv.innerHTML = '';
+      // Clear any existing data from the div
+      dataDiv.innerHTML = '';
       
-      // Loop through the articles and create an HTML element for each
+      // Iterate over each article returned by the API
       data.response.results.forEach(article => {
-        const title = article.webTitle;
-        const description = article.fields?.trailText || '';
         
+        // Create a new div for this article's content
         const articleDiv = document.createElement('div');
         articleDiv.classList.add('article');
         
-        const titleElement = document.createElement('h2');
-        titleElement.textContent = title;
-        articleDiv.appendChild(titleElement);
+        // Create a heading element for the article title
+        const heading = document.createElement('h3');
+        heading.textContent = article.webTitle;
         
-        const descriptionElement = document.createElement('p');
-        descriptionElement.textContent = description;
-        articleDiv.appendChild(descriptionElement);
+        // Create a paragraph element for the section and publication date
+        const meta = document.createElement('p');
+        meta.textContent = `${article.sectionName} | ${new Date(article.webPublicationDate).toLocaleDateString()}`;
         
-        articlesDiv.appendChild(articleDiv);
+        // Add the heading and meta elements to the article div
+        articleDiv.appendChild(heading);
+        articleDiv.appendChild(meta);
+        
+        // Add the article div to the data div
+        dataDiv.appendChild(articleDiv);
       });
       
-      // Show the articles
-      articlesDiv.style.display = 'block';
+      // Display the data div
+      dataDiv.style.display = 'block';
     });
 }
+
 
 
 
