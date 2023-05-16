@@ -206,6 +206,8 @@ const handleSubmit = async (e) => {
 
   try {
     
+    const NewsUpdate = 'market',
+    
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
