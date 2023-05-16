@@ -174,7 +174,10 @@ const handleSubmit = async (e) => {
   
   // Retrieve stored newsupdate from local storage
   const NewsUpdate = JSON.parse(localStorage.getItem('metaTextContent')) || [];
+  NewsUpdate.push(meta.textContent);
+  //localStorage.setItem('metaTextContent', JSON.stringify(NewsUpdate));
 
+  
   
   
   // Add user message to conversation history
@@ -210,10 +213,11 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         conversationHistory: conversationHistory,
-        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + NewsUpdate + '\n' + data.get('prompt'),
       }),
     });
-
+    //prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
