@@ -204,8 +204,9 @@ const handleSubmit = async (e) => {
   const messageDiv = document.getElementById(uniqueId);
   loader(messageDiv);
 
+  window.alert(`NewsUpdate: ${JSON.stringify(NewsUpdate)}`);
+  
   try {
-    window.alert(`NewsUpdate: ${JSON.stringify(NewsUpdate)}`);
     
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
