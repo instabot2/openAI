@@ -212,7 +212,7 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        conversationHistory: [...conversationHistory, ...NewsUpdate, { message: data.get('prompt') }],
+        conversationHistory: [...conversationHistory, ...NewsUpdate],
         prompt: [...conversationHistory, ...NewsUpdate, { message: data.get('prompt') }].map(msg => msg.message).join('\n'),
       }),
     });
