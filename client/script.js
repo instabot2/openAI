@@ -206,8 +206,7 @@ const handleSubmit = async (e) => {
 
   window.alert(`NewsUpdate: ${JSON.stringify(NewsUpdate)}`);
   
-  try {
-    
+  try {   
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
       headers: {
@@ -217,10 +216,7 @@ const handleSubmit = async (e) => {
         conversationHistory: conversationHistory,
         prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
-    });
-    
-    //conversationHistory: conversationHistory,    
-    //prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    }); 
     
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
