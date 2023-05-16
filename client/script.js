@@ -205,8 +205,7 @@ const handleSubmit = async (e) => {
   loader(messageDiv);
 
   try {
-    
-    const NewsUpdate = 'market',
+    window.alert(`NewsUpdate: ${JSON.stringify(NewsUpdate)}`);
     
     const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
       method: 'POST',
