@@ -174,9 +174,9 @@ const handleSubmit = async (e) => {
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
   
   // Retrieve stored newsupdate from local storage
-  const NewsUpdate = JSON.parse(localStorage.getItem('metaTextContent')) || [];
-  NewsUpdate.push(meta.textContent);
-  localStorage.setItem('metaTextContent', JSON.stringify(NewsUpdate));
+  //const NewsUpdate = JSON.parse(localStorage.getItem('metaTextContent')) || [];
+  //NewsUpdate.push(meta.textContent);
+  //localStorage.setItem('metaTextContent', JSON.stringify(NewsUpdate));
 
   
   
