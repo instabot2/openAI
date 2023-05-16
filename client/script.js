@@ -213,7 +213,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify({
         conversationHistory: conversationHistory.concat(NewsUpdate),
-        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+        prompt: conversationHistory.concat(NewsUpdate).map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
     });
     
