@@ -212,8 +212,9 @@ const handleSubmit = async (e) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        conversationHistory: [...conversationHistory, ...NewsUpdate],
-        prompt: [...conversationHistory, ...NewsUpdate, { message: data.get('prompt') }].map(msg => msg.message).join('\n'),
+        conversationHistory: conversationHistory, 
+        NewsUpdate: NewsUpdate,
+        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
     });
     
