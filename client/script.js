@@ -172,6 +172,9 @@ const handleSubmit = async (e) => {
   const oldMessages = JSON.parse(localStorage.getItem('messages')) || [];
   //window.alert(`The old messages are: ${JSON.stringify(oldMessages)}`);
   
+  // Retrieve stored newsupdate from local storage
+  const NewsUpdate = JSON.parse(localStorage.getItem('metaTextContent')) || [];
+
   
   
   // Add user message to conversation history
