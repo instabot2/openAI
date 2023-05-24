@@ -229,7 +229,7 @@ const handleSubmit = async (e) => {
         'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
       },
       data: {
-        model: 'gpt-3.5-turbo',
+        model: 'text-davinci-003',
         messages: [
           {
             role: 'user',
