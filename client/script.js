@@ -222,21 +222,28 @@ const handleSubmit = async (e) => {
     const axios = require('axios');
     const options = {
       method: 'POST',
-      url: 'https://openai80.p.rapidapi.com/models',
+      url: 'https://openai80.p.rapidapi.com/chat/completions',
       headers: {
+        'content-type': 'application/json',
         'X-RapidAPI-Key': '1825e65d0bmsh424a5ef12353dc4p1f84d8jsn208df257599c',
-        'X-RapidAPI-Host': 'openai80.p.rapidapi.com',
-        'Content-Type': 'application/json'
+        'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
       },
-      data: JSON.stringify({
-        conversationHistory: conversationHistory,
-        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt')
-      })
+      data: {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'user',
+            content: 'Hello!'
+          }
+        ]
+      }
     };
+
 
     try {
       const responseData = await axios.request(options);
-      console.log(responseData.data);
+      //console.log(responseData.data);
+      console.log('responseData:', responseData);
       window.alert(`Response: ${JSON.stringify(responseData.data)}`);
     } catch (error) {
       console.error(error);
