@@ -208,22 +208,38 @@ const handleSubmit = async (e) => {
   //window.alert(`NewsUpdate: ${JSON.stringify(NewsUpdate)}`);
   
   try {   
-    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
-      method: 'POST',
+    //const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    //  method: 'POST',
+    //  headers: {
+    //    'Content-Type': 'application/json',
+    //  },
+    //  body: JSON.stringify({
+    //    conversationHistory: conversationHistory,
+    //    prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    //  }),
+    //}); 
+    
+    const axios = require('axios');
+    const options = {
+      method: 'GET',
+      url: 'https://openai80.p.rapidapi.com/models',
       headers: {
-        'Content-Type': 'application/json',
+        'X-RapidAPI-Key': '1825e65d0bmsh424a5ef12353dc4p1f84d8jsn208df257599c',
+        'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
         conversationHistory: conversationHistory,
         prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
       }),
-    }); 
+    };
+    
     
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
     if (response.ok) {
-      const responseData = await response.json();
+      //const responseData = await response.json();
+      const responseData = await axios.request(options);
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
 
       // Add bot message to conversation history
