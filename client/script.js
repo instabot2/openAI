@@ -233,6 +233,14 @@ const handleSubmit = async (e) => {
       }),
     };
     
+    try {
+      const responseData = await axios.request(options);
+      console.log(responseData.data);
+      window.alert(`botMessage: ${JSON.stringify(responseData.data)}`);
+    } catch (error) {
+      console.error(error);
+    }
+
     
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
