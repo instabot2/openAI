@@ -221,29 +221,37 @@ const handleSubmit = async (e) => {
     
     const axios = require('axios');
     const options = {
-      method: 'GET',
+      method: 'POST',
       url: 'https://openai80.p.rapidapi.com/models',
       headers: {
         'X-RapidAPI-Key': '1825e65d0bmsh424a5ef12353dc4p1f84d8jsn208df257599c',
-        'X-RapidAPI-Host': 'openai80.p.rapidapi.com'
-      }
+        'X-RapidAPI-Host': 'openai80.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify({
+        conversationHistory: conversationHistory,
+        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt')
+      })
     };
 
     try {
       const responseData = await axios.request(options);
       console.log(responseData.data);
-      window.alert(`botMessage: ${JSON.stringify(responseData.data)}`);
+      window.alert(`Response: ${JSON.stringify(responseData.data)}`);
     } catch (error) {
       console.error(error);
     }
+
+
 
     
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
     if (response.ok) {
+      //const responseData = await axios.request(options);
+      
       //const responseData = await response.json();
-      const responseData = await axios.request(options);
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
 
       // Add bot message to conversation history
