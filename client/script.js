@@ -211,6 +211,7 @@ const handleSubmit = async (e) => {
   try {   
     
     //modify this code-----------------
+    alert('Start Request..');
     const data = {
       conversationHistory: conversationHistory,
       prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
