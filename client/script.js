@@ -210,8 +210,8 @@ const handleSubmit = async (e) => {
   
   try {   
     
-    //modify this code-----------------
-    //alert('Start Request..');
+    modify this code-----------------
+    alert('Start Request..');
     //const data = {
     //  conversationHistory: conversationHistory,
     //  prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
@@ -227,12 +227,19 @@ const handleSubmit = async (e) => {
     //  data: JSON.stringify(data),
     //};
 
-    
-    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    const response = await fetch('https://chatgpt-api7.p.rapidapi.com/ask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-RapidAPI-Key': '9ec25d2accmsha2f4b9a8bf1feccp12fd72jsn7fa8b52e09eb',
+        'X-RapidAPI-Host': 'chatgpt-api7.p.rapidapi.com',
       },
+
+    //const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    //  method: 'POST',
+    //  headers: {
+    //    'Content-Type': 'application/json',
+    //  },
       body: JSON.stringify({
         conversationHistory: conversationHistory,
         prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
