@@ -212,10 +212,20 @@ const handleSubmit = async (e) => {
     
     //modify this code-----------------
     alert('Start Request..');
-    const data = {
-      conversationHistory: conversationHistory,
-      prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    //const data = {
+    //  conversationHistory: conversationHistory,
+    //  prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    //};
+    
+    const Data = {
+      conversationHistory: [
+        { message: 'Hello', sender: 'user' },
+        { message: 'Hi there!', sender: 'bot' },
+      ],
+      prompt: 'This is a prompt',
     };
+
+    
     const options = {
       method: 'POST',
       url: 'https://chatgpt-api7.p.rapidapi.com/ask',
