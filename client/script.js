@@ -246,9 +246,8 @@ const handleSubmit = async (e) => {
       //modify code
       // Alert message on success
       alert('Request successful');
-      const response = await axios.request(options);
-      const responseData = response.data;
-      const { conversation_id, response: botResponse } = responseData;
+      const responseData = await axios.request(options);
+      //const { conversation_id, response: botResponse } = responseData;
 
       
       //const responseData = await response.json();
