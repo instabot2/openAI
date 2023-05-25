@@ -211,43 +211,33 @@ const handleSubmit = async (e) => {
   try {   
     
     //modify this code-----------------
-    alert('Start Request..');
+    //alert('Start Request..');
     //const data = {
     //  conversationHistory: conversationHistory,
     //  prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
-    //};
-    
-    const Data = {
-      conversationHistory: [
-        { message: 'Hello', sender: 'user' },
-        { message: 'Hi there!', sender: 'bot' },
-      ],
-      prompt: 'This is a prompt',
-    };
-
-    
-    const options = {
-      method: 'POST',
-      url: 'https://chatgpt-api7.p.rapidapi.com/ask',
-      headers: {
-        'content-type': 'application/json',
-        'X-RapidAPI-Key': '9ec25d2accmsha2f4b9a8bf1feccp12fd72jsn7fa8b52e09eb',
-        'X-RapidAPI-Host': 'chatgpt-api7.p.rapidapi.com',
-      },
-      data: JSON.stringify(data),
-    };
-
-    
-    //const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    //}; 
+    //const options = {
     //  method: 'POST',
+    //  url: 'https://chatgpt-api7.p.rapidapi.com/ask',
     //  headers: {
-    //    'Content-Type': 'application/json',
+    //    'content-type': 'application/json',
+    //    'X-RapidAPI-Key': '9ec25d2accmsha2f4b9a8bf1feccp12fd72jsn7fa8b52e09eb',
+    //    'X-RapidAPI-Host': 'chatgpt-api7.p.rapidapi.com',
     //  },
-    //  body: JSON.stringify({
-    //    conversationHistory: conversationHistory,
-    //    prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
-    //  }),
-    //}); 
+    //  data: JSON.stringify(data),
+    //};
+
+    
+    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        conversationHistory: conversationHistory,
+        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+      }),
+    }); 
 
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
@@ -257,11 +247,11 @@ const handleSubmit = async (e) => {
       //modify code
       // Alert message on success
       alert('Request successful');
-      const responseData = await axios.request(options);
+      //const responseData = await axios.request(options);
       //const { conversation_id, response: botResponse } = responseData;
 
       
-      //const responseData = await response.json();
+      const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
 
       // Add bot message to conversation history
