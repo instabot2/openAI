@@ -207,24 +207,49 @@ const handleSubmit = async (e) => {
 
   //window.alert(`NewsUpdate: ${JSON.stringify(NewsUpdate)}`);
   
+  
   try {   
-    const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    
+    //modify this code-----------------
+    const data = {
+      conversationHistory: conversationHistory,
+      prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    };
+    const options = {
       method: 'POST',
+      url: 'https://chatgpt-api7.p.rapidapi.com/ask',
       headers: {
-        'Content-Type': 'application/json',
+        'content-type': 'application/json',
+        'X-RapidAPI-Key': '9ec25d2accmsha2f4b9a8bf1feccp12fd72jsn7fa8b52e09eb',
+        'X-RapidAPI-Host': 'chatgpt-api7.p.rapidapi.com',
       },
-      body: JSON.stringify({
-        conversationHistory: conversationHistory,
-        prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
-      }),
-    }); 
+      data: JSON.stringify(data),
+    };
+
+    
+    //const response = await fetch('https://chatgpt-ai-lujs.onrender.com', {
+    //  method: 'POST',
+    //  headers: {
+    //    'Content-Type': 'application/json',
+    //  },
+    //  body: JSON.stringify({
+    //    conversationHistory: conversationHistory,
+    //    prompt: conversationHistory.map((msg) => msg.message).join('\n') + '\n' + data.get('prompt'),
+    //  }),
+    //}); 
 
     clearInterval(loadInterval);
     messageDiv.innerHTML = '';
 
     if (response.ok) {
 
-      const responseData = await response.json();
+      //modify code
+      const response = await axios.request(options);
+      const responseData = response.data;
+      const { conversation_id, response: botResponse } = responseData;
+
+      
+      //const responseData = await response.json();
       const parsedData = responseData.bot.trim(); // trims any trailing spaces/'\n'
 
       // Add bot message to conversation history
